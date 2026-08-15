@@ -59,6 +59,7 @@ public final class BloodMagicContent {
         // crafting grid and returns the source AE2 pattern to the player.
         GameRegistry.addRecipe(new RecipeEncodeBloodPattern());
         FMLCommonHandler.instance().bus().register(new BloodPatternCraftingHandler());
+        FMLCommonHandler.instance().bus().register(new BloodMagicNeiCatalystBridge());
         MinecraftForge.EVENT_BUS.register(new BloodAltarAssemblerMemoryCardHandler());
     }
 }
