@@ -45,6 +45,10 @@ public class ClientProxy extends CommonProxy {
         BlockMechanicalOrechid.setRenderId(orechid);
         RenderingRegistry.registerBlockHandler(new RenderMechanicalOrechid(orechid));
 
+        int jaded = RenderingRegistry.getNextAvailableRenderId();
+        BlockJadedAmaranthus.setRenderId(jaded);
+        RenderingRegistry.registerBlockHandler(new RenderJadedAmaranthus(jaded));
+
         RenderingRegistry.registerEntityRenderingHandler(EntityTieredManaSpark.class, new RenderTieredManaSpark());
     }
 
@@ -67,6 +71,8 @@ public class ClientProxy extends CommonProxy {
             return new GuiMechanicalAlfheimMarket(player.inventory, (TileMechanicalAlfheimMarket) te);
         if (id == DivineMachineryLegacy.GUI_ORECHID && te instanceof TileMechanicalOrechid)
             return new GuiMechanicalOrechid(player.inventory, (TileMechanicalOrechid) te);
+        if (id == DivineMachineryLegacy.GUI_JADED_AMARANTHUS && te instanceof TileJadedAmaranthus)
+            return new GuiJadedAmaranthus(player.inventory, (TileJadedAmaranthus) te);
         return null;
     }
 }

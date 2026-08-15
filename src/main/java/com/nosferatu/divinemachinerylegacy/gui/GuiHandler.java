@@ -27,6 +27,8 @@ public class GuiHandler implements IGuiHandler {
             return new ContainerMechanicalAlfheimMarket(player.inventory, (TileMechanicalAlfheimMarket) te);
         if (id == DivineMachineryLegacy.GUI_ORECHID && te instanceof TileMechanicalOrechid)
             return new ContainerMechanicalOrechid(player.inventory, (TileMechanicalOrechid) te);
+        if (id == DivineMachineryLegacy.GUI_JADED_AMARANTHUS && te instanceof TileJadedAmaranthus)
+            return new ContainerJadedAmaranthus(player.inventory, (TileJadedAmaranthus) te);
         return null;
     }
 

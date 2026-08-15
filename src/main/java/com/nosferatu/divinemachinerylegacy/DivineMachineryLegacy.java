@@ -37,6 +37,7 @@ public class DivineMachineryLegacy {
     public static final int GUI_INDUSTRIAL_AGGLOMERATION = 5;
     public static final int GUI_ALFHEIM_MARKET = 6;
     public static final int GUI_ORECHID = 7;
+    public static final int GUI_JADED_AMARANTHUS = 8;
 
     public static final String[] MATERIAL_KEYS = {
             "malachite", "saffron", "shadow", "crimson", "crystal", "aureate", "mazarine"
@@ -58,6 +59,7 @@ public class DivineMachineryLegacy {
     public static Block mechanicalIndustrialAgglomerationFactory;
     public static Block mechanicalAlfheimMarket;
     public static Block mechanicalOrechid;
+    public static Block jadedAmaranthus;
 
     public static Item catalystManaInfinity;
     public static Item catalystLivingrockInfinity;
@@ -66,6 +68,8 @@ public class DivineMachineryLegacy {
     public static Item catalystStoneInfinity;
     public static Item catalystWoodInfinity;
     public static Item catalystSpeed;
+    public static Item catalystPetal;
+    public static Item catalystPetalBlock;
 
     public static final Item[] materialIngots = new Item[MATERIAL_KEYS.length];
     public static final Item[] materialDragonstones = new Item[MATERIAL_KEYS.length];
@@ -85,6 +89,8 @@ public class DivineMachineryLegacy {
         catalystStoneInfinity = cat("catalyst_stone_infinity", "catalyst_stone_infinity");
         catalystWoodInfinity = cat("catalyst_wood_infinity", "catalyst_wood_infinity");
         catalystSpeed = cat("catalyst_speed", "catalyst_speed");
+        catalystPetal = cat("catalyst_petal", "catalyst_petal");
+        catalystPetalBlock = cat("catalyst_petal_block", "catalyst_petal_block");
 
         mechanicalRunicAltar = new BlockMechanicalRunicAltar();
         GameRegistry.registerBlock(mechanicalRunicAltar, ItemBlockMechanicalRunicAltar.class, "mechanical_runic_altar");
@@ -118,6 +124,10 @@ public class DivineMachineryLegacy {
         mechanicalOrechid = new BlockMechanicalOrechid();
         GameRegistry.registerBlock(mechanicalOrechid, ItemBlockMechanicalOrechid.class, "mechanical_orechid");
         GameRegistry.registerTileEntity(TileMechanicalOrechid.class, MODID + ".mechanical_orechid");
+
+        jadedAmaranthus = new BlockJadedAmaranthus();
+        GameRegistry.registerBlock(jadedAmaranthus, "jaded_amaranthus");
+        GameRegistry.registerTileEntity(TileJadedAmaranthus.class, MODID + ".jaded_amaranthus");
 
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
         registerSparkRecipes();
