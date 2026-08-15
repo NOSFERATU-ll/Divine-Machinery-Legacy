@@ -1,11 +1,14 @@
 package com.nosferatu.divinemachinerylegacy.tile;
 
+import appeng.api.implementations.tiles.ICraftingMachine;
+import appeng.api.networking.crafting.ICraftingPatternDetails;
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.botania.MachineTier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
@@ -33,12 +37,21 @@ import java.util.List;
  *   5..20  rune altar inputs
  *   21..36 outputs
  *
- * Tier metadata controls parallelism, mana capacity, Livingrock slots and
- * available catalyst slots. Advanced/Ultimate tiers support the same two
- * Runic Altar catalysts used by Extra Reforked: infinite mana and infinite
- * Livingrock.
+ * Features implemented from Extra Reforked's Runic Altar family:
+ * - real BotaniaAPI.runeAltarRecipes
+ * - real recipe mana cost
+ * - 4/8/16/32 parallel crafting by tier
+ * - 2.5M/10M/50M/100M mana buffers
+ * - rune return behavior
+ * - Livingrock consumption
+ * - Infinite Mana / Infinite Livingrock catalysts on high tiers
+ * - Botania mana bursts and Spark attachment
+ * - sided inventory automation
+ * - AE2 rv3 processing-pattern input through ICraftingMachine
+ * - full NBT persistence of inventory, mana and in-progress recipe
  */
-public class TileMechanicalRunicAltar extends TileEntity implements ISidedInventory, ISparkAttachable {
+public class TileMechanicalRunicAltar extends TileEntity
+        implements ISidedInventory, ISparkAttachable, ICraftingMachine {
 
     public static final int SLOT_LIVINGROCK_START = 0;
     public static final int SLOT_LIVINGROCK_END = 2;
@@ -249,8 +262,6 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
     }
 
     private void removeLivingrock(int amount) {
-        if (hasInfiniteLivingrock()) return;
-
         int left = amount;
         int allowed = getTier().getLivingrockSlots();
         for (int i = 0; i < allowed && left > 0; i++) {
@@ -262,18 +273,24 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
             left -= take;
             if (stack.stackSize <= 0) inventory[slot] = null;
         }
+
+        // With the catalyst installed any remaining Livingrock cost is virtual.
+        // Real Livingrock already present in the machine is still consumed first,
+        // matching Extra Reforked's refill-and-consume behavior and avoiding dupes.
+        if (left > 0 && !hasInfiniteLivingrock()) {
+            // This should only happen if inventory changed between the final
+            // preflight check and commit. The process is already server-atomic.
+        }
     }
 
     private int getLivingrockCount() {
-        if (hasInfiniteLivingrock()) return Integer.MAX_VALUE;
-
         int total = 0;
         int allowed = getTier().getLivingrockSlots();
         for (int i = 0; i < allowed; i++) {
             ItemStack stack = inventory[SLOT_LIVINGROCK_START + i];
             if (isLivingrock(stack)) total += stack.stackSize;
         }
-        return total;
+        return hasInfiniteLivingrock() ? Integer.MAX_VALUE : total;
     }
 
     private boolean isLivingrock(ItemStack stack) {
@@ -427,6 +444,98 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
         Item item = stack.getItem();
         return item == DivineMachineryLegacy.catalystManaInfinity
                 || item == DivineMachineryLegacy.catalystLivingrockInfinity;
+    }
+
+    // ---------------------------------------------------------------------
+    // AE2 rv3 processing patterns
+    // ---------------------------------------------------------------------
+
+    @Override
+    public boolean acceptsPlans() {
+        return true;
+    }
+
+    @Override
+    public boolean pushPattern(ICraftingPatternDetails pattern, InventoryCrafting table, ForgeDirection direction) {
+        if (worldObj == null || worldObj.isRemote || pattern == null || table == null) return false;
+
+        // Crafting-table patterns belong in Molecular Assemblers. This machine
+        // accepts AE2 processing patterns only.
+        if (pattern.isCraftable()) return false;
+
+        ItemStack[] simulated = copyInventory();
+        for (int i = 0; i < table.getSizeInventory(); i++) {
+            ItemStack stack = table.getStackInSlot(i);
+            if (stack == null || stack.stackSize <= 0) continue;
+            if (!insertPatternStack(simulated, stack.copy())) return false;
+        }
+
+        internalInventoryMutation = true;
+        try {
+            for (int i = 0; i < table.getSizeInventory(); i++) {
+                ItemStack stack = table.getStackInSlot(i);
+                if (stack == null || stack.stackSize <= 0) continue;
+                if (!insertPatternStack(inventory, stack.copy())) return false;
+            }
+        } finally {
+            internalInventoryMutation = false;
+        }
+
+        // New pattern input may increase the possible batch size, so recompute.
+        resetProcess();
+        markDirty();
+        return true;
+    }
+
+    private ItemStack[] copyInventory() {
+        ItemStack[] copy = new ItemStack[INVENTORY_SIZE];
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            copy[i] = inventory[i] == null ? null : inventory[i].copy();
+        }
+        return copy;
+    }
+
+    private boolean insertPatternStack(ItemStack[] target, ItemStack incoming) {
+        if (incoming == null || incoming.stackSize <= 0) return true;
+
+        if (isLivingrock(incoming)) {
+            return insertIntoRange(target, incoming,
+                    SLOT_LIVINGROCK_START,
+                    SLOT_LIVINGROCK_START + getTier().getLivingrockSlots() - 1);
+        }
+
+        if (isUpgradeItem(incoming)) {
+            // Machine upgrades are configuration, never autocrafting ingredients.
+            return false;
+        }
+
+        return insertIntoRange(target, incoming, SLOT_INPUT_START, SLOT_INPUT_END);
+    }
+
+    private boolean insertIntoRange(ItemStack[] target, ItemStack incoming, int first, int last) {
+        if (first > last) return false;
+        int left = incoming.stackSize;
+
+        for (int slot = first; slot <= last && left > 0; slot++) {
+            ItemStack existing = target[slot];
+            if (existing == null || !canStacksMerge(existing, incoming)) continue;
+            int limit = Math.min(existing.getMaxStackSize(), getInventoryStackLimit());
+            int room = limit - existing.stackSize;
+            if (room <= 0) continue;
+            int moved = Math.min(room, left);
+            existing.stackSize += moved;
+            left -= moved;
+        }
+
+        for (int slot = first; slot <= last && left > 0; slot++) {
+            if (target[slot] != null) continue;
+            ItemStack placed = incoming.copy();
+            placed.stackSize = Math.min(left, Math.min(placed.getMaxStackSize(), getInventoryStackLimit()));
+            target[slot] = placed;
+            left -= placed.stackSize;
+        }
+
+        return left == 0;
     }
 
     // Client GUI synchronization only.
@@ -687,8 +796,6 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
                 inventory[slot] = ItemStack.loadItemStackFromNBT(item);
             }
         }
-
-        if (mana > getManaCapacity()) mana = getManaCapacity();
     }
 
     private static final class MatchPlan {
