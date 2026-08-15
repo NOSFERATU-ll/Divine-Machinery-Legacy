@@ -5,6 +5,7 @@ import com.nosferatu.divinemachinerylegacy.block.*;
 import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
 import com.nosferatu.divinemachinerylegacy.client.render.*;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
+import com.nosferatu.divinemachinerylegacy.gaiarelics.GaiaRelicsLegacy;
 import com.nosferatu.divinemachinerylegacy.gui.*;
 import com.nosferatu.divinemachinerylegacy.tile.*;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -70,6 +71,16 @@ public class ClientProxy extends CommonProxy {
         if (BloodMagicContent.bloodGenerator != null) {
             MinecraftForgeClient.registerItemRenderer(
                     Item.getItemFromBlock(BloodMagicContent.bloodGenerator), bloodGeneratorRenderer);
+        }
+
+        RenderGaiaRelicItem relicRenderer = new RenderGaiaRelicItem();
+        Item[] relics = {
+                GaiaRelicsLegacy.yggdrasilEssence, GaiaRelicsLegacy.muspelEssence, GaiaRelicsLegacy.niflEssence,
+                GaiaRelicsLegacy.yggdrasilIngot, GaiaRelicsLegacy.muspelIngot, GaiaRelicsLegacy.niflIngot,
+                GaiaRelicsLegacy.gaiaEchoBlade, GaiaRelicsLegacy.gaiaBlade, GaiaRelicsLegacy.valkyrieFeather
+        };
+        for (Item relic : relics) {
+            if (relic != null) MinecraftForgeClient.registerItemRenderer(relic, relicRenderer);
         }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityTieredManaSpark.class, new RenderTieredManaSpark());
