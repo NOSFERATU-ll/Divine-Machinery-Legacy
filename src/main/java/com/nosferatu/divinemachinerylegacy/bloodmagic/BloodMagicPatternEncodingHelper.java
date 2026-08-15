@@ -16,6 +16,8 @@ import java.util.List;
 
 /** Converts an ordinary AE2 rv3 processing pattern into a Blood Pattern. */
 public final class BloodMagicPatternEncodingHelper {
+    private static final int LEGACY_ALCHEMY_PROGRESS_TICKS = 100;
+
     private BloodMagicPatternEncodingHelper() { }
 
     public static ItemStack tryEncode(ItemStack blankBloodPattern, ItemStack sourcePattern, World world) {
@@ -88,11 +90,22 @@ public final class BloodMagicPatternEncodingHelper {
             }
             BloodMagicPatternData.encode(result, BloodMagicPatternKind.ALCHEMY_TABLE,
                     encodedInputs, recipe.getResult(),
-                    scaledLifeCost(recipe.getAmountNeeded()), recipe.getOrbLevel(),
+                    scaledAlchemyLifeCost(recipe.getAmountNeeded()), recipe.getOrbLevel(),
                     BloodMagicAddonConfig.bloodAltarAssemblerBaseCraftTimeTicks);
             return result;
         }
         return null;
+    }
+
+    /**
+     * Blood Magic 1.7.10 stores AlchemyRecipe.amountNeeded as LP siphoned per
+     * progress tick. The Writing Table completes at 100 progress, so the
+     * machine equivalent must reserve the total recipe LP rather than one tick.
+     */
+    private static int scaledAlchemyLifeCost(int amountPerTick) {
+        long total = Math.max(0L, (long) amountPerTick) * LEGACY_ALCHEMY_PROGRESS_TICKS;
+        double scaled = Math.ceil(total * BloodMagicAddonConfig.bloodAltarAssemblerLifeEssenceMultiplier);
+        return scaled >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) scaled;
     }
 
     private static int scaledLifeCost(int base) {
