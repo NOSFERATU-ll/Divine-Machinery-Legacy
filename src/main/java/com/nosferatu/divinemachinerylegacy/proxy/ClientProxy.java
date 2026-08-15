@@ -25,6 +25,10 @@ public class ClientProxy extends CommonProxy {
         BlockMechanicalManaPool.setRenderId(pool);
         RenderingRegistry.registerBlockHandler(new RenderMechanicalManaPool(pool));
 
+        int infuser = RenderingRegistry.getNextAvailableRenderId();
+        BlockMechanicalManaInfuser.setRenderId(infuser);
+        RenderingRegistry.registerBlockHandler(new RenderMechanicalManaInfuser(infuser));
+
         int apothecary = RenderingRegistry.getNextAvailableRenderId();
         BlockMechanicalApothecary.setRenderId(apothecary);
         RenderingRegistry.registerBlockHandler(new RenderMechanicalApothecary(apothecary));
@@ -63,6 +67,8 @@ public class ClientProxy extends CommonProxy {
             return new GuiMechanicalRunicAltar(player.inventory, (TileMechanicalRunicAltar) te);
         if (id == DivineMachineryLegacy.GUI_MANA_POOL && te instanceof TileMechanicalManaPool)
             return new GuiMechanicalManaPool(player.inventory, (TileMechanicalManaPool) te);
+        if (id == DivineMachineryLegacy.GUI_MANA_INFUSER && te instanceof TileMechanicalManaInfuser)
+            return new GuiMechanicalManaInfuser(player.inventory, (TileMechanicalManaInfuser) te);
         if (id == DivineMachineryLegacy.GUI_APOTHECARY && te instanceof TileMechanicalApothecary)
             return new GuiMechanicalApothecary(player.inventory, (TileMechanicalApothecary) te);
         if (id == DivineMachineryLegacy.GUI_DAISY && te instanceof TileMechanicalDaisy)
