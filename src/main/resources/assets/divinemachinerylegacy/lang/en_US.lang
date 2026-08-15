@@ -9,9 +9,21 @@ tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Malachite Mechani
 tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Saffron Mechanical Mana Pool
 tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Shadow Mechanical Mana Pool
 tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Crimson Mechanical Mana Pool
+tile.divinemachinerylegacy.mechanical_apothecary.malachite.name=Malachite Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_apothecary.saffron.name=Saffron Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_apothecary.shadow.name=Shadow Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_apothecary.crimson.name=Crimson Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_daisy.malachite.name=Malachite Mechanical Daisy
+tile.divinemachinerylegacy.mechanical_daisy.saffron.name=Saffron Mechanical Daisy
+tile.divinemachinerylegacy.mechanical_daisy.shadow.name=Shadow Mechanical Daisy
+tile.divinemachinerylegacy.mechanical_daisy.crimson.name=Crimson Mechanical Daisy
 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
+item.divinemachinerylegacy.catalyst_seed_infinity.name=Infinite Seeds Catalyst
+item.divinemachinerylegacy.catalyst_water_infinity.name=Infinite Water Catalyst
+item.divinemachinerylegacy.catalyst_stone_infinity.name=Infinite Stone Catalyst
+item.divinemachinerylegacy.catalyst_wood_infinity.name=Infinite Wood Catalyst
 
 item.divinemachinerylegacy.base_spark.name=Base Mana Spark
 item.divinemachinerylegacy.malachite_spark.name=Malachite Mana Spark
@@ -56,3 +68,5 @@ tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Mazarine Dragonstone 
 
 container.divinemachinerylegacy.runic_altar=Mechanical Runic Altar
 container.divinemachinerylegacy.mana_pool=Mechanical Mana Pool
+container.divinemachinerylegacy.apothecary=Mechanical Apothecary
+container.divinemachinerylegacy.daisy=Mechanical Daisy
