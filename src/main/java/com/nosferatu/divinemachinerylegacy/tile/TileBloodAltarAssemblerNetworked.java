@@ -132,6 +132,10 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
         }
     }
 
+    public boolean isNetworkPowered() {
+        return gridProxy.isActive();
+    }
+
     @Override
     public void invalidate() {
         gridProxy.invalidate();
