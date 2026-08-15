@@ -2,7 +2,6 @@ package com.nosferatu.divinemachinerylegacy.block;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.botania.MachineTier;
-import com.nosferatu.divinemachinerylegacy.botania.RunicAltarItemHelper;
 import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalRunicAltar;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -125,9 +124,6 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
         tierIcons[MachineTier.CRIMSON.ordinal()] = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/crimson_dragonstone_block");
         blockIcon = tierIcons[MachineTier.MALACHITE.ordinal()];
 
-        // These are the three native 1.7.10 Botania Runic Altar textures. The
-        // Reforked model uses the equivalent bottom/top/side textures inside
-        // its tier-coloured frame.
         runeBottomIcon = register.registerIcon("Botania:runeAltar0");
         runeTopIcon = register.registerIcon("Botania:runeAltar1");
         runeSideIcon = register.registerIcon("Botania:runeAltar2");
@@ -136,33 +132,6 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
                                     int side, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
-        if (!(te instanceof TileMechanicalRunicAltar)) return true;
-
-        TileMechanicalRunicAltar altar = (TileMechanicalRunicAltar) te;
-        ItemStack held = player.getCurrentEquippedItem();
-
-        // Preserve the familiar Botania altar interaction: right-click a valid
-        // rune ingredient or Livingrock onto the machine. Sneak-right-click (or
-        // an empty hand) opens the full automation GUI instead.
-        if (!player.isSneaking() && held != null && RunicAltarItemHelper.canInsertAsAltarItem(held)) {
-            if (!world.isRemote) {
-                int moved = RunicAltarItemHelper.insert(altar, held, 1);
-                if (moved > 0) {
-                    if (!player.capabilities.isCreativeMode) {
-                        held.stackSize -= moved;
-                        if (held.stackSize <= 0) {
-                            player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        }
-                    }
-                    world.playSoundEffect(x + 0.5D, y + 0.9D, z + 0.5D,
-                            "random.pop", 0.2F, 1.3F + world.rand.nextFloat() * 0.2F);
-                    player.inventory.markDirty();
-                }
-            }
-            return true;
-        }
-
         if (!world.isRemote) {
             player.openGui(DivineMachineryLegacy.INSTANCE, DivineMachineryLegacy.GUI_RUNIC_ALTAR, world, x, y, z);
         }
