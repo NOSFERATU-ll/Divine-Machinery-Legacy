@@ -4,14 +4,17 @@ import WayofTime.alchemicalWizardry.ModBlocks;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
 import appeng.api.AEApi;
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
 import net.minecraft.item.ItemStack;
 
-/** Registers the BloodMagic Additions altar progression against Blood Magic 1.7.10. */
+/** Registers the BloodMagic Additions port and its altar progression against Blood Magic 1.7.10. */
 public final class BloodMagicRecipeRegistrar {
     private BloodMagicRecipeRegistrar() { }
 
     public static void register() {
-        // Modern Blood Magic stores altar upgradeLevel zero-based.  In 1.7.10
+        BloodMagicContent.register();
+
+        // Modern Blood Magic stores altar upgradeLevel zero-based. In 1.7.10
         // AltarRecipeRegistry expects the real altar tier, hence +1 here.
         register(new ItemStack(DivineMachineryLegacy.bloodAltarTierCards[0]),
                 new ItemStack(ModBlocks.bloodRune, 1, 1),
