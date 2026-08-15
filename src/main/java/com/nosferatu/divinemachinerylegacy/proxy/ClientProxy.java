@@ -61,6 +61,10 @@ public class ClientProxy extends CommonProxy {
         BlockGreenhouse.setRenderId(greenhouse);
         RenderingRegistry.registerBlockHandler(new RenderGreenhouse(greenhouse));
 
+        int bloodAssembler = RenderingRegistry.getNextAvailableRenderId();
+        BlockBloodAltarAssembler.setRenderId(bloodAssembler);
+        RenderingRegistry.registerBlockHandler(new RenderBloodAltarAssembler(bloodAssembler));
+
         RenderBloodGenerator bloodGeneratorRenderer = new RenderBloodGenerator();
         ClientRegistry.bindTileEntitySpecialRenderer(TileBloodGenerator.class, bloodGeneratorRenderer);
         if (BloodMagicContent.bloodGenerator != null) {
