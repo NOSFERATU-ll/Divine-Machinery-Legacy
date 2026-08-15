@@ -6,15 +6,17 @@ import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
 import appeng.api.AEApi;
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
+import com.nosferatu.divinemachinerylegacy.gaiarelics.GaiaRelicsLegacy;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 
-/** Registers the BloodMagic Additions port and its altar progression against Blood Magic 1.7.10. */
+/** Registers Blood Magic additions plus the late Gaia relic progression. */
 public final class BloodMagicRecipeRegistrar {
     private BloodMagicRecipeRegistrar() { }
 
     public static void register() {
         BloodMagicContent.register();
+        GaiaRelicsLegacy.registerAll();
 
         // bmaddon itself ships no recipe for the Blood Generator. DML gives it
         // a deliberate late-midgame recipe matching what the machine actually does:
