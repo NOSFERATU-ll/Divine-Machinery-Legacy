@@ -17,11 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 
-/**
- * Registration point for content that belongs to the BloodMagic Additions port.
- * Kept separate from the older Botania bootstrap so the entire bmaddon port can
- * be moved/expanded without turning the main mod class into another monolith.
- */
+/** Registration point for content that belongs to the BloodMagic Additions port. */
 public final class BloodMagicContent {
     public static final int GUI_BLOOD_GENERATOR = 12;
 
@@ -37,6 +33,7 @@ public final class BloodMagicContent {
         registered = true;
 
         BloodMagicAddonConfig.loadFromDirectory(new File("config"));
+        BloodMagicLocalization.register();
 
         bloodGenerator = new BlockBloodGenerator();
         GameRegistry.registerBlock(bloodGenerator, "blood_generator");
@@ -57,9 +54,9 @@ public final class BloodMagicContent {
                     'P', aeBlankPattern);
         }
 
-        // AE2 rv3 cannot accept a foreign blank pattern in its Pattern Terminal.
-        // The bridge recipe copies a normal AE2 processing pattern into the
-        // Blood Pattern while this event handler gives the source pattern back.
+        // AE2 rv3 hard-codes its own blank pattern in the Pattern Terminal, so
+        // the 1.7.10 equivalent copies an encoded AE2 processing pattern in a
+        // crafting grid and returns the source AE2 pattern to the player.
         GameRegistry.addRecipe(new RecipeEncodeBloodPattern());
         FMLCommonHandler.instance().bus().register(new BloodPatternCraftingHandler());
         MinecraftForge.EVENT_BUS.register(new BloodAltarAssemblerMemoryCardHandler());
