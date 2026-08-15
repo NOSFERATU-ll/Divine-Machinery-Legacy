@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "divinemachinerylegacy",
+    "name": "Divine Machinery Legacy",
+    "description": "Compact magic automation backports for Minecraft 1.7.10.",
+    "version": "${version}",
+    "mcversion": "1.7.10",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["NOSFERATU-ll"],
+    "credits": "Botanical Machinery and Botanical Machinery Extra Reforked are used as open-source design/code references.",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": ["Botania", "appliedenergistics2"]
+  }
+]
