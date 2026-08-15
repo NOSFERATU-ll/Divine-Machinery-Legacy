@@ -29,9 +29,9 @@ public class TileJadedAmaranthus extends TileEntity implements ISidedInventory, 
     public static final int INVENTORY_SIZE = 18;
 
     public static final int MANA_CAPACITY = 1000000;
-    public static final int COOLDOWN_TICKS = 20;
-    public static final int COUNT_CRAFT = 64;
-    public static final int MANA_PER_CRAFT_UNIT = 500;
+    public static final int COOLDOWN_TICKS = 30;
+    public static final int COUNT_CRAFT = 1;
+    public static final int MANA_PER_CRAFT_UNIT = 200;
 
     private final ItemStack[] inventory = new ItemStack[INVENTORY_SIZE];
     private int mana;
@@ -103,17 +103,9 @@ public class TileJadedAmaranthus extends TileEntity implements ISidedInventory, 
         return false;
     }
 
-    public boolean hasInfiniteMana() {
-        return hasUpgrade(DivineMachineryLegacy.catalystManaInfinity);
-    }
-
-    public boolean hasPetalUpgrade() {
-        return hasUpgrade(DivineMachineryLegacy.catalystPetal);
-    }
-
-    public boolean hasPetalBlockUpgrade() {
-        return hasUpgrade(DivineMachineryLegacy.catalystPetalBlock);
-    }
+    public boolean hasInfiniteMana() { return hasUpgrade(DivineMachineryLegacy.catalystManaInfinity); }
+    public boolean hasPetalUpgrade() { return hasUpgrade(DivineMachineryLegacy.catalystPetal); }
+    public boolean hasPetalBlockUpgrade() { return hasUpgrade(DivineMachineryLegacy.catalystPetalBlock); }
 
     private boolean isUpgrade(ItemStack stack) {
         return stack != null && (stack.getItem() == DivineMachineryLegacy.catalystManaInfinity
@@ -121,26 +113,17 @@ public class TileJadedAmaranthus extends TileEntity implements ISidedInventory, 
                 || stack.getItem() == DivineMachineryLegacy.catalystPetalBlock);
     }
 
-    public int getCooldown() {
-        return cooldown;
-    }
+    public int getCooldown() { return cooldown; }
 
-    // Botania mana / Spark API
     @Override public int getCurrentMana() { return mana; }
     @Override public boolean isFull() { return mana >= MANA_CAPACITY; }
-
-    @Override
-    public void recieveMana(int amount) {
+    @Override public void recieveMana(int amount) {
         long next = (long) mana + amount;
         if (next < 0L) next = 0L;
         if (next > MANA_CAPACITY) next = MANA_CAPACITY;
         int updated = (int) next;
-        if (updated != mana) {
-            mana = updated;
-            markDirty();
-        }
+        if (updated != mana) { mana = updated; markDirty(); }
     }
-
     @Override public boolean canRecieveManaFromBursts() { return !isFull(); }
     @Override public boolean isOutputtingPower() { return false; }
     @Override public boolean canAttachSpark(ItemStack stack) { return true; }
@@ -160,135 +143,73 @@ public class TileJadedAmaranthus extends TileEntity implements ISidedInventory, 
         }
         return found;
     }
-
     @Override public boolean areIncomingTranfersDone() { return false; }
 
-    @Override
-    public void invalidate() {
-        if (registeredInManaNetwork) {
-            ManaNetworkEvent.removePool(this);
-            registeredInManaNetwork = false;
-        }
+    @Override public void invalidate() {
+        if (registeredInManaNetwork) { ManaNetworkEvent.removePool(this); registeredInManaNetwork = false; }
         super.invalidate();
     }
-
-    @Override
-    public void onChunkUnload() {
-        if (registeredInManaNetwork) {
-            ManaNetworkEvent.removePool(this);
-            registeredInManaNetwork = false;
-        }
+    @Override public void onChunkUnload() {
+        if (registeredInManaNetwork) { ManaNetworkEvent.removePool(this); registeredInManaNetwork = false; }
         super.onChunkUnload();
     }
 
-    // Inventory / AE2 import-export bus compatibility
     @Override public int getSizeInventory() { return INVENTORY_SIZE; }
     @Override public ItemStack getStackInSlot(int slot) { return slot >= 0 && slot < INVENTORY_SIZE ? inventory[slot] : null; }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amount) {
-        ItemStack stack = getStackInSlot(slot);
-        if (stack == null) return null;
+    @Override public ItemStack decrStackSize(int slot, int amount) {
+        ItemStack stack = getStackInSlot(slot); if (stack == null) return null;
         ItemStack removed;
-        if (stack.stackSize <= amount) {
-            removed = stack;
-            inventory[slot] = null;
-        } else {
-            removed = stack.splitStack(amount);
-            if (stack.stackSize <= 0) inventory[slot] = null;
-        }
-        markDirty();
-        return removed;
+        if (stack.stackSize <= amount) { removed = stack; inventory[slot] = null; }
+        else { removed = stack.splitStack(amount); if (stack.stackSize <= 0) inventory[slot] = null; }
+        markDirty(); return removed;
     }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        ItemStack stack = getStackInSlot(slot);
-        inventory[slot] = null;
-        markDirty();
-        return stack;
+    @Override public ItemStack getStackInSlotOnClosing(int slot) {
+        ItemStack stack = getStackInSlot(slot); inventory[slot] = null; markDirty(); return stack;
     }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
+    @Override public void setInventorySlotContents(int slot, ItemStack stack) {
         if (slot < 0 || slot >= INVENTORY_SIZE) return;
         inventory[slot] = stack;
         int limit = slot <= SLOT_UPGRADE_END ? 1 : 64;
         if (stack != null && stack.stackSize > limit) stack.stackSize = limit;
         markDirty();
     }
-
     @Override public String getInventoryName() { return "container.divinemachinerylegacy.jaded_amaranthus"; }
     @Override public boolean hasCustomInventoryName() { return false; }
     @Override public int getInventoryStackLimit() { return 64; }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    @Override public boolean isUseableByPlayer(EntityPlayer player) {
         return worldObj != null && worldObj.getTileEntity(xCoord, yCoord, zCoord) == this
                 && player.getDistanceSq(xCoord + .5D, yCoord + .5D, zCoord + .5D) <= 64D;
     }
-
     @Override public void openInventory() { }
     @Override public void closeInventory() { }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+    @Override public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END && isUpgrade(stack);
     }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
-        int[] slots = new int[INVENTORY_SIZE];
-        for (int i = 0; i < INVENTORY_SIZE; i++) slots[i] = i;
-        return slots;
+    @Override public int[] getAccessibleSlotsFromSide(int side) {
+        int[] slots = new int[INVENTORY_SIZE]; for (int i = 0; i < INVENTORY_SIZE; i++) slots[i] = i; return slots;
     }
+    @Override public boolean canInsertItem(int slot, ItemStack stack, int side) { return isItemValidForSlot(slot, stack); }
+    @Override public boolean canExtractItem(int slot, ItemStack stack, int side) { return slot >= SLOT_OUTPUT_START && slot <= SLOT_OUTPUT_END; }
 
-    @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return isItemValidForSlot(slot, stack);
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return slot >= SLOT_OUTPUT_START && slot <= SLOT_OUTPUT_END;
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        tag.setInteger("Mana", mana);
-        tag.setInteger("Cooldown", cooldown);
+    @Override public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag); tag.setInteger("Mana", mana); tag.setInteger("Cooldown", cooldown);
         NBTTagList list = new NBTTagList();
         for (int slot = 0; slot < INVENTORY_SIZE; slot++) {
-            ItemStack stack = inventory[slot];
-            if (stack == null) continue;
-            NBTTagCompound entry = new NBTTagCompound();
-            entry.setByte("Slot", (byte) slot);
-            stack.writeToNBT(entry);
-            list.appendTag(entry);
+            ItemStack stack = inventory[slot]; if (stack == null) continue;
+            NBTTagCompound entry = new NBTTagCompound(); entry.setByte("Slot", (byte) slot); stack.writeToNBT(entry); list.appendTag(entry);
         }
         tag.setTag("Items", list);
     }
-
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        mana = Math.max(0, Math.min(MANA_CAPACITY, tag.getInteger("Mana")));
+    @Override public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag); mana = Math.max(0, Math.min(MANA_CAPACITY, tag.getInteger("Mana")));
         cooldown = Math.max(0, tag.getInteger("Cooldown"));
         for (int i = 0; i < INVENTORY_SIZE; i++) inventory[i] = null;
         NBTTagList list = tag.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < list.tagCount(); i++) {
-            NBTTagCompound entry = list.getCompoundTagAt(i);
-            int slot = entry.getByte("Slot") & 255;
+            NBTTagCompound entry = list.getCompoundTagAt(i); int slot = entry.getByte("Slot") & 255;
             if (slot < INVENTORY_SIZE) inventory[slot] = ItemStack.loadItemStackFromNBT(entry);
         }
     }
-
-    public void setClientMana(int value) {
-        if (worldObj != null && worldObj.isRemote) mana = Math.max(0, Math.min(MANA_CAPACITY, value));
-    }
-
-    public void setClientCooldown(int value) {
-        if (worldObj != null && worldObj.isRemote) cooldown = Math.max(0, value);
-    }
+    public void setClientMana(int value) { if (worldObj != null && worldObj.isRemote) mana = Math.max(0, Math.min(MANA_CAPACITY, value)); }
+    public void setClientCooldown(int value) { if (worldObj != null && worldObj.isRemote) cooldown = Math.max(0, value); }
 }
