@@ -19,7 +19,7 @@ import net.minecraft.item.Item;
         modid = DivineMachineryLegacy.MODID,
         name = DivineMachineryLegacy.NAME,
         version = DivineMachineryLegacy.VERSION,
-        dependencies = "required-after:Botania;after:appliedenergistics2"
+        dependencies = "required-after:Botania;required-after:appliedenergistics2"
 )
 public class DivineMachineryLegacy {
 
