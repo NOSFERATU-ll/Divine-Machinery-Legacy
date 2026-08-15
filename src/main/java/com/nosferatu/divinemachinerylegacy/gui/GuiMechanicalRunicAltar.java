@@ -8,8 +8,8 @@ import net.minecraft.inventory.Slot;
 import org.lwjgl.opengl.GL11;
 
 /**
- * Deliberately code-drawn placeholder GUI. No upstream Extra Reforked GUI
- * texture is redistributed because its README reserves those assets.
+ * Code-drawn development GUI. Upstream Extra Reforked GUI textures are not
+ * redistributed unless explicit permission for those reserved assets is added.
  */
 public class GuiMechanicalRunicAltar extends GuiContainer {
 
@@ -29,6 +29,7 @@ public class GuiMechanicalRunicAltar extends GuiContainer {
         MachineTier tier = tile.getTier();
         fontRendererObj.drawString("Mechanical Runic Altar - " + tier.getKey(), 8, 7, 0xE8E8E8);
         fontRendererObj.drawString("Livingrock", 8, 39, 0xB8B8B8);
+        fontRendererObj.drawString("Upgrades", 82, 39, 0xB8B8B8);
         fontRendererObj.drawString("Inputs", 8, 45, 0xB8B8B8);
         fontRendererObj.drawString("Outputs", 128, 45, 0xB8B8B8);
 
@@ -38,8 +39,14 @@ public class GuiMechanicalRunicAltar extends GuiContainer {
                 : "Idle";
         fontRendererObj.drawString(status, 8, 126, 0xD8D8D8);
 
-        String mana = "Mana: " + tile.getCurrentMana() + " / " + tile.getManaCapacity();
+        String mana = tile.hasInfiniteMana()
+                ? "Mana: INFINITE"
+                : "Mana: " + tile.getCurrentMana() + " / " + tile.getManaCapacity();
         fontRendererObj.drawString(mana, 8, 140, 0xA8C8FF);
+
+        if (tile.hasInfiniteLivingrock()) {
+            fontRendererObj.drawString("Livingrock: INFINITE", 118, 140, 0xB8E6B8);
+        }
     }
 
     @Override
@@ -58,11 +65,12 @@ public class GuiMechanicalRunicAltar extends GuiContainer {
         int barX2 = left + 212;
         int barY2 = top + 138;
         drawRect(barX1, barY1, barX2, barY2, 0xFF161A20);
-        if (tile.getManaCapacity() > 0) {
-            double ratio = Math.min(1D, Math.max(0D, tile.getCurrentMana() / (double) tile.getManaCapacity()));
-            int fill = (int) ((barX2 - barX1) * ratio);
-            drawRect(barX1, barY1, barX1 + fill, barY2, 0xFF2B75C9);
-        }
+        double ratio = tile.hasInfiniteMana()
+                ? 1D
+                : (tile.getManaCapacity() <= 0 ? 0D
+                : Math.min(1D, Math.max(0D, tile.getCurrentMana() / (double) tile.getManaCapacity())));
+        int fill = (int) ((barX2 - barX1) * ratio);
+        drawRect(barX1, barY1, barX1 + fill, barY2, 0xFF2B75C9);
 
         // Slot frames for every exposed machine/player slot.
         for (Object object : inventorySlots.inventorySlots) {
