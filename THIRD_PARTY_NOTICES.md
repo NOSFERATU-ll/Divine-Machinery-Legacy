@@ -12,7 +12,14 @@ License: Apache License 2.0
 Source: https://github.com/BOLTMAGIC/Botanical-Machinery-Extra-Reforked
 License file: Apache License 2.0
 
-The upstream README explicitly reserves the graphical interface textures of its mechanisms. Those GUI textures are not redistributed by Divine Machinery Legacy.
+The upstream README separately reserves the graphical interface textures of its mechanisms.
+
+On 2026-08-15, BOLT_M4G1C explicitly granted Divine Machinery Legacy permission to temporarily use the original GUI textures and other visual assets from Botanical Machinery Extra Reforked while the 1.7.10 port is being developed. The permission request also stated that these assets will later be replaced/redrawn with original Divine Machinery Legacy artwork.
+
+The permission record is kept at:
+`docs/ASSET_PERMISSION_BOTANICAL_EXTRA_REFORKED.md`
+
+Development builds sync the permitted upstream artwork into the build workspace and package it into the development jar. These assets remain third-party artwork and are not claimed as original Divine Machinery Legacy artwork.
 
 ## Runtime APIs
 

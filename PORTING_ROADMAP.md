@@ -12,6 +12,8 @@ Primary references:
 
 Do not ask the player to runtime-test a machine until that machine reaches its own **feature-complete milestone**. CI compilation alone is not the milestone.
 
+During development, original Botanical Machinery Extra Reforked GUI/visual assets may be used under BOLT_M4G1C's explicit 2026-08-15 permission. They are temporary development assets and will be replaced/redrawn after the port is feature-complete.
+
 ## Milestone 1 — Mechanical Runic Altar
 
 ### Core recipe behavior
@@ -58,8 +60,10 @@ Do not ask the player to runtime-test a machine until that machine reaches its o
 - [x] Dedicated `Divine Machinery Legacy` creative tab.
 - [x] All four altar metadata variants exposed to Creative/NEI.
 - [x] English and Russian names.
+- [x] Original Extra Reforked Runic Altar development GUI wired under explicit permission.
+- [x] Original inventory modules, mana bars, tier textures and catalyst art wired for development builds.
 - [ ] Final 1.7.10 block renderer/model for the altar frame.
-- [ ] Final GUI artwork. Until permission is documented, do not redistribute the GUI textures reserved by Extra Reforked's README.
+- [ ] Final original Divine Machinery Legacy GUI/artwork pass after feature completion.
 
 ### Milestone gate
 

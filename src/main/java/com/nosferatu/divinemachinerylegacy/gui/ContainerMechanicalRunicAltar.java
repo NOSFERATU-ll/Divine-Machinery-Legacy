@@ -1,6 +1,7 @@
 package com.nosferatu.divinemachinerylegacy.gui;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
+import com.nosferatu.divinemachinerylegacy.botania.MachineTier;
 import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalRunicAltar;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,6 +11,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerMechanicalRunicAltar extends Container {
+
+    private static final int HIDDEN_SLOT = -1000;
 
     private final TileMechanicalRunicAltar tile;
 
@@ -25,40 +28,45 @@ public class ContainerMechanicalRunicAltar extends Container {
 
     public ContainerMechanicalRunicAltar(InventoryPlayer playerInventory, TileMechanicalRunicAltar tile) {
         this.tile = tile;
+        MachineTier tier = tile.getTier();
 
-        // Livingrock slots.
+        // Match Extra Reforked's four original Runic Altar GUI layouts.
+        int[][] livingrock = livingrockCoordinates(tier);
         for (int i = 0; i < 3; i++) {
-            addSlotToContainer(new SlotLivingrock(tile, i, 8 + i * 18, 22));
+            addSlotToContainer(new SlotLivingrock(tile, i, livingrock[i][0], livingrock[i][1]));
         }
 
-        // Upgrade slots. They are only valid on Shadow (1) / Crimson (2).
-        addSlotToContainer(new SlotUpgrade(tile, TileMechanicalRunicAltar.SLOT_UPGRADE_START, 82, 22));
-        addSlotToContainer(new SlotUpgrade(tile, TileMechanicalRunicAltar.SLOT_UPGRADE_START + 1, 100, 22));
+        int[][] upgrades = upgradeCoordinates(tier);
+        addSlotToContainer(new SlotUpgrade(tile, TileMechanicalRunicAltar.SLOT_UPGRADE_START,
+                upgrades[0][0], upgrades[0][1]));
+        addSlotToContainer(new SlotUpgrade(tile, TileMechanicalRunicAltar.SLOT_UPGRADE_START + 1,
+                upgrades[1][0], upgrades[1][1]));
 
-        // 4x4 input area.
+        // Original 4x4 input grid.
         int index = TileMechanicalRunicAltar.SLOT_INPUT_START;
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
-                addSlotToContainer(new Slot(tile, index++, 8 + col * 18, 54 + row * 18));
+                addSlotToContainer(new Slot(tile, index++, 27 + col * 18, 25 + row * 18));
             }
         }
 
-        // 4x4 output area.
+        // Original 4x4 output grid.
         index = TileMechanicalRunicAltar.SLOT_OUTPUT_START;
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 4; col++) {
-                addSlotToContainer(new SlotOutput(tile, index++, 128 + col * 18, 54 + row * 18));
+                addSlotToContainer(new SlotOutput(tile, index++, 119 + col * 18, 25 + row * 18));
             }
         }
 
-        // Player inventory.
+        // Extra Reforked centers its 188x95 inventory module under a 216x140
+        // machine panel. These are the corresponding slot coordinates.
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, 29 + col * 18, 151 + row * 18));
+                addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, 28 + col * 18, 154 + row * 18));
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlotToContainer(new Slot(playerInventory, col, 29 + col * 18, 209));
+            addSlotToContainer(new Slot(playerInventory, col, 28 + col * 18, 212));
         }
     }
 
@@ -168,6 +176,23 @@ public class ContainerMechanicalRunicAltar extends Container {
         if (stack.stackSize == 0) slot.putStack(null);
         else slot.onSlotChanged();
         return original;
+    }
+
+    private static int[][] livingrockCoordinates(MachineTier tier) {
+        if (tier == MachineTier.MALACHITE) {
+            return new int[][]{{100, 100}, {HIDDEN_SLOT, HIDDEN_SLOT}, {HIDDEN_SLOT, HIDDEN_SLOT}};
+        }
+        return new int[][]{{81, 100}, {100, 100}, {119, 100}};
+    }
+
+    private static int[][] upgradeCoordinates(MachineTier tier) {
+        if (tier == MachineTier.SHADOW) {
+            return new int[][]{{45, 100}, {HIDDEN_SLOT, HIDDEN_SLOT}};
+        }
+        if (tier == MachineTier.CRIMSON) {
+            return new int[][]{{45, 100}, {155, 100}};
+        }
+        return new int[][]{{HIDDEN_SLOT, HIDDEN_SLOT}, {HIDDEN_SLOT, HIDDEN_SLOT}};
     }
 
     private static class SlotLivingrock extends Slot {
