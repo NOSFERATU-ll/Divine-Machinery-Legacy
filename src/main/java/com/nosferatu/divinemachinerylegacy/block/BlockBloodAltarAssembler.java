@@ -1,7 +1,7 @@
 package com.nosferatu.divinemachinerylegacy.block;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
-import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssemblerExtended;
+import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssemblerNetworked;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -26,7 +26,7 @@ public class BlockBloodAltarAssembler extends BlockContainer {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileBloodAltarAssemblerExtended();
+        return new TileBloodAltarAssemblerNetworked();
     }
 
     @Override
