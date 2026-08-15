@@ -19,7 +19,9 @@ public class ItemBloodAltarTierCard extends Item {
         setUnlocalizedName(DivineMachineryLegacy.MODID + "." + key);
         setTextureName(DivineMachineryLegacy.MODID + ":bloodmagic/" + key);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
-        setMaxStackSize(1);
+        // As in bmaddon, cards may stack normally in the player inventory;
+        // only an assembler upgrade slot is limited to one item.
+        setMaxStackSize(64);
     }
 
     public int getTier() {
