@@ -46,8 +46,8 @@ public class DivineMachineryLegacy {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        catalystManaInfinity = new ItemMachineCatalyst("catalyst_mana_infinity", "minecraft:nether_star");
-        catalystLivingrockInfinity = new ItemMachineCatalyst("catalyst_livingrock_infinity", "minecraft:quartz");
+        catalystManaInfinity = new ItemMachineCatalyst("catalyst_mana_infinity", "catalyst_mana_infinity");
+        catalystLivingrockInfinity = new ItemMachineCatalyst("catalyst_livingrock_infinity", "catalyst_living_rock_infinity");
         GameRegistry.registerItem(catalystManaInfinity, "catalyst_mana_infinity");
         GameRegistry.registerItem(catalystLivingrockInfinity, "catalyst_livingrock_infinity");
 
