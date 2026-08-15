@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public final class ItemValkyrieFeather extends Item {
 
     public ItemValkyrieFeather() {
         setUnlocalizedName(DivineMachineryLegacy.MODID + ".valkyrie_feather");
-        setTextureName("minecraft:feather");
+        setTextureName(DivineMachineryLegacy.MODID + ":gaiarelics/valkyrie_feather");
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
         setMaxStackSize(1);
     }
@@ -45,9 +46,9 @@ public final class ItemValkyrieFeather extends Item {
         NBTTagCompound nbt = stack.getTagCompound();
         long flight = nbt == null ? 0 : nbt.getLong(TAG_FLIGHT_END);
         long cooldown = nbt == null ? 0 : nbt.getLong(TAG_COOLDOWN_END);
-        list.add("§bRight click: 30 sec. flight");
-        if (flight > now) list.add("§aFlight: " + ((flight - now + 19) / 20) + " sec.");
-        else if (cooldown > now) list.add("§cCooldown: " + ((cooldown - now + 19) / 20) + " sec.");
-        else list.add("§aReady");
+        list.add("§b" + StatCollector.translateToLocal("tooltip.divinemachinerylegacy.valkyrie.use"));
+        if (flight > now) list.add("§a" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.valkyrie.flight", (flight - now + 19) / 20));
+        else if (cooldown > now) list.add("§c" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.valkyrie.cooldown", (cooldown - now + 19) / 20));
+        else list.add("§a" + StatCollector.translateToLocal("tooltip.divinemachinerylegacy.valkyrie.ready"));
     }
 }
