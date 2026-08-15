@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.util.StatCollector;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public final class ItemGaiaEchoBlade extends ItemSword {
     public ItemGaiaEchoBlade() {
         super(Item.ToolMaterial.EMERALD);
         setUnlocalizedName(DivineMachineryLegacy.MODID + ".gaia_echo_blade");
-        setTextureName("minecraft:diamond_sword");
+        setTextureName(DivineMachineryLegacy.MODID + ":gaiarelics/gaia_echo_blade");
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
         setMaxDamage(0);
     }
@@ -38,8 +39,8 @@ public final class ItemGaiaEchoBlade extends ItemSword {
     @Override
     public void addInformation(ItemStack stack, net.minecraft.entity.player.EntityPlayer player, List list, boolean advanced) {
         int echo = getEcho(stack);
-        list.add("§bEcho: " + echo + " / 100");
-        list.add("§7Main Gaia loot x2 chance: " + echo + "%");
-        list.add("§8Echo resets after killing Gaia.");
+        list.add("§b" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.gaia_echo.echo", echo));
+        list.add("§7" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.gaia_echo.chance", echo));
+        list.add("§8" + StatCollector.translateToLocal("tooltip.divinemachinerylegacy.gaia_echo.reset"));
     }
 }
