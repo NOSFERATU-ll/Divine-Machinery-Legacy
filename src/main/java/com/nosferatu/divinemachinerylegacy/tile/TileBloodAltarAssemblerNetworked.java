@@ -1,6 +1,6 @@
 package com.nosferatu.divinemachinerylegacy.tile;
 
-import appeng.api.config.GridFlags;
+import appeng.api.networking.GridFlags;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.crafting.ICraftingProviderHelper;
@@ -135,8 +135,8 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
         super.setInventorySlotContents(slot, stack);
-        if (slot >= SLOT_PATTERN_START && slot <= SLOT_PATTERN_END
-                || slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END) {
+        if ((slot >= SLOT_PATTERN_START && slot <= SLOT_PATTERN_END)
+                || (slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END)) {
             notifyPatternChange();
         }
     }
@@ -144,8 +144,8 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         ItemStack result = super.decrStackSize(slot, amount);
-        if (result != null && (slot >= SLOT_PATTERN_START && slot <= SLOT_PATTERN_END
-                || slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END)) {
+        if (result != null && ((slot >= SLOT_PATTERN_START && slot <= SLOT_PATTERN_END)
+                || (slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END))) {
             notifyPatternChange();
         }
         return result;
