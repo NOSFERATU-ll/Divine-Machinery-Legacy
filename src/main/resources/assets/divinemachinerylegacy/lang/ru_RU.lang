@@ -8,4 +8,36 @@ tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Багровый 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
 
+item.divinemachinerylegacy.malachite_ingot.name=Малахитовый слиток
+item.divinemachinerylegacy.saffron_ingot.name=Шафрановый слиток
+item.divinemachinerylegacy.shadow_ingot.name=Теневой слиток
+item.divinemachinerylegacy.crimson_ingot.name=Багровый слиток
+item.divinemachinerylegacy.crystal_ingot.name=Кристальный слиток
+item.divinemachinerylegacy.aureate_ingot.name=Ауреатовый слиток
+item.divinemachinerylegacy.mazarine_ingot.name=Мазариновый слиток
+
+item.divinemachinerylegacy.malachite_dragonstone.name=Малахитовый драконий камень
+item.divinemachinerylegacy.saffron_dragonstone.name=Шафрановый драконий камень
+item.divinemachinerylegacy.shadow_dragonstone.name=Теневой драконий камень
+item.divinemachinerylegacy.crimson_dragonstone.name=Багровый драконий камень
+item.divinemachinerylegacy.crystal_dragonstone.name=Кристальный драконий камень
+item.divinemachinerylegacy.aureate_dragonstone.name=Ауреатовый драконий камень
+item.divinemachinerylegacy.mazarine_dragonstone.name=Мазариновый драконий камень
+
+tile.divinemachinerylegacy.malachite_ingot_block.name=Малахитовый блок
+tile.divinemachinerylegacy.saffron_ingot_block.name=Шафрановый блок
+tile.divinemachinerylegacy.shadow_ingot_block.name=Теневой блок
+tile.divinemachinerylegacy.crimson_ingot_block.name=Багровый блок
+tile.divinemachinerylegacy.crystal_ingot_block.name=Кристальный блок
+tile.divinemachinerylegacy.aureate_ingot_block.name=Ауреатовый блок
+tile.divinemachinerylegacy.mazarine_ingot_block.name=Мазариновый блок
+
+tile.divinemachinerylegacy.malachite_dragonstone_block.name=Блок малахитового драконьего камня
+tile.divinemachinerylegacy.saffron_dragonstone_block.name=Блок шафранового драконьего камня
+tile.divinemachinerylegacy.shadow_dragonstone_block.name=Блок теневого драконьего камня
+tile.divinemachinerylegacy.crimson_dragonstone_block.name=Блок багрового драконьего камня
+tile.divinemachinerylegacy.crystal_dragonstone_block.name=Блок кристального драконьего камня
+tile.divinemachinerylegacy.aureate_dragonstone_block.name=Блок ауреатового драконьего камня
+tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Блок мазаринового драконьего камня
+
 container.divinemachinerylegacy.runic_altar=Механический рунический алтарь
