@@ -101,7 +101,7 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
      * The modern machine returns pattern outputs to AE2 itself. 1.7.10 does not
      * provide the newer pattern-provider helper, so inject the hidden output
      * buffer through the rv3 storage grid. Anything the network cannot accept
-     * stays in the machine and can still be extracted by an Import Bus/pipe.
+     * remains buffered until the network can accept it.
      */
     private void returnCompletedOutputsToMe() {
         try {
@@ -173,7 +173,8 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
 
     @Override
     public AECableType getCableConnectionType(ForgeDirection direction) {
-        return AECableType.SMART;
+        // The original bmaddon machine identifies itself as a covered cable host.
+        return AECableType.COVERED;
     }
 
     @Override
@@ -225,6 +226,27 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
     @Override
     public boolean isBusy() {
         return !gridProxy.isActive() || getActiveBatch() >= getMaxParallelCrafts();
+    }
+
+    // Modern AENetworkInvBlockEntity exposes only its nine pattern slots to
+    // sided item automation. Keep upgrades and the internal completion buffer
+    // private, while allowing encoded Blood Patterns to be piped in/out.
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        int[] slots = new int[PATTERN_SLOT_COUNT];
+        for (int i = 0; i < PATTERN_SLOT_COUNT; i++) slots[i] = SLOT_PATTERN_START + i;
+        return slots;
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        return slot >= SLOT_PATTERN_START && slot <= SLOT_PATTERN_END
+                && isItemValidForSlot(slot, stack);
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+        return slot >= SLOT_PATTERN_START && slot <= SLOT_PATTERN_END;
     }
 
     @Override
