@@ -7,6 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.item.ModItems;
 import vazkii.botania.common.item.block.ItemBlockSpecialFlower;
 
@@ -23,15 +24,45 @@ public final class RecipeRegistrar {
     }
 
     private static void registerMaterialProgression() {
-        // Botania 1.7.10 has no extensible Terra Plate recipe registry. Crystal is
-        // therefore the bootstrap step on the Rune Altar; the remaining Reforked
-        // Terra Plate material recipes are handled by our Mana Infuser registry.
+        /*
+         * Reforked defines these seven ingots as custom Terra Plate recipes.
+         * Botania 1.7.10 has no public registry for adding Terra Plate recipes,
+         * so the exact ingredients and mana costs are exposed as Rune Altar
+         * recipes for the manual/NEI path. The Mechanical Mana Infuser keeps
+         * the automated Reforked-style material chain in parallel.
+         */
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.materialIngots[4]), 250000,
                 manaResource(0, 1), new ItemStack(Blocks.glass), new ItemStack(Blocks.glass), manaResource(7, 1));
 
-        // These are the original Reforked Elven Trade chains, translated directly
-        // to Botania 1.7.10's real Elven Trade registry. The Mechanical Alfheim
-        // Market picks them up automatically because it consumes that registry.
+        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.materialIngots[0]), 750000,
+                manaResource(4, 1), manaResource(5, 1), manaResource(7, 1));
+
+        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.materialIngots[1]), 1000000,
+                new ItemStack(DivineMachineryLegacy.materialIngots[0]),
+                manaResource(14, 1), new ItemStack(ModBlocks.storage, 1, 1));
+
+        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.materialIngots[2]), 1500000,
+                new ItemStack(DivineMachineryLegacy.materialIngots[1]),
+                manaResource(14, 1), manaResource(14, 1),
+                new ItemStack(DivineMachineryLegacy.materialIngotBlocks[0]));
+
+        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.materialIngots[3]), 2000000,
+                new ItemStack(DivineMachineryLegacy.materialIngots[2]),
+                manaResource(14, 1), manaResource(14, 1), manaResource(14, 1), manaResource(14, 1),
+                new ItemStack(DivineMachineryLegacy.materialIngotBlocks[1]));
+
+        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.materialIngots[5]), 2500000,
+                new ItemStack(DivineMachineryLegacy.materialIngots[3]),
+                manaResource(14, 1), manaResource(14, 1), manaResource(14, 1), manaResource(14, 1),
+                new ItemStack(DivineMachineryLegacy.materialIngotBlocks[3]));
+
+        BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.materialIngots[6]), 5000000,
+                new ItemStack(DivineMachineryLegacy.materialIngots[5]),
+                manaResource(14, 1), manaResource(14, 1), manaResource(14, 1), manaResource(14, 1),
+                new ItemStack(DivineMachineryLegacy.materialIngotBlocks[5]));
+
+        // Original Reforked Elven Trade chain, translated directly into the
+        // real Botania 1.7.10 registry. Our Mechanical Alfheim Market consumes it too.
         BotaniaAPI.registerElvenTradeRecipe(new ItemStack(DivineMachineryLegacy.materialDragonstones[4]),
                 new ItemStack(DivineMachineryLegacy.materialIngots[4]), manaResource(0, 1));
         BotaniaAPI.registerElvenTradeRecipe(new ItemStack(DivineMachineryLegacy.materialDragonstones[0]),
@@ -49,13 +80,13 @@ public final class RecipeRegistrar {
     }
 
     private static void registerMachines() {
-        baseMachine(DivineMachineryLegacy.mechanicalRunicAltar, new ItemStack(vazkii.botania.common.block.ModBlocks.runeAltar));
-        baseMachine(DivineMachineryLegacy.mechanicalManaPool, new ItemStack(vazkii.botania.common.block.ModBlocks.pool));
+        baseMachine(DivineMachineryLegacy.mechanicalRunicAltar, new ItemStack(ModBlocks.runeAltar));
+        baseMachine(DivineMachineryLegacy.mechanicalManaPool, new ItemStack(ModBlocks.pool));
         baseManaInfuser();
-        baseMachine(DivineMachineryLegacy.mechanicalApothecary, new ItemStack(vazkii.botania.common.block.ModBlocks.altar));
+        baseMachine(DivineMachineryLegacy.mechanicalApothecary, new ItemStack(ModBlocks.altar));
         baseMachine(DivineMachineryLegacy.mechanicalDaisy, ItemBlockSpecialFlower.ofType("puredaisy"));
-        baseMachine(DivineMachineryLegacy.mechanicalIndustrialAgglomerationFactory, new ItemStack(vazkii.botania.common.block.ModBlocks.terraPlate));
-        baseMachine(DivineMachineryLegacy.mechanicalAlfheimMarket, new ItemStack(vazkii.botania.common.block.ModBlocks.alfPortal));
+        baseMachine(DivineMachineryLegacy.mechanicalIndustrialAgglomerationFactory, new ItemStack(ModBlocks.terraPlate));
+        baseMachine(DivineMachineryLegacy.mechanicalAlfheimMarket, new ItemStack(ModBlocks.alfPortal));
         baseMachine(DivineMachineryLegacy.mechanicalOrechid, ItemBlockSpecialFlower.ofType("orechid"));
 
         tierUp(DivineMachineryLegacy.mechanicalRunicAltar);
@@ -80,13 +111,13 @@ public final class RecipeRegistrar {
                 'e', ItemBlockSpecialFlower.ofType("endoflame"));
     }
 
-    /** Crystal bootstraps the Malachite machine that creates the rest of the material chain. */
+    /** Crystal bootstraps the Malachite machine that automates the rest of the material chain. */
     private static void baseManaInfuser() {
         GameRegistry.addRecipe(new ItemStack(DivineMachineryLegacy.mechanicalManaInfuser, 1, 0),
                 "idi", "dtd", "idi",
                 'i', DivineMachineryLegacy.materialIngots[4],
                 'd', DivineMachineryLegacy.materialDragonstones[4],
-                't', new ItemStack(vazkii.botania.common.block.ModBlocks.terraPlate));
+                't', new ItemStack(ModBlocks.terraPlate));
     }
 
     private static void baseMachine(Block machine, ItemStack core) {
@@ -115,7 +146,7 @@ public final class RecipeRegistrar {
                 rune(8), rune(9), rune(15), new ItemStack(Items.nether_star),
                 new ItemStack(DivineMachineryLegacy.materialIngotBlocks[3]), new ItemStack(DivineMachineryLegacy.materialDragonstoneBlocks[3]));
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.catalystLivingrockInfinity), 750000,
-                rune(0), rune(8), new ItemStack(vazkii.botania.common.block.ModBlocks.livingrock), new ItemStack(Items.nether_star),
+                rune(0), rune(8), new ItemStack(ModBlocks.livingrock), new ItemStack(Items.nether_star),
                 new ItemStack(DivineMachineryLegacy.materialIngots[3]));
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.catalystSeedInfinity), 500000,
                 rune(1), rune(8), new ItemStack(Items.wheat_seeds), new ItemStack(Items.nether_star), new ItemStack(DivineMachineryLegacy.materialIngots[2]));
@@ -126,10 +157,10 @@ public final class RecipeRegistrar {
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.catalystWoodInfinity), 500000,
                 rune(1), rune(8), new ItemStack(Blocks.log), new ItemStack(Items.nether_star), new ItemStack(DivineMachineryLegacy.materialIngots[2]));
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.catalystPetal), 300000,
-                rune(3), rune(8), new ItemStack(vazkii.botania.common.item.ModItems.petal, 1, 0),
+                rune(3), rune(8), new ItemStack(ModItems.petal, 1, 0),
                 new ItemStack(DivineMachineryLegacy.materialIngots[1]), new ItemStack(DivineMachineryLegacy.materialDragonstones[1]));
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(DivineMachineryLegacy.catalystPetalBlock), 600000,
-                rune(3), rune(8), new ItemStack(DivineMachineryLegacy.catalystPetal), new ItemStack(vazkii.botania.common.block.ModBlocks.petalBlock, 1, 0),
+                rune(3), rune(8), new ItemStack(DivineMachineryLegacy.catalystPetal), new ItemStack(ModBlocks.petalBlock, 1, 0),
                 new ItemStack(DivineMachineryLegacy.materialIngots[3]), new ItemStack(DivineMachineryLegacy.materialDragonstones[3]));
     }
 
@@ -157,10 +188,12 @@ public final class RecipeRegistrar {
         GameRegistry.addRecipe(new ItemStack(DivineMachineryLegacy.greenhouseUpgrades[out]),
                 "aba", "bcb", "aba", 'a', a, 'b', b, 'c', center);
     }
+
     private static void chainedUpgrade(int out, int previous, Object a, Object b) {
         GameRegistry.addRecipe(new ItemStack(DivineMachineryLegacy.greenhouseUpgrades[out]),
                 "aba", "bpb", "aba", 'a', a, 'b', b, 'p', DivineMachineryLegacy.greenhouseUpgrades[previous]);
     }
+
     private static ItemStack rune(int meta) { return new ItemStack(ModItems.rune, 1, meta); }
     private static ItemStack manaResource(int meta, int count) { return new ItemStack(ModItems.manaResource, count, meta); }
 }
