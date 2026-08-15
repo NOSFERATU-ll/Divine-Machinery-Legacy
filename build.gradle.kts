@@ -1,5 +1,7 @@
 plugins {
-    id("com.falsepattern.fpgradle-mc") version "4.0.2"
+    // FPGradle 4.x moved the Gradle runtime baseline forward. 3.3.1 is the
+    // maintained pre-4.x line and uses the Java 17-era toolchain we need here.
+    id("com.falsepattern.fpgradle-mc") version "3.3.1"
 }
 
 group = "com.nosferatu.divinemachinerylegacy"
