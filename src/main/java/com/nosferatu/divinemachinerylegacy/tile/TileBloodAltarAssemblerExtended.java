@@ -46,7 +46,11 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
         Iterator<PatternJob> iterator = patternJobs.iterator();
         while (iterator.hasNext()) {
             PatternJob job = iterator.next();
-            if (job.progress < job.craftTime) {
+
+            // bmaddon charges active processing jobs individually. A job that
+            // has finished processing and is merely waiting for output space
+            // consumes no additional AE and can still flush once space returns.
+            if (job.progress < job.craftTime && canAdvancePatternCraft()) {
                 job.progress++;
                 dirty = true;
             }
@@ -59,6 +63,11 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
         }
 
         if (dirty) markDirty();
+    }
+
+    /** Hook used by the AE2 networked tile to charge exactly one active job. */
+    protected boolean canAdvancePatternCraft() {
+        return true;
     }
 
     // ---------------------------------------------------------------------
@@ -209,6 +218,16 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
         patternJobs.add(new PatternJob(output.copy(), calculatePatternCraftTime()));
         markDirty();
         return true;
+    }
+
+    @Override
+    public int getMaxParallelCrafts() {
+        int base = Math.max(1, BloodMagicAddonConfig.bloodAltarAssemblerBaseParallelCrafts);
+        int perCard = Math.max(0, BloodMagicAddonConfig.bloodAltarAssemblerParallelCraftsPerCard);
+        int cap = Math.max(1, BloodMagicAddonConfig.bloodAltarAssemblerMaxParallelCrafts);
+        int cards = getParallelCardCount();
+        long desired = cards > 0 ? (long) cards * perCard : base;
+        return Math.max(1, (int) Math.min((long) cap, desired));
     }
 
     private int calculatePatternCraftTime() {
