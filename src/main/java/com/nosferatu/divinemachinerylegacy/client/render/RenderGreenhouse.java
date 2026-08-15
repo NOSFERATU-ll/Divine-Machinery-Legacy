@@ -42,7 +42,6 @@ public class RenderGreenhouse implements ISimpleBlockRenderingHandler {
                                double x, double y, double z, int brightness) {
         IIcon icon = block.getMachineIcon();
 
-        // Element 1: [0,0,0] -> [16,1,16]
         RenderMachineModelUtil.box(t, x, y, z, 0, 0, 0, 16, 1, 16, brightness,
                 icon, uv(4, 4, 0, 8),
                 icon, uv(4, 4, 0, 0),
@@ -51,7 +50,6 @@ public class RenderGreenhouse implements ISimpleBlockRenderingHandler {
                 icon, uv(8, 3.25, 12, 3.5),
                 icon, uv(8, 2.75, 12, 3));
 
-        // Element 2: [3,1,3] -> [13,2,13]
         RenderMachineModelUtil.box(t, x, y, z, 3, 1, 3, 13, 2, 13, brightness,
                 icon, uv(9, 0, 6.5, 2.5),
                 icon, uv(6.5, 7.5, 4, 5),
@@ -60,7 +58,6 @@ public class RenderGreenhouse implements ISimpleBlockRenderingHandler {
                 icon, uv(9, 1.5, 11.5, 1.75),
                 icon, uv(9, 1, 11.5, 1.25));
 
-        // Element 3: [3,1,3] -> [13,1.5,13], Y-rotated 45 degrees around [8,1.5,8].
         rotatedBoxY(t, icon, x, y, z, 3, 1, 3, 13, 1.5, 13,
                 8, 8, Math.toRadians(45), brightness,
                 uv(6.5, 2.5, 4, 5),
@@ -86,19 +83,17 @@ public class RenderGreenhouse implements ISimpleBlockRenderingHandler {
                                     RenderMachineModelUtil.UV south,
                                     RenderMachineModelUtil.UV west,
                                     RenderMachineModelUtil.UV east) {
-        // Same face winding as RenderMachineModelUtil.box, with every X/Z vertex
-        // rotated around the model-space origin from Reforked's JSON.
-        quad(t, icon, down, brightness, .5F, 0, -1, 0, angle, cx, cz, ox, oy, oz,
+        quad(t, icon, down, true, brightness, .5F, 0, -1, 0, angle, cx, cz, ox, oy, oz,
                 p(x1,y1,z2), p(x1,y1,z1), p(x2,y1,z1), p(x2,y1,z2));
-        quad(t, icon, up, brightness, 1F, 0, 1, 0, angle, cx, cz, ox, oy, oz,
+        quad(t, icon, up, false, brightness, 1F, 0, 1, 0, angle, cx, cz, ox, oy, oz,
                 p(x1,y2,z1), p(x1,y2,z2), p(x2,y2,z2), p(x2,y2,z1));
-        quad(t, icon, north, brightness, .8F, 0, 0, -1, angle, cx, cz, ox, oy, oz,
+        quad(t, icon, north, false, brightness, .8F, 0, 0, -1, angle, cx, cz, ox, oy, oz,
                 p(x2,y2,z1), p(x2,y1,z1), p(x1,y1,z1), p(x1,y2,z1));
-        quad(t, icon, south, brightness, .8F, 0, 0, 1, angle, cx, cz, ox, oy, oz,
+        quad(t, icon, south, false, brightness, .8F, 0, 0, 1, angle, cx, cz, ox, oy, oz,
                 p(x1,y2,z2), p(x1,y1,z2), p(x2,y1,z2), p(x2,y2,z2));
-        quad(t, icon, west, brightness, .6F, -1, 0, 0, angle, cx, cz, ox, oy, oz,
+        quad(t, icon, west, false, brightness, .6F, -1, 0, 0, angle, cx, cz, ox, oy, oz,
                 p(x1,y2,z1), p(x1,y1,z1), p(x1,y1,z2), p(x1,y2,z2));
-        quad(t, icon, east, brightness, .6F, 1, 0, 0, angle, cx, cz, ox, oy, oz,
+        quad(t, icon, east, false, brightness, .6F, 1, 0, 0, angle, cx, cz, ox, oy, oz,
                 p(x2,y2,z2), p(x2,y1,z2), p(x2,y1,z1), p(x2,y2,z1));
     }
 
@@ -107,7 +102,8 @@ public class RenderGreenhouse implements ISimpleBlockRenderingHandler {
     }
 
     private static void quad(Tessellator t, IIcon icon, RenderMachineModelUtil.UV uv,
-                             int brightness, float shade, double nx, double ny, double nz,
+                             boolean downOrder, int brightness, float shade,
+                             double nx, double ny, double nz,
                              double angle, double cx, double cz,
                              double ox, double oy, double oz,
                              double[] a, double[] b, double[] c, double[] d) {
@@ -123,10 +119,17 @@ public class RenderGreenhouse implements ISimpleBlockRenderingHandler {
         double u1 = icon.getInterpolatedU(uv.u1);
         double v0 = icon.getInterpolatedV(uv.v0);
         double v1 = icon.getInterpolatedV(uv.v1);
-        vertex(t, a, ox, oy, oz, cx, cz, cos, sin, u0, v1);
-        vertex(t, b, ox, oy, oz, cx, cz, cos, sin, u0, v0);
-        vertex(t, c, ox, oy, oz, cx, cz, cos, sin, u1, v0);
-        vertex(t, d, ox, oy, oz, cx, cz, cos, sin, u1, v1);
+        if (downOrder) {
+            vertex(t, a, ox, oy, oz, cx, cz, cos, sin, u0, v1);
+            vertex(t, b, ox, oy, oz, cx, cz, cos, sin, u0, v0);
+            vertex(t, c, ox, oy, oz, cx, cz, cos, sin, u1, v0);
+            vertex(t, d, ox, oy, oz, cx, cz, cos, sin, u1, v1);
+        } else {
+            vertex(t, a, ox, oy, oz, cx, cz, cos, sin, u0, v0);
+            vertex(t, b, ox, oy, oz, cx, cz, cos, sin, u0, v1);
+            vertex(t, c, ox, oy, oz, cx, cz, cos, sin, u1, v1);
+            vertex(t, d, ox, oy, oz, cx, cz, cos, sin, u1, v0);
+        }
     }
 
     private static void vertex(Tessellator t, double[] p,
