@@ -9,9 +9,21 @@ tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Малахито�
 tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Шафрановый механический бассейн маны
 tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Теневой механический бассейн маны
 tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Багровый механический бассейн маны
+tile.divinemachinerylegacy.mechanical_apothecary.malachite.name=Малахитовый механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_apothecary.saffron.name=Шафрановый механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_apothecary.shadow.name=Теневой механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_apothecary.crimson.name=Багровый механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_daisy.malachite.name=Малахитовая механическая чистая маргаритка
+tile.divinemachinerylegacy.mechanical_daisy.saffron.name=Шафрановая механическая чистая маргаритка
+tile.divinemachinerylegacy.mechanical_daisy.shadow.name=Теневая механическая чистая маргаритка
+tile.divinemachinerylegacy.mechanical_daisy.crimson.name=Багровая механическая чистая маргаритка
 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
+item.divinemachinerylegacy.catalyst_seed_infinity.name=Катализатор бесконечных семян
+item.divinemachinerylegacy.catalyst_water_infinity.name=Катализатор бесконечной воды
+item.divinemachinerylegacy.catalyst_stone_infinity.name=Катализатор бесконечного камня
+item.divinemachinerylegacy.catalyst_wood_infinity.name=Катализатор бесконечной древесины
 
 item.divinemachinerylegacy.base_spark.name=Базовая искра маны
 item.divinemachinerylegacy.malachite_spark.name=Малахитовая искра маны
@@ -56,3 +68,5 @@ tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Блок мазари
 
 container.divinemachinerylegacy.runic_altar=Механический рунический алтарь
 container.divinemachinerylegacy.mana_pool=Механический бассейн маны
+container.divinemachinerylegacy.apothecary=Механический лепестковый аптекарь
+container.divinemachinerylegacy.daisy=Механическая чистая маргаритка
