@@ -1,3 +1,78 @@
-package com.nosferatu.divinemachinerylegacy.client.render;import com.nosferatu.divinemachinerylegacy.block.BlockMechanicalDaisy;import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;import net.minecraft.block.Block;import net.minecraft.client.renderer.RenderBlocks;import net.minecraft.client.renderer.Tessellator;import net.minecraft.init.Blocks;import net.minecraft.util.IIcon;import net.minecraft.world.IBlockAccess;import org.lwjgl.opengl.GL11;import static com.nosferatu.divinemachinerylegacy.client.render.RenderMachineModelUtil.*;
-/** Exact Reforked plate/soil/flower silhouette for Mechanical Daisy. */
-public class RenderMechanicalDaisy implements ISimpleBlockRenderingHandler{private final int id;public RenderMechanicalDaisy(int i){id=i;}@Override public void renderInventoryBlock(Block b,int m,int model,RenderBlocks r){if(!(b instanceof BlockMechanicalDaisy))return;Tessellator t=Tessellator.instance;GL11.glPushMatrix();GL11.glTranslatef(-.5F,-.5F,-.5F);t.startDrawingQuads();draw(t,(BlockMechanicalDaisy)b,m,0,0,0,15728880);t.draw();GL11.glPopMatrix();}@Override public boolean renderWorldBlock(IBlockAccess w,int x,int y,int z,Block b,int model,RenderBlocks r){if(!(b instanceof BlockMechanicalDaisy))return false;draw(Tessellator.instance,(BlockMechanicalDaisy)b,w.getBlockMetadata(x,y,z),x,y,z,b.getMixedBrightnessForBlock(w,x,y,z));return true;}private static void draw(Tessellator t,BlockMechanicalDaisy b,int m,double x,double y,double z,int br){IIcon p=b.getPlate(m),top=Blocks.grass.getIcon(1,0),side=Blocks.grass.getIcon(2,0);box(t,x,y,z,0,0,0,16,2,16,br,p,new UV(1,1,15,15),p,new UV(1,1,15,15),p,new UV(1,7,15,9),p,new UV(1,7,15,9),p,new UV(1,7,15,9),p,new UV(1,7,15,9));box(t,x,y,z,5,2,5,11,3,11,br,p,new UV(5,5,11,11),top,new UV(5,5,11,11),side,new UV(5,0,11,1),side,new UV(5,0,11,1),side,new UV(5,0,11,1),side,new UV(5,0,11,1));crossedPlant(t,x,y,z,5,3,5,11,11.4,11,b.getFlower(),br);}@Override public boolean shouldRender3DInInventory(int i){return true;}@Override public int getRenderId(){return id;}}
+package com.nosferatu.divinemachinerylegacy.client.render;
+
+import com.nosferatu.divinemachinerylegacy.block.BlockMechanicalDaisy;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import org.lwjgl.opengl.GL11;
+import vazkii.botania.common.block.ModBlocks;
+
+import static com.nosferatu.divinemachinerylegacy.client.render.RenderMachineModelUtil.*;
+
+/** Exact Reforked plate / enchanted-soil / Pure Daisy silhouette. */
+public class RenderMechanicalDaisy implements ISimpleBlockRenderingHandler {
+    private final int renderId;
+
+    public RenderMechanicalDaisy(int renderId) {
+        this.renderId = renderId;
+    }
+
+    @Override
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
+        if (!(block instanceof BlockMechanicalDaisy)) return;
+        Tessellator t = Tessellator.instance;
+        GL11.glPushMatrix();
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        t.startDrawingQuads();
+        draw(t, (BlockMechanicalDaisy) block, metadata, 0, 0, 0, 15728880);
+        t.draw();
+        GL11.glPopMatrix();
+    }
+
+    @Override
+    public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block,
+                                    int modelId, RenderBlocks renderer) {
+        if (!(block instanceof BlockMechanicalDaisy)) return false;
+        draw(Tessellator.instance, (BlockMechanicalDaisy) block,
+                world.getBlockMetadata(x, y, z), x, y, z,
+                block.getMixedBrightnessForBlock(world, x, y, z));
+        return true;
+    }
+
+    private static void draw(Tessellator t, BlockMechanicalDaisy block, int meta,
+                             double x, double y, double z, int brightness) {
+        IIcon plate = block.getPlate(meta);
+        // Reforked uses Botania's enchanted soil here, not vanilla grass.
+        IIcon soilTop = ModBlocks.enchantedSoil.getIcon(1, 0);
+        IIcon soilSide = ModBlocks.enchantedSoil.getIcon(2, 0);
+
+        box(t, x, y, z, 0, 0, 0, 16, 2, 16, brightness,
+                plate, new UV(1, 1, 15, 15),
+                plate, new UV(1, 1, 15, 15),
+                plate, new UV(1, 7, 15, 9),
+                plate, new UV(1, 7, 15, 9),
+                plate, new UV(1, 7, 15, 9),
+                plate, new UV(1, 7, 15, 9));
+
+        box(t, x, y, z, 5, 2, 5, 11, 3, 11, brightness,
+                plate, new UV(5, 5, 11, 11),
+                soilTop, new UV(5, 5, 11, 11),
+                soilSide, new UV(5, 0, 11, 1),
+                soilSide, new UV(5, 0, 11, 1),
+                soilSide, new UV(5, 0, 11, 1),
+                soilSide, new UV(5, 0, 11, 1));
+
+        // The two Reforked flower planes are rotated 45 degrees around Y;
+        // crossedPlant produces the same X silhouette in the legacy renderer.
+        crossedPlant(t, x, y, z, 5, 3, 5, 11, 11.4, 11, block.getFlower(), brightness);
+    }
+
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) { return true; }
+
+    @Override
+    public int getRenderId() { return renderId; }
+}
