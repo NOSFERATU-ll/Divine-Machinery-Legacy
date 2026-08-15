@@ -42,6 +42,7 @@ public final class GaiaRelicsLegacy {
         GameRegistry.registerItem(gaiaEchoBlade, "gaia_echo_blade");
         GameRegistry.registerItem(gaiaBlade, "gaia_blade");
         GameRegistry.registerItem(valkyrieFeather, "valkyrie_feather");
+        GaiaRelicsLocalization.register();
 
         GaiaRelicsEvents events = new GaiaRelicsEvents();
         MinecraftForge.EVENT_BUS.register(events);
