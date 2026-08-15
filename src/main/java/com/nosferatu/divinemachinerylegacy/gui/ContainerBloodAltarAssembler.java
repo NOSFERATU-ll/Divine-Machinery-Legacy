@@ -1,6 +1,7 @@
 package com.nosferatu.divinemachinerylegacy.gui;
 
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssembler;
+import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssemblerExtended;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -8,8 +9,16 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+/** 1.7.10 menu layout matching bmaddon: 9 patterns, 9 upgrades, player inventory. */
 public class ContainerBloodAltarAssembler extends Container {
+    private static final int PATTERN_CONTAINER_START = 0;
+    private static final int PATTERN_CONTAINER_END = 8;
+    private static final int UPGRADE_CONTAINER_START = 9;
+    private static final int UPGRADE_CONTAINER_END = 17;
+    private static final int MACHINE_VISIBLE_SLOTS = 18;
+
     private final TileBloodAltarAssembler tile;
+    private final boolean hasPatternSlots;
 
     private int lastLife = Integer.MIN_VALUE;
     private int lastProgress = Integer.MIN_VALUE;
@@ -23,39 +32,39 @@ public class ContainerBloodAltarAssembler extends Container {
 
     public ContainerBloodAltarAssembler(InventoryPlayer playerInventory, TileBloodAltarAssembler tile) {
         this.tile = tile;
+        this.hasPatternSlots = tile instanceof TileBloodAltarAssemblerExtended;
 
-        // 3x3 upgrade grid, matching bmaddon's nine upgrade slots.
-        int slot = TileBloodAltarAssembler.SLOT_UPGRADE_START;
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                addSlotToContainer(new SlotUpgrade(tile, slot++, 12 + col * 18, 26 + row * 18));
+        if (hasPatternSlots) {
+            TileBloodAltarAssemblerExtended extended = (TileBloodAltarAssemblerExtended) tile;
+            for (int col = 0; col < TileBloodAltarAssemblerExtended.PATTERN_SLOT_COUNT; col++) {
+                addSlotToContainer(new SlotPattern(extended,
+                        TileBloodAltarAssemblerExtended.SLOT_PATTERN_START + col,
+                        8 + col * 18, 45));
+            }
+        } else {
+            // Legacy chunks created before the pattern-aware tile existed keep
+            // nine harmless placeholder slots offscreen until the block is replaced.
+            for (int col = 0; col < 9; col++) {
+                addSlotToContainer(new SlotDisabled(tile, -1, -1000, -1000));
             }
         }
 
-        // 4x2 input queue.
-        slot = TileBloodAltarAssembler.SLOT_INPUT_START;
-        for (int row = 0; row < 2; row++) {
-            for (int col = 0; col < 4; col++) {
-                addSlotToContainer(new Slot(tile, slot++, 82 + col * 18, 35 + row * 18));
-            }
+        // bmaddon screen JSON places all nine upgrade slots in one horizontal row.
+        for (int col = 0; col < 9; col++) {
+            addSlotToContainer(new SlotUpgrade(tile,
+                    TileBloodAltarAssembler.SLOT_UPGRADE_START + col,
+                    8 + col * 18, 97));
         }
 
-        // 4x2 output queue.
-        slot = TileBloodAltarAssembler.SLOT_OUTPUT_START;
-        for (int row = 0; row < 2; row++) {
-            for (int col = 0; col < 4; col++) {
-                addSlotToContainer(new SlotOutput(tile, slot++, 166 + col * 18, 35 + row * 18));
-            }
-        }
-
-        // Player inventory.
+        // Player inventory in the 176x213 AE2-style frame.
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
-                addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9, 39 + col * 18, 129 + row * 18));
+                addSlotToContainer(new Slot(playerInventory, col + row * 9 + 9,
+                        8 + col * 18, 132 + row * 18));
             }
         }
         for (int col = 0; col < 9; col++) {
-            addSlotToContainer(new Slot(playerInventory, col, 39 + col * 18, 187));
+            addSlotToContainer(new Slot(playerInventory, col, 8 + col * 18, 190));
         }
     }
 
@@ -93,40 +102,24 @@ public class ContainerBloodAltarAssembler extends Container {
     public void updateProgressBar(int id, int value) {
         int unsigned = value & 0xFFFF;
         switch (id) {
-            case 0:
-                clientLife = (clientLife & 0xFFFF0000) | unsigned;
-                break;
-            case 1:
-                clientLife = (clientLife & 0x0000FFFF) | (unsigned << 16);
-                break;
-            case 2:
-                clientProgress = unsigned;
-                break;
-            case 3:
-                clientCraftTime = unsigned;
-                break;
-            case 4:
-                clientBatch = unsigned;
-                break;
-            default:
-                break;
+            case 0: clientLife = (clientLife & 0xFFFF0000) | unsigned; break;
+            case 1: clientLife = (clientLife & 0x0000FFFF) | (unsigned << 16); break;
+            case 2: clientProgress = unsigned; break;
+            case 3: clientCraftTime = unsigned; break;
+            case 4: clientBatch = unsigned; break;
+            default: break;
         }
     }
 
-    public int getSyncedLifeEssence() {
-        return clientLife;
-    }
+    public int getSyncedLifeEssence() { return clientLife; }
+    public int getSyncedProgress() { return clientProgress; }
+    public int getSyncedCraftTime() { return clientCraftTime; }
+    public int getSyncedBatch() { return clientBatch; }
 
-    public int getSyncedProgress() {
-        return clientProgress;
-    }
-
-    public int getSyncedCraftTime() {
-        return clientCraftTime;
-    }
-
-    public int getSyncedBatch() {
-        return clientBatch;
+    public boolean isPatternContainerSlot(int containerIndex) {
+        return hasPatternSlots
+                && containerIndex >= PATTERN_CONTAINER_START
+                && containerIndex <= PATTERN_CONTAINER_END;
     }
 
     @Override
@@ -136,26 +129,56 @@ public class ContainerBloodAltarAssembler extends Container {
 
         ItemStack stack = slot.getStack();
         ItemStack original = stack.copy();
-        final int machineSlots = 25; // hidden pending-output slot is intentionally not exposed.
 
-        if (index < machineSlots) {
-            if (!mergeItemStack(stack, machineSlots, inventorySlots.size(), true)) return null;
+        if (index < MACHINE_VISIBLE_SLOTS) {
+            if (!mergeItemStack(stack, MACHINE_VISIBLE_SLOTS, inventorySlots.size(), true)) return null;
         } else {
             boolean moved = false;
-            for (int upgradeSlot = TileBloodAltarAssembler.SLOT_UPGRADE_START;
-                 upgradeSlot <= TileBloodAltarAssembler.SLOT_UPGRADE_END && !moved;
-                 upgradeSlot++) {
-                if (tile.isItemValidForSlot(upgradeSlot, stack)) {
-                    moved = mergeItemStack(stack, 0, 9, false);
+
+            if (hasPatternSlots) {
+                TileBloodAltarAssemblerExtended extended = (TileBloodAltarAssemblerExtended) tile;
+                if (extended.isItemValidForSlot(TileBloodAltarAssemblerExtended.SLOT_PATTERN_START, stack)) {
+                    moved = mergeItemStack(stack, PATTERN_CONTAINER_START, PATTERN_CONTAINER_END + 1, false);
                 }
             }
-            if (!moved) moved = mergeItemStack(stack, 9, 17, false);
+
+            if (!moved && tile.isItemValidForSlot(TileBloodAltarAssembler.SLOT_UPGRADE_START, stack)) {
+                moved = mergeItemStack(stack, UPGRADE_CONTAINER_START, UPGRADE_CONTAINER_END + 1, false);
+            }
+
+            if (!moved) {
+                int playerIndex = index - MACHINE_VISIBLE_SLOTS;
+                if (playerIndex < 27) {
+                    moved = mergeItemStack(stack, MACHINE_VISIBLE_SLOTS + 27,
+                            MACHINE_VISIBLE_SLOTS + 36, false);
+                } else {
+                    moved = mergeItemStack(stack, MACHINE_VISIBLE_SLOTS,
+                            MACHINE_VISIBLE_SLOTS + 27, false);
+                }
+            }
+
             if (!moved) return null;
         }
 
         if (stack.stackSize == 0) slot.putStack(null);
         else slot.onSlotChanged();
         return original;
+    }
+
+    private static class SlotPattern extends Slot {
+        SlotPattern(TileBloodAltarAssemblerExtended tile, int index, int x, int y) {
+            super(tile, index, x, y);
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack stack) {
+            return inventory.isItemValidForSlot(getSlotIndex(), stack);
+        }
+
+        @Override
+        public int getSlotStackLimit() {
+            return 1;
+        }
     }
 
     private static class SlotUpgrade extends Slot {
@@ -167,16 +190,19 @@ public class ContainerBloodAltarAssembler extends Container {
         public boolean isItemValid(ItemStack stack) {
             return inventory.isItemValidForSlot(getSlotIndex(), stack);
         }
+
+        @Override
+        public int getSlotStackLimit() {
+            return 1;
+        }
     }
 
-    private static class SlotOutput extends Slot {
-        SlotOutput(TileBloodAltarAssembler tile, int index, int x, int y) {
+    private static class SlotDisabled extends Slot {
+        SlotDisabled(TileBloodAltarAssembler tile, int index, int x, int y) {
             super(tile, index, x, y);
         }
 
-        @Override
-        public boolean isItemValid(ItemStack stack) {
-            return false;
-        }
+        @Override public boolean isItemValid(ItemStack stack) { return false; }
+        @Override public boolean canTakeStack(EntityPlayer player) { return false; }
     }
 }
