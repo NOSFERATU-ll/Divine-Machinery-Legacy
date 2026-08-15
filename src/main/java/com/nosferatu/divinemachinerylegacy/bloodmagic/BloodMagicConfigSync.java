@@ -18,8 +18,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
  * 1.7.10 equivalent of bmaddon's SyncCommonConfigS2CPacket + player events.
  *
  * The modern addon synchronises the eight Blood Generator common-config values
- * whenever a player logs in, respawns, or changes dimension. Assembler values
- * are intentionally not part of that packet in bmaddon 1.0.4.
+ * whenever a player logs in, respawns, changes dimension, or opens the
+ * generator. Assembler values are intentionally not part of that packet in
+ * bmaddon 1.0.4.
  */
 public final class BloodMagicConfigSync {
     private static final SimpleNetworkWrapper NETWORK =
@@ -37,20 +38,20 @@ public final class BloodMagicConfigSync {
 
     @SubscribeEvent
     public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        sync(event.player);
+        sendToPlayer(event.player);
     }
 
     @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        sync(event.player);
+        sendToPlayer(event.player);
     }
 
     @SubscribeEvent
     public void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        sync(event.player);
+        sendToPlayer(event.player);
     }
 
-    private static void sync(EntityPlayer player) {
+    public static void sendToPlayer(EntityPlayer player) {
         if (player instanceof EntityPlayerMP) {
             NETWORK.sendTo(ConfigMessage.fromServerConfig(), (EntityPlayerMP) player);
         }
