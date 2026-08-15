@@ -1,11 +1,19 @@
 package com.nosferatu.divinemachinerylegacy.gui;
 
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicPatternData;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssembler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * 1.7.10 recreation of bmaddon's AE2 screen definition:
+ * 176x213, nine horizontal Blood Pattern slots at y=45 and nine upgrades at y=97.
+ */
 public class GuiBloodAltarAssembler extends GuiContainer {
     private final TileBloodAltarAssembler tile;
     private final ContainerBloodAltarAssembler container;
@@ -18,36 +26,21 @@ public class GuiBloodAltarAssembler extends GuiContainer {
         super(container);
         this.container = container;
         this.tile = tile;
-        this.xSize = 246;
-        this.ySize = 211;
+        this.xSize = 176;
+        this.ySize = 213;
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        String title = StatCollector.translateToLocal("container.divinemachinerylegacy.blood_altar_assembler");
-        fontRendererObj.drawString(title, 8, 7, 0x404040);
-        fontRendererObj.drawString(StatCollector.translateToLocal("gui.divinemachinerylegacy.blood_altar_assembler.upgrades"),
-                10, 17, 0x505050);
-        fontRendererObj.drawString(StatCollector.translateToLocal("gui.divinemachinerylegacy.blood_altar_assembler.inputs"),
-                82, 17, 0x505050);
-        fontRendererObj.drawString(StatCollector.translateToLocal("gui.divinemachinerylegacy.blood_altar_assembler.outputs"),
-                166, 17, 0x505050);
-
-        String tier = StatCollector.translateToLocalFormatted(
-                "gui.divinemachinerylegacy.blood_altar_assembler.tier", tile.getAltarTier());
-        String parallel = StatCollector.translateToLocalFormatted(
-                "gui.divinemachinerylegacy.blood_altar_assembler.parallel", tile.getMaxParallelCrafts());
-        fontRendererObj.drawString(tier, 82, 76, 0x404040);
-        fontRendererObj.drawString(parallel, 166, 76, 0x404040);
-
-        int life = container.getSyncedLifeEssence();
-        fontRendererObj.drawString(life + " / " + TileBloodAltarAssembler.LIFE_ESSENCE_CAPACITY + " LP", 82, 91, 0x7A1111);
-
-        int batch = container.getSyncedBatch();
-        if (batch > 0) {
-            fontRendererObj.drawString(StatCollector.translateToLocalFormatted(
-                    "gui.divinemachinerylegacy.blood_altar_assembler.batch", batch), 166, 91, 0x404040);
-        }
+        fontRendererObj.drawString(
+                StatCollector.translateToLocal("container.divinemachinerylegacy.blood_altar_assembler"),
+                8, 6, 0x404040);
+        fontRendererObj.drawString(
+                StatCollector.translateToLocal("gui.divinemachinerylegacy.blood_altar_assembler.patterns"),
+                8, 34, 0x404040);
+        fontRendererObj.drawString(
+                StatCollector.translateToLocal("gui.divinemachinerylegacy.blood_altar_assembler.tier_cards"),
+                8, 86, 0x404040);
     }
 
     @Override
@@ -57,42 +50,67 @@ public class GuiBloodAltarAssembler extends GuiContainer {
         int left = guiLeft;
         int top = guiTop;
         drawRect(left, top, left + xSize, top + ySize, 0xFFC6C6C6);
-        drawRect(left + 4, top + 4, left + xSize - 4, top + 112, 0xFFDEDEDE);
-        drawRect(left + 4, top + 116, left + xSize - 4, top + ySize - 4, 0xFFDEDEDE);
+        drawRect(left + 4, top + 4, left + xSize - 4, top + 120, 0xFFDEDEDE);
+        drawRect(left + 4, top + 124, left + xSize - 4, top + ySize - 4, 0xFFDEDEDE);
 
-        // Slot wells.
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) drawSlotWell(left + 11 + col * 18, top + 25 + row * 18);
+        // Pattern row from assets/ae2/screens/blood_altar_assembler.json.
+        for (int col = 0; col < 9; col++) {
+            drawSlotWell(left + 7 + col * 18, top + 44);
         }
-        for (int row = 0; row < 2; row++) {
-            for (int col = 0; col < 4; col++) {
-                drawSlotWell(left + 81 + col * 18, top + 34 + row * 18);
-                drawSlotWell(left + 165 + col * 18, top + 34 + row * 18);
+
+        // Upgrade row from the same screen definition.
+        for (int col = 0; col < 9; col++) {
+            drawSlotWell(left + 7 + col * 18, top + 96);
+        }
+
+        // Player inventory.
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 9; col++) {
+                drawSlotWell(left + 7 + col * 18, top + 131 + row * 18);
             }
         }
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 9; col++) drawSlotWell(left + 38 + col * 18, top + 128 + row * 18);
-        }
-        for (int col = 0; col < 9; col++) drawSlotWell(left + 38 + col * 18, top + 186);
-
-        // Life Essence buffer.
-        drawRect(left + 70, top + 88, left + 232, top + 100, 0xFF6F6F6F);
-        int life = Math.max(0, Math.min(TileBloodAltarAssembler.LIFE_ESSENCE_CAPACITY,
-                container.getSyncedLifeEssence()));
-        int lifeWidth = (int) (160L * life / TileBloodAltarAssembler.LIFE_ESSENCE_CAPACITY);
-        if (lifeWidth > 0) drawRect(left + 71, top + 89, left + 71 + lifeWidth, top + 99, 0xFF8F1616);
-
-        // Current craft progress.
-        drawRect(left + 70, top + 103, left + 232, top + 111, 0xFF6F6F6F);
-        int max = container.getSyncedCraftTime();
-        int progress = container.getSyncedProgress();
-        if (max > 0 && progress > 0) {
-            int width = Math.min(160, (int) (160L * progress / max));
-            drawRect(left + 71, top + 104, left + 71 + width, top + 110, 0xFFB52C2C);
+        for (int col = 0; col < 9; col++) {
+            drawSlotWell(left + 7 + col * 18, top + 189);
         }
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(1F, 1F, 1F, 1F);
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        super.drawScreen(mouseX, mouseY, partialTicks);
+
+        // bmaddon replaces a Blood Pattern with its output preview while Shift
+        // is held. In 1.7 GuiContainer's slot renderer is private, so redraw the
+        // nine slot wells and outputs after the vanilla pass to get the same result.
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) {
+            renderShiftPatternPreviews();
+        }
+    }
+
+    private void renderShiftPatternPreviews() {
+        for (int containerIndex = 0; containerIndex < 9; containerIndex++) {
+            if (!container.isPatternContainerSlot(containerIndex)) continue;
+            Slot slot = (Slot) inventorySlots.inventorySlots.get(containerIndex);
+            if (slot == null || !slot.getHasStack()) continue;
+
+            ItemStack pattern = slot.getStack();
+            if (!BloodMagicPatternData.isEncoded(pattern)) continue;
+            ItemStack output = BloodMagicPatternData.getOutput(pattern);
+            if (output == null) continue;
+
+            int x = guiLeft + slot.xDisplayPosition;
+            int y = guiTop + slot.yDisplayPosition;
+
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            drawRect(x, y, x + 16, y + 16, 0xFFEEEEEE);
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GL11.glColor4f(1F, 1F, 1F, 1F);
+
+            itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), output, x, y);
+            itemRender.renderItemOverlayIntoGUI(fontRendererObj, mc.getTextureManager(), output, x, y);
+        }
     }
 
     private void drawSlotWell(int x, int y) {
