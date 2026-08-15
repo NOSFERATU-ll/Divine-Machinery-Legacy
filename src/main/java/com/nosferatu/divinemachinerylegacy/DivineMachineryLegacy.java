@@ -4,6 +4,7 @@ import com.nosferatu.divinemachinerylegacy.block.*;
 import com.nosferatu.divinemachinerylegacy.botania.SparkTier;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.gui.GuiHandler;
+import com.nosferatu.divinemachinerylegacy.integration.ae2.Ae2InterfaceOutputReturner;
 import com.nosferatu.divinemachinerylegacy.item.ItemGreenhouseUpgrade;
 import com.nosferatu.divinemachinerylegacy.item.ItemMachineCatalyst;
 import com.nosferatu.divinemachinerylegacy.item.ItemReforkedMaterial;
@@ -11,6 +12,7 @@ import com.nosferatu.divinemachinerylegacy.item.ItemTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.proxy.CommonProxy;
 import com.nosferatu.divinemachinerylegacy.recipe.RecipeRegistrar;
 import com.nosferatu.divinemachinerylegacy.tile.*;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -145,6 +147,7 @@ public class DivineMachineryLegacy {
         GameRegistry.registerTileEntity(TileGreenhouse.class, MODID + ".greenhouse");
 
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
+        FMLCommonHandler.instance().bus().register(new Ae2InterfaceOutputReturner());
         registerSparkRecipes();
         RecipeRegistrar.registerAll();
         proxy.registerRenderers();
