@@ -5,7 +5,9 @@ import com.nosferatu.divinemachinerylegacy.block.BlockMechanicalRunicAltar;
 import com.nosferatu.divinemachinerylegacy.client.render.RenderMechanicalRunicAltar;
 import com.nosferatu.divinemachinerylegacy.client.render.RenderTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
+import com.nosferatu.divinemachinerylegacy.gui.GuiMechanicalManaPool;
 import com.nosferatu.divinemachinerylegacy.gui.GuiMechanicalRunicAltar;
+import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalManaPool;
 import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalRunicAltar;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,9 +29,13 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
-        if (id != DivineMachineryLegacy.GUI_RUNIC_ALTAR) return null;
         TileEntity te = world.getTileEntity(x, y, z);
-        if (!(te instanceof TileMechanicalRunicAltar)) return null;
-        return new GuiMechanicalRunicAltar(player.inventory, (TileMechanicalRunicAltar) te);
+        if (id == DivineMachineryLegacy.GUI_RUNIC_ALTAR && te instanceof TileMechanicalRunicAltar) {
+            return new GuiMechanicalRunicAltar(player.inventory, (TileMechanicalRunicAltar) te);
+        }
+        if (id == DivineMachineryLegacy.GUI_MANA_POOL && te instanceof TileMechanicalManaPool) {
+            return new GuiMechanicalManaPool(player.inventory, (TileMechanicalManaPool) te);
+        }
+        return null;
     }
 }

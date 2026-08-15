@@ -5,6 +5,11 @@ tile.divinemachinerylegacy.mechanical_runic_altar.saffron.name=Шафранов�
 tile.divinemachinerylegacy.mechanical_runic_altar.shadow.name=Теневой механический рунический алтарь
 tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Багровый механический рунический алтарь
 
+tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Малахитовый механический бассейн маны
+tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Шафрановый механический бассейн маны
+tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Теневой механический бассейн маны
+tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Багровый механический бассейн маны
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
 
@@ -50,3 +55,4 @@ tile.divinemachinerylegacy.aureate_dragonstone_block.name=Блок ауреат�
 tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Блок мазаринового драконьего камня
 
 container.divinemachinerylegacy.runic_altar=Механический рунический алтарь
+container.divinemachinerylegacy.mana_pool=Механический бассейн маны

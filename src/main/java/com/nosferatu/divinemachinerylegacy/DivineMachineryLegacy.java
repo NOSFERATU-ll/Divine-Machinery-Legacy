@@ -1,7 +1,9 @@
 package com.nosferatu.divinemachinerylegacy;
 
+import com.nosferatu.divinemachinerylegacy.block.BlockMechanicalManaPool;
 import com.nosferatu.divinemachinerylegacy.block.BlockMechanicalRunicAltar;
 import com.nosferatu.divinemachinerylegacy.block.BlockReforkedMaterial;
+import com.nosferatu.divinemachinerylegacy.block.ItemBlockMechanicalManaPool;
 import com.nosferatu.divinemachinerylegacy.block.ItemBlockMechanicalRunicAltar;
 import com.nosferatu.divinemachinerylegacy.botania.SparkTier;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
@@ -10,6 +12,7 @@ import com.nosferatu.divinemachinerylegacy.item.ItemMachineCatalyst;
 import com.nosferatu.divinemachinerylegacy.item.ItemReforkedMaterial;
 import com.nosferatu.divinemachinerylegacy.item.ItemTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.proxy.CommonProxy;
+import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalManaPool;
 import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalRunicAltar;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -37,6 +40,7 @@ public class DivineMachineryLegacy {
     public static final String VERSION = "0.1.0-dev";
 
     public static final int GUI_RUNIC_ALTAR = 1;
+    public static final int GUI_MANA_POOL = 2;
 
     public static final String[] MATERIAL_KEYS = {
             "malachite", "saffron", "shadow", "crimson", "crystal", "aureate", "mazarine"
@@ -54,6 +58,7 @@ public class DivineMachineryLegacy {
     public static final CreativeTabs CREATIVE_TAB = new CreativeTabDivineMachinery();
 
     public static Block mechanicalRunicAltar;
+    public static Block mechanicalManaPool;
     public static Item catalystManaInfinity;
     public static Item catalystLivingrockInfinity;
 
@@ -78,6 +83,11 @@ public class DivineMachineryLegacy {
         mechanicalRunicAltar = new BlockMechanicalRunicAltar();
         GameRegistry.registerBlock(mechanicalRunicAltar, ItemBlockMechanicalRunicAltar.class, "mechanical_runic_altar");
         GameRegistry.registerTileEntity(TileMechanicalRunicAltar.class, MODID + ".mechanical_runic_altar");
+
+        mechanicalManaPool = new BlockMechanicalManaPool();
+        GameRegistry.registerBlock(mechanicalManaPool, ItemBlockMechanicalManaPool.class, "mechanical_mana_pool");
+        GameRegistry.registerTileEntity(TileMechanicalManaPool.class, MODID + ".mechanical_mana_pool");
+
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
 
         registerSparkRecipes();
@@ -91,21 +101,15 @@ public class DivineMachineryLegacy {
             GameRegistry.registerItem(spark, tier.getKey() + "_spark");
         }
 
-        // One network entity type is enough on 1.7.10; its tier is synced in a
-        // DataWatcher. Reforked uses separate entity classes but identical logic.
         EntityRegistry.registerModEntity(EntityTieredManaSpark.class,
                 "tiered_mana_spark", 1, INSTANCE, 64, 1, true);
     }
 
     private void registerSparkRecipes() {
-        // Reforked's base Spark is intentionally just a conversion of Botania's
-        // regular Spark. This preserves the original early-game entry point.
         GameRegistry.addShapelessRecipe(
                 new ItemStack(manaSparks[SparkTier.BASE.ordinal()]),
                 new ItemStack(vazkii.botania.common.item.ModItems.spark));
 
-        // Exact Extra Reforked Runic Altar progression, translated to the
-        // metadata-based rune item used by Botania r1.8-249.
         BotaniaAPI.registerRuneAltarRecipe(
                 new ItemStack(manaSparks[SparkTier.MALACHITE.ordinal()]), 50000,
                 rune(0), rune(1), rune(2), rune(3), rune(8),

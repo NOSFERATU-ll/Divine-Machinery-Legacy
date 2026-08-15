@@ -5,6 +5,11 @@ tile.divinemachinerylegacy.mechanical_runic_altar.saffron.name=Saffron Mechanica
 tile.divinemachinerylegacy.mechanical_runic_altar.shadow.name=Shadow Mechanical Runic Altar
 tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Crimson Mechanical Runic Altar
 
+tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Malachite Mechanical Mana Pool
+tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Saffron Mechanical Mana Pool
+tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Shadow Mechanical Mana Pool
+tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Crimson Mechanical Mana Pool
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
 
@@ -50,3 +55,4 @@ tile.divinemachinerylegacy.aureate_dragonstone_block.name=Aureate Dragonstone Bl
 tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Mazarine Dragonstone Block
 
 container.divinemachinerylegacy.runic_altar=Mechanical Runic Altar
+container.divinemachinerylegacy.mana_pool=Mechanical Mana Pool
