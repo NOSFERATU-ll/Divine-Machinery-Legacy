@@ -1,8 +1,10 @@
 package com.nosferatu.divinemachinerylegacy;
 
 import com.nosferatu.divinemachinerylegacy.block.*;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
 import com.nosferatu.divinemachinerylegacy.botania.SparkTier;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
+import com.nosferatu.divinemachinerylegacy.gaiarelics.GaiaRelicsLegacy;
 import com.nosferatu.divinemachinerylegacy.gui.GuiHandler;
 import com.nosferatu.divinemachinerylegacy.integration.ae2.Ae2InterfaceOutputReturner;
 import com.nosferatu.divinemachinerylegacy.item.ItemBloodAltarTierCard;
@@ -98,21 +100,24 @@ public class DivineMachineryLegacy {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+        // Registration order is deliberate. NEI 1.7.10 largely follows item/block
+        // registry order, so keep each subsystem together instead of interleaving it.
+        registerBotaniaMachines();
         registerMaterials();
         registerTieredSparks();
+        registerBotaniaSupportItems();
 
-        catalystManaInfinity = cat("catalyst_mana_infinity", "catalyst_mana_infinity");
-        catalystLivingrockInfinity = cat("catalyst_livingrock_infinity", "catalyst_living_rock_infinity");
-        catalystSeedInfinity = cat("catalyst_seed_infinity", "catalyst_seed_infinity");
-        catalystWaterInfinity = cat("catalyst_water_infinity", "catalyst_water_infinity");
-        catalystStoneInfinity = cat("catalyst_stone_infinity", "catalyst_stone_infinity");
-        catalystWoodInfinity = cat("catalyst_wood_infinity", "catalyst_wood_infinity");
-        catalystSpeed = cat("catalyst_speed", "catalyst_speed");
-        catalystPetal = cat("catalyst_petal", "catalyst_petal");
-        catalystPetalBlock = cat("catalyst_petal_block", "catalyst_petal_block_pattern");
-        registerGreenhouseUpgrades();
-        registerBloodMagicItems();
+        GaiaRelicsLegacy.registerAll();
+        registerBloodMagicSection();
 
+        NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
+        FMLCommonHandler.instance().bus().register(new Ae2InterfaceOutputReturner());
+        registerSparkRecipes();
+        RecipeRegistrar.registerAll();
+        proxy.registerRenderers();
+    }
+
+    private void registerBotaniaMachines() {
         mechanicalRunicAltar = new BlockMechanicalRunicAltar();
         GameRegistry.registerBlock(mechanicalRunicAltar, ItemBlockMechanicalRunicAltar.class, "mechanical_runic_altar");
         GameRegistry.registerTileEntity(TileMechanicalRunicAltar.class, MODID + ".mechanical_runic_altar");
@@ -154,16 +159,29 @@ public class DivineMachineryLegacy {
         greenhouse = new BlockGreenhouse();
         GameRegistry.registerBlock(greenhouse, "greenhouse");
         GameRegistry.registerTileEntity(TileGreenhouse.class, MODID + ".greenhouse");
+    }
 
+    private void registerBotaniaSupportItems() {
+        catalystManaInfinity = cat("catalyst_mana_infinity", "catalyst_mana_infinity");
+        catalystLivingrockInfinity = cat("catalyst_livingrock_infinity", "catalyst_living_rock_infinity");
+        catalystSeedInfinity = cat("catalyst_seed_infinity", "catalyst_seed_infinity");
+        catalystWaterInfinity = cat("catalyst_water_infinity", "catalyst_water_infinity");
+        catalystStoneInfinity = cat("catalyst_stone_infinity", "catalyst_stone_infinity");
+        catalystWoodInfinity = cat("catalyst_wood_infinity", "catalyst_wood_infinity");
+        catalystSpeed = cat("catalyst_speed", "catalyst_speed");
+        catalystPetal = cat("catalyst_petal", "catalyst_petal");
+        catalystPetalBlock = cat("catalyst_petal_block", "catalyst_petal_block_pattern");
+        registerGreenhouseUpgrades();
+    }
+
+    private void registerBloodMagicSection() {
         bloodAltarAssembler = new BlockBloodAltarAssembler();
         GameRegistry.registerBlock(bloodAltarAssembler, "blood_altar_assembler");
         GameRegistry.registerTileEntity(TileBloodAltarAssembler.class, MODID + ".blood_altar_assembler");
 
-        NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
-        FMLCommonHandler.instance().bus().register(new Ae2InterfaceOutputReturner());
-        registerSparkRecipes();
-        RecipeRegistrar.registerAll();
-        proxy.registerRenderers();
+        // Generator and Blood Pattern immediately follow the assembler in the registry.
+        BloodMagicContent.register();
+        registerBloodMagicItems();
     }
 
     private Item cat(String key, String texture) {
@@ -244,7 +262,9 @@ public class DivineMachineryLegacy {
                 new ItemStack(materialIngotBlocks[6]), new ItemStack(materialIngots[6]), new ItemStack(materialDragonstoneBlocks[6]));
     }
 
-    private static ItemStack rune(int meta) { return new ItemStack(vazkii.botania.common.item.ModItems.rune, 1, meta); }
+    private static ItemStack rune(int meta) {
+        return new ItemStack(vazkii.botania.common.item.ModItems.rune, 1, meta);
+    }
 
     private void registerMaterials() {
         for (int i = 0; i < MATERIAL_KEYS.length; i++) {
@@ -261,11 +281,13 @@ public class DivineMachineryLegacy {
             GameRegistry.registerItem(materialDragonstones[i], dragonstoneKey);
             GameRegistry.registerBlock(materialIngotBlocks[i], ingotBlockKey);
             GameRegistry.registerBlock(materialDragonstoneBlocks[i], dragonstoneBlockKey);
+
             String suffix = Character.toUpperCase(material.charAt(0)) + material.substring(1);
             OreDictionary.registerOre("ingot" + suffix, new ItemStack(materialIngots[i]));
             OreDictionary.registerOre("block" + suffix, new ItemStack(materialIngotBlocks[i]));
             OreDictionary.registerOre("gem" + suffix + "Dragonstone", new ItemStack(materialDragonstones[i]));
             OreDictionary.registerOre("block" + suffix + "Dragonstone", new ItemStack(materialDragonstoneBlocks[i]));
+
             GameRegistry.addRecipe(new ItemStack(materialIngotBlocks[i]), "III", "III", "III", 'I', materialIngots[i]);
             GameRegistry.addShapelessRecipe(new ItemStack(materialIngots[i], 9), materialIngotBlocks[i]);
             GameRegistry.addRecipe(new ItemStack(materialDragonstoneBlocks[i]), "DDD", "DDD", "DDD", 'D', materialDragonstones[i]);
