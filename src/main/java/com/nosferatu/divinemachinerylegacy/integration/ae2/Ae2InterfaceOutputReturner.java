@@ -177,7 +177,9 @@ public final class Ae2InterfaceOutputReturner {
     }
 
     private boolean isDmlMachine(TileEntity tile) {
-        return tile.getClass().getName().startsWith("com.nosferatu.divinemachinerylegacy.tile.TileMechanical");
+        String name = tile.getClass().getName();
+        return name.startsWith("com.nosferatu.divinemachinerylegacy.tile.TileMechanical")
+                || name.equals("com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssembler");
     }
 
     private boolean isClassOrSubclass(Object object, String className) {
