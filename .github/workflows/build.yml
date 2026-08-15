@@ -8,6 +8,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: build-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -48,7 +52,7 @@ jobs:
           retention-days: 14
 
       - name: Publish rolling development release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/botania-port'
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/botania-port' || github.ref == 'refs/heads/blood-magic-port')
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -61,8 +65,16 @@ jobs:
             exit 1
           fi
 
-          TAG="botania-dev"
-          RELEASE_TITLE="Botania Port Development Build"
+          if [ "$GITHUB_REF" = "refs/heads/blood-magic-port" ]; then
+            TAG="blood-magic-dev"
+            RELEASE_TITLE="Blood Magic Port Development Build"
+            RELEASE_NOTE="Automatic development build from blood-magic-port. Includes the BloodMagic Additions 1.7.10 backport and permitted original visual assets. Commit: $GITHUB_SHA"
+          else
+            TAG="botania-dev"
+            RELEASE_TITLE="Botania Port Development Build"
+            RELEASE_NOTE="Automatic development build from botania-port. Includes permitted Botanical Machinery Extra Reforked development visual assets. Commit: $GITHUB_SHA"
+          fi
+
           ASSET_NAME="Divine-Machinery-Legacy-dev.jar"
 
           git tag -f "$TAG" "$GITHUB_SHA"
@@ -72,13 +84,13 @@ jobs:
             gh release edit "$TAG" \
               --prerelease \
               --title "$RELEASE_TITLE" \
-              --notes "Automatic development build from botania-port. Includes permitted Botanical Machinery Extra Reforked development visual assets. Commit: $GITHUB_SHA"
+              --notes "$RELEASE_NOTE"
           else
             gh release create "$TAG" \
               --prerelease \
               --target "$GITHUB_SHA" \
               --title "$RELEASE_TITLE" \
-              --notes "Automatic development build from botania-port. Includes permitted Botanical Machinery Extra Reforked development visual assets. Commit: $GITHUB_SHA"
+              --notes "$RELEASE_NOTE"
           fi
 
           gh release upload "$TAG" "$JAR#$ASSET_NAME" --clobber
