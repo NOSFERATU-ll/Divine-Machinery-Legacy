@@ -1,7 +1,8 @@
 plugins {
-    // FPGradle 4.x moved the Gradle runtime baseline forward. 3.3.1 is the
-    // maintained pre-4.x line and uses the Java 17-era toolchain we need here.
-    id("com.falsepattern.fpgradle-mc") version "3.3.1"
+    // Modern build runtime, legacy Minecraft output.
+    // FPGradle 4.1 runs on Java 25 while `compatibility = legacy` keeps the
+    // produced mod compatible with the Java 8-era Minecraft 1.7.10 runtime.
+    id("com.falsepattern.fpgradle-mc") version "4.1.0"
 }
 
 group = "com.nosferatu.divinemachinerylegacy"
@@ -9,7 +10,6 @@ version = "0.1.0-dev"
 
 minecraft_fp {
     java {
-        // Keep the produced mod compatible with the Java 8-era 1.7.10 pack.
         compatibility = legacy
     }
 
