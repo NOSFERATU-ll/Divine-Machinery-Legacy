@@ -6,6 +6,7 @@ import com.nosferatu.divinemachinerylegacy.block.BlockBloodGenerator;
 import com.nosferatu.divinemachinerylegacy.config.BloodMagicAddonConfig;
 import com.nosferatu.divinemachinerylegacy.item.ItemBloodAltarPattern;
 import com.nosferatu.divinemachinerylegacy.recipe.RecipeEncodeBloodPattern;
+import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssemblerExtended;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodGenerator;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -40,6 +41,8 @@ public final class BloodMagicContent {
         GameRegistry.registerBlock(bloodGenerator, "blood_generator");
         GameRegistry.registerTileEntity(TileBloodGenerator.class,
                 "divinemachinerylegacy.blood_generator");
+        GameRegistry.registerTileEntity(TileBloodAltarAssemblerExtended.class,
+                "divinemachinerylegacy.blood_altar_assembler_patterns");
 
         bloodAltarPattern = new ItemBloodAltarPattern();
         GameRegistry.registerItem(bloodAltarPattern, "blood_altar_pattern");
