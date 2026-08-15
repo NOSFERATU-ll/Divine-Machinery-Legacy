@@ -1,6 +1,5 @@
 package com.nosferatu.divinemachinerylegacy.entity;
 
-import baubles.common.lib.PlayerHandler;
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.botania.SparkTier;
 import net.minecraft.entity.Entity;
@@ -21,6 +20,8 @@ import vazkii.botania.common.core.helper.Vector3;
 import vazkii.botania.common.item.ModItems;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -34,9 +35,9 @@ import java.util.WeakHashMap;
 /**
  * 1.7.10 port of Extra Reforked's tiered Mana Sparks.
  *
- * The transfer graph and Spark Augment behaviour intentionally follow Botania's
- * native Spark contract, while the per-Spark transfer rate follows Extra
- * Reforked (1k -> 5M mana/t).
+ * The transfer graph and Spark Augment behaviour follow Botania's native
+ * Spark contract, while the per-Spark transfer rate follows Extra Reforked
+ * (1k -> 5M mana/t).
  */
 public class EntityTieredManaSpark extends Entity implements ISparkEntity {
 
@@ -125,7 +126,7 @@ public class EntityTieredManaSpark extends Entity implements ISparkEntity {
             List<ItemStack> stacks = new ArrayList<ItemStack>();
             stacks.addAll(Arrays.asList(player.inventory.mainInventory));
             stacks.addAll(Arrays.asList(player.inventory.armorInventory));
-            stacks.addAll(Arrays.asList(PlayerHandler.getPlayerBaubles(player).stackList));
+            addBaublesReflectively(player, stacks);
 
             for (ItemStack stack : stacks) {
                 if (stack == null || !(stack.getItem() instanceof IManaItem)) continue;
@@ -154,6 +155,28 @@ public class EntityTieredManaSpark extends Entity implements ISparkEntity {
             ((IManaItem) stack.getItem()).addMana(stack, manaToPut);
             tile.recieveMana(-manaToPut);
             particlesTowards(player);
+        }
+    }
+
+    /**
+     * Botania 1.7.10 normally has Baubles on its runtime, but it is not a
+     * transitive compile dependency of the deobfuscated Botania jar in our CI.
+     * Reflecting this one optional inventory keeps Dispersive Spark parity
+     * without making Divine Machinery Legacy hard-depend on Baubles at build time.
+     */
+    private static void addBaublesReflectively(EntityPlayer player, List<ItemStack> stacks) {
+        try {
+            Class<?> handler = Class.forName("baubles.common.lib.PlayerHandler");
+            Method getter = handler.getMethod("getPlayerBaubles", EntityPlayer.class);
+            Object inventory = getter.invoke(null, player);
+            if (inventory == null) return;
+            Field field = inventory.getClass().getField("stackList");
+            Object value = field.get(inventory);
+            if (value instanceof ItemStack[]) {
+                stacks.addAll(Arrays.asList((ItemStack[]) value));
+            }
+        } catch (Throwable ignored) {
+            // Baubles absent or API changed: main inventory/armor still work.
         }
     }
 
@@ -189,9 +212,6 @@ public class EntityTieredManaSpark extends Entity implements ISparkEntity {
     }
 
     private void particlesTowards(Entity e) {
-        // The actual flow is server-authoritative. Vanilla Spark rendering also
-        // runs this helper on the client, so send a lightweight sparkle at the
-        // source as visual feedback without touching mana client-side.
         Botania.proxy.wispFX(worldObj, posX, posY + 0.25D, posZ,
                 0.6F, 0.7F, 1.0F, 0.25F,
                 (float) ((e.posX - posX) * 0.04D),
