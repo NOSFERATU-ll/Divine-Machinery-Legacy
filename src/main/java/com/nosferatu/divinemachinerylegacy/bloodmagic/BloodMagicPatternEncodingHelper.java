@@ -58,7 +58,7 @@ public final class BloodMagicPatternEncodingHelper {
             encodedInputs.add(oneInput);
             BloodMagicPatternData.encode(result, BloodMagicPatternKind.BLOOD_ALTAR,
                     encodedInputs, recipe.getResult(),
-                    scaledLifeCost(recipe.getLiquidRequired()), recipe.getMinTier(),
+                    Math.max(0, recipe.getLiquidRequired()), recipe.getMinTier(),
                     BloodMagicAddonConfig.bloodAltarAssemblerBaseCraftTimeTicks);
             return result;
         }
@@ -90,7 +90,7 @@ public final class BloodMagicPatternEncodingHelper {
             }
             BloodMagicPatternData.encode(result, BloodMagicPatternKind.ALCHEMY_TABLE,
                     encodedInputs, recipe.getResult(),
-                    scaledAlchemyLifeCost(recipe.getAmountNeeded()), recipe.getOrbLevel(),
+                    legacyAlchemyLifeCost(recipe.getAmountNeeded()), recipe.getOrbLevel(),
                     BloodMagicAddonConfig.bloodAltarAssemblerBaseCraftTimeTicks);
             return result;
         }
@@ -99,18 +99,13 @@ public final class BloodMagicPatternEncodingHelper {
 
     /**
      * Blood Magic 1.7.10 stores AlchemyRecipe.amountNeeded as LP siphoned per
-     * progress tick. The Writing Table completes at 100 progress, so the
-     * machine equivalent must reserve the total recipe LP rather than one tick.
+     * progress tick. The Writing Table completes at 100 progress, so store the
+     * effective unscaled total here. The configurable multiplier is applied at
+     * execution time by BloodMagicPatternDetails, like modern bmaddon.
      */
-    private static int scaledAlchemyLifeCost(int amountPerTick) {
+    private static int legacyAlchemyLifeCost(int amountPerTick) {
         long total = Math.max(0L, (long) amountPerTick) * LEGACY_ALCHEMY_PROGRESS_TICKS;
-        double scaled = Math.ceil(total * BloodMagicAddonConfig.bloodAltarAssemblerLifeEssenceMultiplier);
-        return scaled >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) scaled;
-    }
-
-    private static int scaledLifeCost(int base) {
-        double scaled = Math.ceil(Math.max(0, base) * BloodMagicAddonConfig.bloodAltarAssemblerLifeEssenceMultiplier);
-        return scaled >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) scaled;
+        return total >= Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
     }
 
     private static List<ItemStack> expandInputs(IAEItemStack[] aeInputs) {
