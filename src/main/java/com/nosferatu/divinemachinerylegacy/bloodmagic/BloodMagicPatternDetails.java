@@ -23,6 +23,9 @@ public final class BloodMagicPatternDetails implements ICraftingPatternDetails {
         if (!BloodMagicPatternData.isEncoded(pattern)) {
             throw new IllegalArgumentException("Blood Pattern is not encoded");
         }
+        if (!BloodMagicPatternRecipeValidator.recipeStillExists(pattern)) {
+            throw new IllegalArgumentException("Blood Pattern recipe no longer exists");
+        }
         this.pattern = pattern;
 
         List<IAEItemStack> rawInputs = new ArrayList<IAEItemStack>();
