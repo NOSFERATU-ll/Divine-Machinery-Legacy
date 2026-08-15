@@ -15,6 +15,8 @@ public class GuiHandler implements IGuiHandler {
             return new ContainerMechanicalRunicAltar(player.inventory, (TileMechanicalRunicAltar) te);
         if (id == DivineMachineryLegacy.GUI_MANA_POOL && te instanceof TileMechanicalManaPool)
             return new ContainerMechanicalManaPool(player.inventory, (TileMechanicalManaPool) te);
+        if (id == DivineMachineryLegacy.GUI_MANA_INFUSER && te instanceof TileMechanicalManaInfuser)
+            return new ContainerMechanicalManaInfuser(player.inventory, (TileMechanicalManaInfuser) te);
         if (id == DivineMachineryLegacy.GUI_APOTHECARY && te instanceof TileMechanicalApothecary)
             return new ContainerMechanicalApothecary(player.inventory, (TileMechanicalApothecary) te);
         if (id == DivineMachineryLegacy.GUI_DAISY && te instanceof TileMechanicalDaisy)
