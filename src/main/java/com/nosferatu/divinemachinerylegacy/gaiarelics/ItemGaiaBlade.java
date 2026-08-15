@@ -10,6 +10,7 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import vazkii.botania.common.entity.EntityDoppleganger;
 
@@ -22,7 +23,7 @@ public final class ItemGaiaBlade extends ItemSword {
     public ItemGaiaBlade() {
         super(Item.ToolMaterial.EMERALD);
         setUnlocalizedName(DivineMachineryLegacy.MODID + ".gaia_blade");
-        setTextureName("minecraft:diamond_sword");
+        setTextureName(DivineMachineryLegacy.MODID + ":gaiarelics/gaia_blade");
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
         setMaxDamage(0);
     }
@@ -82,13 +83,15 @@ public final class ItemGaiaBlade extends ItemSword {
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advanced) {
         int kills = getKills(stack);
         int level = getLevel(stack);
-        list.add("§6Level: " + level + " / 10");
-        list.add("§bGaia kills: " + kills);
-        if (level < 10) list.add("§aKills until next level: " + (10 - kills % 10));
-        list.add("§dBonus essence drop: " + Math.round(getBonusDropChance(stack) * 100D) + "%");
+        list.add("§6" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.gaia_blade.level", level));
+        list.add("§b" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.gaia_blade.kills", kills));
+        if (level < 10) {
+            list.add("§a" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.gaia_blade.next", 10 - kills % 10));
+        }
+        list.add("§d" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.gaia_blade.drop", Math.round(getBonusDropChance(stack) * 100D)));
         long now = player == null || player.worldObj == null ? 0 : player.worldObj.getTotalWorldTime();
         long ready = stack.getTagCompound() == null ? 0 : stack.getTagCompound().getLong(TAG_READY_TICK);
-        if (ready <= now) list.add("§aAbility: ready");
-        else list.add("§cCooldown: " + ((ready - now + 19) / 20) + " sec.");
+        if (ready <= now) list.add("§a" + StatCollector.translateToLocal("tooltip.divinemachinerylegacy.gaia_blade.ready"));
+        else list.add("§c" + StatCollector.translateToLocalFormatted("tooltip.divinemachinerylegacy.gaia_blade.cooldown", (ready - now + 19) / 20));
     }
 }
