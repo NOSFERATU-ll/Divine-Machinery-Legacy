@@ -5,6 +5,8 @@ import com.nosferatu.divinemachinerylegacy.botania.SparkTier;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.gui.GuiHandler;
 import com.nosferatu.divinemachinerylegacy.integration.ae2.Ae2InterfaceOutputReturner;
+import com.nosferatu.divinemachinerylegacy.item.ItemBloodAltarTierCard;
+import com.nosferatu.divinemachinerylegacy.item.ItemBloodMachineUpgrade;
 import com.nosferatu.divinemachinerylegacy.item.ItemGreenhouseUpgrade;
 import com.nosferatu.divinemachinerylegacy.item.ItemMachineCatalyst;
 import com.nosferatu.divinemachinerylegacy.item.ItemReforkedMaterial;
@@ -28,7 +30,7 @@ import vazkii.botania.api.BotaniaAPI;
 
 @Mod(modid = DivineMachineryLegacy.MODID, name = DivineMachineryLegacy.NAME,
         version = DivineMachineryLegacy.VERSION,
-        dependencies = "required-after:Botania;required-after:appliedenergistics2;required-after:CoFHCore")
+        dependencies = "required-after:Botania;required-after:appliedenergistics2;required-after:CoFHCore;required-after:AWWayofTime")
 public class DivineMachineryLegacy {
     public static final String MODID = "divinemachinerylegacy";
     public static final String NAME = "Divine Machinery Legacy";
@@ -44,6 +46,7 @@ public class DivineMachineryLegacy {
     public static final int GUI_JADED_AMARANTHUS = 8;
     public static final int GUI_GREENHOUSE = 9;
     public static final int GUI_MANA_INFUSER = 10;
+    public static final int GUI_BLOOD_ALTAR_ASSEMBLER = 11;
 
     public static final String[] MATERIAL_KEYS = {
             "malachite", "saffron", "shadow", "crimson", "crystal", "aureate", "mazarine"
@@ -68,6 +71,7 @@ public class DivineMachineryLegacy {
     public static Block mechanicalOrechid;
     public static Block jadedAmaranthus;
     public static Block greenhouse;
+    public static Block bloodAltarAssembler;
 
     public static Item catalystManaInfinity;
     public static Item catalystLivingrockInfinity;
@@ -81,6 +85,10 @@ public class DivineMachineryLegacy {
 
     public static final Item[] greenhouseUpgrades = new Item[15];
     public static Item greenhouseHeatUpgrade;
+
+    public static final Item[] bloodAltarTierCards = new Item[4];
+    public static Item bloodAltarParallelCard;
+    public static Item bloodMagicSpeedCard;
 
     public static final Item[] materialIngots = new Item[MATERIAL_KEYS.length];
     public static final Item[] materialDragonstones = new Item[MATERIAL_KEYS.length];
@@ -103,6 +111,7 @@ public class DivineMachineryLegacy {
         catalystPetal = cat("catalyst_petal", "catalyst_petal");
         catalystPetalBlock = cat("catalyst_petal_block", "catalyst_petal_block_pattern");
         registerGreenhouseUpgrades();
+        registerBloodMagicItems();
 
         mechanicalRunicAltar = new BlockMechanicalRunicAltar();
         GameRegistry.registerBlock(mechanicalRunicAltar, ItemBlockMechanicalRunicAltar.class, "mechanical_runic_altar");
@@ -146,6 +155,10 @@ public class DivineMachineryLegacy {
         GameRegistry.registerBlock(greenhouse, "greenhouse");
         GameRegistry.registerTileEntity(TileGreenhouse.class, MODID + ".greenhouse");
 
+        bloodAltarAssembler = new BlockBloodAltarAssembler();
+        GameRegistry.registerBlock(bloodAltarAssembler, "blood_altar_assembler");
+        GameRegistry.registerTileEntity(TileBloodAltarAssembler.class, MODID + ".blood_altar_assembler");
+
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
         FMLCommonHandler.instance().bus().register(new Ae2InterfaceOutputReturner());
         registerSparkRecipes();
@@ -182,6 +195,21 @@ public class DivineMachineryLegacy {
         Item item = new ItemGreenhouseUpgrade(key, slot, value);
         GameRegistry.registerItem(item, key);
         return item;
+    }
+
+    private void registerBloodMagicItems() {
+        for (int tier = 2; tier <= 5; tier++) {
+            Item item = new ItemBloodAltarTierCard(tier);
+            bloodAltarTierCards[tier - 2] = item;
+            GameRegistry.registerItem(item, "blood_altar_tier_card_" + tier);
+        }
+
+        bloodAltarParallelCard = new ItemBloodMachineUpgrade("blood_altar_parallel_card",
+                ItemBloodMachineUpgrade.Type.PARALLEL);
+        bloodMagicSpeedCard = new ItemBloodMachineUpgrade("blood_magic_speed_card",
+                ItemBloodMachineUpgrade.Type.SPEED);
+        GameRegistry.registerItem(bloodAltarParallelCard, "blood_altar_parallel_card");
+        GameRegistry.registerItem(bloodMagicSpeedCard, "blood_magic_speed_card");
     }
 
     private void registerTieredSparks() {
