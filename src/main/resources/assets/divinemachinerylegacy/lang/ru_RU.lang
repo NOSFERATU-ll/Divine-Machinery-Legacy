@@ -9,6 +9,12 @@ tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Малахито�
 tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Шафрановый механический бассейн маны
 tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Теневой механический бассейн маны
 tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Багровый механический бассейн маны
+
+tile.divinemachinerylegacy.mechanical_mana_infuser.malachite.name=Малахитовый механический мана-инфузор
+tile.divinemachinerylegacy.mechanical_mana_infuser.saffron.name=Шафрановый механический мана-инфузор
+tile.divinemachinerylegacy.mechanical_mana_infuser.shadow.name=Теневой механический мана-инфузор
+tile.divinemachinerylegacy.mechanical_mana_infuser.crimson.name=Багровый механический мана-инфузор
+
 tile.divinemachinerylegacy.mechanical_apothecary.malachite.name=Малахитовый механический лепестковый аптекарь
 tile.divinemachinerylegacy.mechanical_apothecary.saffron.name=Шафрановый механический лепестковый аптекарь
 tile.divinemachinerylegacy.mechanical_apothecary.shadow.name=Теневой механический лепестковый аптекарь
@@ -34,6 +40,7 @@ tile.divinemachinerylegacy.mechanical_orechid.shadow.name=Теневая мех�
 tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Багровая механическая рудноцветка
 
 tile.divinemachinerylegacy.jaded_amaranthus.name=Нефритовый амарант
+tile.divinemachinerylegacy.greenhouse.name=Теплица
 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
@@ -44,6 +51,23 @@ item.divinemachinerylegacy.catalyst_wood_infinity.name=Катализатор б
 item.divinemachinerylegacy.catalyst_speed.name=Катализатор скорости
 item.divinemachinerylegacy.catalyst_petal.name=Катализатор лепестков
 item.divinemachinerylegacy.catalyst_petal_block.name=Катализатор блоков лепестков
+
+item.divinemachinerylegacy.upgrade_flower_4x.name=Вместимость цветов x4
+item.divinemachinerylegacy.upgrade_flower_16x.name=Вместимость цветов x16
+item.divinemachinerylegacy.upgrade_flower_32x.name=Вместимость цветов x32
+item.divinemachinerylegacy.upgrade_flower_64x.name=Вместимость цветов x64
+item.divinemachinerylegacy.upgrade_gen_mana.name=Улучшение генерации маны
+item.divinemachinerylegacy.upgrade_slot_add.name=Дополнительный топливный слот
+item.divinemachinerylegacy.upgrade_cost_energy.name=Улучшение энергоэффективности
+item.divinemachinerylegacy.upgrade_tick_gen_mana_1.name=Скорость генерации маны I
+item.divinemachinerylegacy.upgrade_tick_gen_mana_2.name=Скорость генерации маны II
+item.divinemachinerylegacy.upgrade_storage_energy_1.name=Хранилище энергии I
+item.divinemachinerylegacy.upgrade_storage_energy_2.name=Хранилище энергии II
+item.divinemachinerylegacy.upgrade_storage_energy_3.name=Хранилище энергии III
+item.divinemachinerylegacy.upgrade_storage_mana_1.name=Хранилище маны I
+item.divinemachinerylegacy.upgrade_storage_mana_2.name=Хранилище маны II
+item.divinemachinerylegacy.upgrade_storage_mana_3.name=Хранилище маны III
+item.divinemachinerylegacy.upgrade_heat_greenhouse.name=Обогрев теплицы
 
 item.divinemachinerylegacy.base_spark.name=Базовая искра маны
 item.divinemachinerylegacy.malachite_spark.name=Малахитовая искра маны
@@ -88,9 +112,11 @@ tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Блок мазари
 
 container.divinemachinerylegacy.runic_altar=Механический рунический алтарь
 container.divinemachinerylegacy.mana_pool=Механический бассейн маны
+container.divinemachinerylegacy.mana_infuser=Механический мана-инфузор
 container.divinemachinerylegacy.apothecary=Механический лепестковый аптекарь
 container.divinemachinerylegacy.daisy=Механическая чистая маргаритка
 container.divinemachinerylegacy.industrial_agglomeration=Фабрика промышленной агломерации
 container.divinemachinerylegacy.alfheim_market=Механический рынок Альфхейма
 container.divinemachinerylegacy.orechid=Механическая рудноцветка
 container.divinemachinerylegacy.jaded_amaranthus=Нефритовый амарант
+container.divinemachinerylegacy.greenhouse=Теплица
