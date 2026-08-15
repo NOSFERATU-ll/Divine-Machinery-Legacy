@@ -15,7 +15,7 @@ public final class ItemGaiaRelicMaterial extends Item {
     public ItemGaiaRelicMaterial(String key, Kind kind) {
         this.kind = kind;
         setUnlocalizedName(DivineMachineryLegacy.MODID + "." + key);
-        setTextureName("minecraft:nether_star"); // fallback; custom 3D renderer owns normal presentation
+        setTextureName(DivineMachineryLegacy.MODID + ":gaiarelics/" + key);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
         setMaxStackSize(64);
     }
