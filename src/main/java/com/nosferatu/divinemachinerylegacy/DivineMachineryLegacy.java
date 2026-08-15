@@ -99,7 +99,7 @@ public class DivineMachineryLegacy {
         catalystWoodInfinity = cat("catalyst_wood_infinity", "catalyst_wood_infinity");
         catalystSpeed = cat("catalyst_speed", "catalyst_speed");
         catalystPetal = cat("catalyst_petal", "catalyst_petal");
-        catalystPetalBlock = cat("catalyst_petal_block", "catalyst_petal_block");
+        catalystPetalBlock = cat("catalyst_petal_block", "catalyst_petal_block_pattern");
         registerGreenhouseUpgrades();
 
         mechanicalRunicAltar = new BlockMechanicalRunicAltar();
