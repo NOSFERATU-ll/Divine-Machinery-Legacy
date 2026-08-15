@@ -225,7 +225,9 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
 
     @Override
     public boolean isBusy() {
-        return !gridProxy.isActive() || getActiveBatch() >= getMaxParallelCrafts();
+        // This method is deliberately only the capacity check in bmaddon.
+        // Network availability is handled by the AE2 host/proxy itself.
+        return getActiveBatch() >= getMaxParallelCrafts();
     }
 
     // Modern AENetworkInvBlockEntity exposes only its nine pattern slots to
