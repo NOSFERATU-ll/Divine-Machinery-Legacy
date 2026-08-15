@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -29,7 +28,7 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
         setBlockName(DivineMachineryLegacy.MODID + ".mechanical_runic_altar");
         setHardness(4.0F);
         setResistance(10.0F);
-        setCreativeTab(CreativeTabs.tabRedstone);
+        setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, net.minecraft.creativetab.CreativeTabs tab, List list) {
         for (int meta = 0; meta < 4; meta++) {
             list.add(new ItemStack(item, 1, meta));
         }
@@ -74,8 +73,8 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        // Intentionally empty for the first milestone. We use vanilla placeholder
-        // icons so no restricted upstream GUI/art is redistributed.
+        // Temporary vanilla placeholders. Block artwork can be replaced later
+        // without touching machine logic or registry IDs.
     }
 
     @Override
