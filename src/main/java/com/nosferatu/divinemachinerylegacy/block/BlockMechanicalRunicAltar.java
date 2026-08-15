@@ -11,7 +11,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,6 +21,15 @@ import net.minecraft.world.World;
 import java.util.List;
 
 public class BlockMechanicalRunicAltar extends BlockContainer {
+
+    @SideOnly(Side.CLIENT)
+    private IIcon malachiteIcon;
+    @SideOnly(Side.CLIENT)
+    private IIcon saffronIcon;
+    @SideOnly(Side.CLIENT)
+    private IIcon shadowIcon;
+    @SideOnly(Side.CLIENT)
+    private IIcon crimsonIcon;
 
     public BlockMechanicalRunicAltar() {
         super(Material.rock);
@@ -59,22 +67,28 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
     public IIcon getIcon(int side, int meta) {
         switch (MachineTier.fromMeta(meta)) {
             case SAFFRON:
-                return Blocks.gold_block.getIcon(side, 0);
+                return saffronIcon;
             case SHADOW:
-                return Blocks.obsidian.getIcon(side, 0);
+                return shadowIcon;
             case CRIMSON:
-                return Blocks.redstone_block.getIcon(side, 0);
+                return crimsonIcon;
             case MALACHITE:
             default:
-                return Blocks.emerald_block.getIcon(side, 0);
+                return malachiteIcon;
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        // Temporary vanilla placeholders. Block artwork can be replaced later
-        // without touching machine logic or registry IDs.
+        // Extra Reforked's machine models are modern JSON models rather than
+        // single cube textures. For the native 1.7.10 block representation we
+        // use the permitted tier Dragonstone artwork until the dedicated TESR
+        // model pass is complete.
+        malachiteIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/malachite_dragonstone_block");
+        saffronIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/saffron_dragonstone_block");
+        shadowIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/shadow_dragonstone_block");
+        crimsonIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/crimson_dragonstone_block");
     }
 
     @Override
