@@ -34,10 +34,31 @@ repositories {
         name = "GTNH Maven"
         url = uri("https://nexus.gtnewhorizons.com/repository/public/")
     }
+    maven {
+        name = "CurseMaven"
+        url = uri("https://cursemaven.com")
+        content {
+            includeGroup("curse.maven")
+        }
+    }
 }
 
 dependencies {
-    // Exact pack jars. Keep them local and out of Git.
-    api(rfg.deobf(project.files("libs/Botania r1.8-249.jar")))
-    api(rfg.deobf(project.files("libs/appliedenergistics2-rv3-beta-6.jar")))
+    // Prefer the exact jars from the user's Divine Journey instance when they
+    // are present. CI and clean clones fall back to the exact same CurseForge
+    // file IDs, so the target versions do not silently drift.
+    val localBotania = file("libs/Botania r1.8-249.jar")
+    val localAe2 = file("libs/appliedenergistics2-rv3-beta-6.jar")
+
+    if (localBotania.exists()) {
+        api(rfg.deobf(files(localBotania)))
+    } else {
+        api(rfg.deobf("curse.maven:botania-225643:2283837"))
+    }
+
+    if (localAe2.exists()) {
+        api(rfg.deobf(files(localAe2)))
+    } else {
+        api(rfg.deobf("curse.maven:applied-energistics-2-223794:2296430"))
+    }
 }
