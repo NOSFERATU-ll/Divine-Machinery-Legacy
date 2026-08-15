@@ -33,6 +33,8 @@ tile.divinemachinerylegacy.mechanical_orechid.saffron.name=Шафрановая 
 tile.divinemachinerylegacy.mechanical_orechid.shadow.name=Теневая механическая рудноцветка
 tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Багровая механическая рудноцветка
 
+tile.divinemachinerylegacy.jaded_amaranthus.name=Нефритовый амарант
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
 item.divinemachinerylegacy.catalyst_seed_infinity.name=Катализатор бесконечных семян
@@ -40,6 +42,8 @@ item.divinemachinerylegacy.catalyst_water_infinity.name=Катализатор �
 item.divinemachinerylegacy.catalyst_stone_infinity.name=Катализатор бесконечного камня
 item.divinemachinerylegacy.catalyst_wood_infinity.name=Катализатор бесконечной древесины
 item.divinemachinerylegacy.catalyst_speed.name=Катализатор скорости
+item.divinemachinerylegacy.catalyst_petal.name=Катализатор лепестков
+item.divinemachinerylegacy.catalyst_petal_block.name=Катализатор блоков лепестков
 
 item.divinemachinerylegacy.base_spark.name=Базовая искра маны
 item.divinemachinerylegacy.malachite_spark.name=Малахитовая искра маны
@@ -89,3 +93,4 @@ container.divinemachinerylegacy.daisy=Механическая чистая ма
 container.divinemachinerylegacy.industrial_agglomeration=Фабрика промышленной агломерации
 container.divinemachinerylegacy.alfheim_market=Механический рынок Альфхейма
 container.divinemachinerylegacy.orechid=Механическая рудноцветка
+container.divinemachinerylegacy.jaded_amaranthus=Нефритовый амарант
