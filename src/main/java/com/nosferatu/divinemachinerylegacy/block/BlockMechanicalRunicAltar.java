@@ -22,21 +22,28 @@ import java.util.List;
 
 public class BlockMechanicalRunicAltar extends BlockContainer {
 
+    private static int renderId;
+
     @SideOnly(Side.CLIENT)
-    private IIcon malachiteIcon;
+    private IIcon[] tierIcons;
     @SideOnly(Side.CLIENT)
-    private IIcon saffronIcon;
+    private IIcon runeBottomIcon;
     @SideOnly(Side.CLIENT)
-    private IIcon shadowIcon;
+    private IIcon runeTopIcon;
     @SideOnly(Side.CLIENT)
-    private IIcon crimsonIcon;
+    private IIcon runeSideIcon;
 
     public BlockMechanicalRunicAltar() {
         super(Material.rock);
         setBlockName(DivineMachineryLegacy.MODID + ".mechanical_runic_altar");
         setHardness(4.0F);
         setResistance(10.0F);
+        setLightOpacity(0);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
+    }
+
+    public static void setRenderId(int id) {
+        renderId = id;
     }
 
     @Override
@@ -63,32 +70,66 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
     }
 
     @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return renderId;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        switch (MachineTier.fromMeta(meta)) {
-            case SAFFRON:
-                return saffronIcon;
-            case SHADOW:
-                return shadowIcon;
-            case CRIMSON:
-                return crimsonIcon;
-            case MALACHITE:
-            default:
-                return malachiteIcon;
+        return getFrameIcon(meta);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getFrameIcon(int meta) {
+        int index = MachineTier.fromMeta(meta).ordinal();
+        if (tierIcons != null && index >= 0 && index < tierIcons.length && tierIcons[index] != null) {
+            return tierIcons[index];
         }
+        return blockIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getRuneBottomIcon() {
+        return runeBottomIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getRuneTopIcon() {
+        return runeTopIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getRuneSideIcon() {
+        return runeSideIcon;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        // Extra Reforked's machine models are modern JSON models rather than
-        // single cube textures. For the native 1.7.10 block representation we
-        // use the permitted tier Dragonstone artwork until the dedicated TESR
-        // model pass is complete.
-        malachiteIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/malachite_dragonstone_block");
-        saffronIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/saffron_dragonstone_block");
-        shadowIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/shadow_dragonstone_block");
-        crimsonIcon = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/crimson_dragonstone_block");
+        tierIcons = new IIcon[4];
+        tierIcons[MachineTier.MALACHITE.ordinal()] = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/malachite_dragonstone_block");
+        tierIcons[MachineTier.SAFFRON.ordinal()] = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/saffron_dragonstone_block");
+        tierIcons[MachineTier.SHADOW.ordinal()] = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/shadow_dragonstone_block");
+        tierIcons[MachineTier.CRIMSON.ordinal()] = register.registerIcon(DivineMachineryLegacy.MODID + ":reforked/crimson_dragonstone_block");
+        blockIcon = tierIcons[MachineTier.MALACHITE.ordinal()];
+
+        // These are the three native 1.7.10 Botania Runic Altar textures. The
+        // Reforked model uses the equivalent bottom/top/side textures inside
+        // its tier-coloured frame.
+        runeBottomIcon = register.registerIcon("Botania:runeAltar0");
+        runeTopIcon = register.registerIcon("Botania:runeAltar1");
+        runeSideIcon = register.registerIcon("Botania:runeAltar2");
     }
 
     @Override
@@ -119,7 +160,9 @@ public class BlockMechanicalRunicAltar extends BlockContainer {
                     stack.stackSize -= amount;
 
                     ItemStack drop = new ItemStack(stack.getItem(), amount, stack.getItemDamage());
-                    if (stack.hasTagCompound()) drop.setTagCompound((net.minecraft.nbt.NBTTagCompound) stack.getTagCompound().copy());
+                    if (stack.hasTagCompound()) {
+                        drop.setTagCompound((net.minecraft.nbt.NBTTagCompound) stack.getTagCompound().copy());
+                    }
                     EntityItem entity = new EntityItem(world, x + ox, y + oy, z + oz, drop);
                     entity.motionX = world.rand.nextGaussian() * 0.05D;
                     entity.motionY = world.rand.nextGaussian() * 0.05D + 0.2D;

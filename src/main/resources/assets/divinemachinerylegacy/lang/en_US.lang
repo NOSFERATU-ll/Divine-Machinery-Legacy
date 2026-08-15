@@ -8,4 +8,36 @@ tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Crimson Mechanica
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
 
+item.divinemachinerylegacy.malachite_ingot.name=Malachite Ingot
+item.divinemachinerylegacy.saffron_ingot.name=Saffron Ingot
+item.divinemachinerylegacy.shadow_ingot.name=Shadow Ingot
+item.divinemachinerylegacy.crimson_ingot.name=Crimson Ingot
+item.divinemachinerylegacy.crystal_ingot.name=Crystal Ingot
+item.divinemachinerylegacy.aureate_ingot.name=Aureate Ingot
+item.divinemachinerylegacy.mazarine_ingot.name=Mazarine Ingot
+
+item.divinemachinerylegacy.malachite_dragonstone.name=Malachite Dragonstone
+item.divinemachinerylegacy.saffron_dragonstone.name=Saffron Dragonstone
+item.divinemachinerylegacy.shadow_dragonstone.name=Shadow Dragonstone
+item.divinemachinerylegacy.crimson_dragonstone.name=Crimson Dragonstone
+item.divinemachinerylegacy.crystal_dragonstone.name=Crystal Dragonstone
+item.divinemachinerylegacy.aureate_dragonstone.name=Aureate Dragonstone
+item.divinemachinerylegacy.mazarine_dragonstone.name=Mazarine Dragonstone
+
+tile.divinemachinerylegacy.malachite_ingot_block.name=Malachite Block
+tile.divinemachinerylegacy.saffron_ingot_block.name=Saffron Block
+tile.divinemachinerylegacy.shadow_ingot_block.name=Shadow Block
+tile.divinemachinerylegacy.crimson_ingot_block.name=Crimson Block
+tile.divinemachinerylegacy.crystal_ingot_block.name=Crystal Block
+tile.divinemachinerylegacy.aureate_ingot_block.name=Aureate Block
+tile.divinemachinerylegacy.mazarine_ingot_block.name=Mazarine Block
+
+tile.divinemachinerylegacy.malachite_dragonstone_block.name=Malachite Dragonstone Block
+tile.divinemachinerylegacy.saffron_dragonstone_block.name=Saffron Dragonstone Block
+tile.divinemachinerylegacy.shadow_dragonstone_block.name=Shadow Dragonstone Block
+tile.divinemachinerylegacy.crimson_dragonstone_block.name=Crimson Dragonstone Block
+tile.divinemachinerylegacy.crystal_dragonstone_block.name=Crystal Dragonstone Block
+tile.divinemachinerylegacy.aureate_dragonstone_block.name=Aureate Dragonstone Block
+tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Mazarine Dragonstone Block
+
 container.divinemachinerylegacy.runic_altar=Mechanical Runic Altar

@@ -2,12 +2,16 @@
 set -euo pipefail
 
 UPSTREAM_URL="https://github.com/BOLTMAGIC/Botanical-Machinery-Extra-Reforked.git"
-UPSTREAM_REF="master"
+# Pinned after comparing the permitted artwork with botanicalextramachinery-1.2.9.9.jar.
+# Do not follow master automatically: development visuals should not drift under us.
+UPSTREAM_REF="5f017fe066f2b85c1ebc139d5667579f9de420b7"
 TMP_DIR="${TMPDIR:-/tmp}/divine-machinery-reforked-assets"
 TARGET="src/main/resources/assets/divinemachinerylegacy/textures"
 
 rm -rf "$TMP_DIR"
-git clone --depth 1 --branch "$UPSTREAM_REF" "$UPSTREAM_URL" "$TMP_DIR"
+git clone --filter=blob:none --no-checkout "$UPSTREAM_URL" "$TMP_DIR"
+git -C "$TMP_DIR" fetch --depth 1 origin "$UPSTREAM_REF"
+git -C "$TMP_DIR" checkout --detach "$UPSTREAM_REF"
 SRC="$TMP_DIR/src/main/resources/assets/botanicalextramachinery/textures"
 
 # Modern Minecraft uses textures/block and textures/item. Forge 1.7.10 expects
