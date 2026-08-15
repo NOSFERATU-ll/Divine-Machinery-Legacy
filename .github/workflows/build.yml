@@ -5,6 +5,9 @@ on:
     branches: [ main, botania-port ]
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,10 +30,48 @@ jobs:
       - name: Build
         run: gradle build --stacktrace
 
-      - name: Upload development jar
+      - name: Upload development jar to workflow artifacts
         uses: actions/upload-artifact@v6
         with:
           name: Divine-Machinery-Legacy-dev
           path: build/libs/*.jar
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish rolling development release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/botania-port'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' ! -name '*-javadoc.jar' | head -n 1)"
+          if [ -z "$JAR" ]; then
+            echo "No runnable jar found in build/libs"
+            exit 1
+          fi
+
+          TAG="botania-dev"
+          RELEASE_TITLE="Botania Port Development Build"
+          ASSET_NAME="Divine-Machinery-Legacy-dev.jar"
+
+          # Keep one stable prerelease URL while moving the development tag
+          # to the latest successful botania-port commit.
+          git tag -f "$TAG" "$GITHUB_SHA"
+          git push origin "refs/tags/$TAG" --force
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" \
+              --prerelease \
+              --title "$RELEASE_TITLE" \
+              --notes "Automatic development build from botania-port. Commit: $GITHUB_SHA"
+          else
+            gh release create "$TAG" \
+              --prerelease \
+              --target "$GITHUB_SHA" \
+              --title "$RELEASE_TITLE" \
+              --notes "Automatic development build from botania-port. Commit: $GITHUB_SHA"
+          fi
+
+          gh release upload "$TAG" "$JAR#$ASSET_NAME" --clobber
