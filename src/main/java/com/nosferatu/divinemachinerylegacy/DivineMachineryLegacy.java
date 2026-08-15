@@ -3,13 +3,11 @@ package com.nosferatu.divinemachinerylegacy;
 import com.nosferatu.divinemachinerylegacy.block.BlockMechanicalRunicAltar;
 import com.nosferatu.divinemachinerylegacy.block.BlockReforkedMaterial;
 import com.nosferatu.divinemachinerylegacy.block.ItemBlockMechanicalRunicAltar;
-import com.nosferatu.divinemachinerylegacy.botania.RunicAltarWorldItemHandler;
 import com.nosferatu.divinemachinerylegacy.gui.GuiHandler;
 import com.nosferatu.divinemachinerylegacy.item.ItemMachineCatalyst;
 import com.nosferatu.divinemachinerylegacy.item.ItemReforkedMaterial;
 import com.nosferatu.divinemachinerylegacy.proxy.CommonProxy;
 import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalRunicAltar;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -72,10 +70,6 @@ public class DivineMachineryLegacy {
         GameRegistry.registerBlock(mechanicalRunicAltar, ItemBlockMechanicalRunicAltar.class, "mechanical_runic_altar");
         GameRegistry.registerTileEntity(TileMechanicalRunicAltar.class, MODID + ".mechanical_runic_altar");
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
-
-        // Physical Botania-style input: dropped valid Rune Altar ingredients
-        // and Livingrock are collected by the mechanical altar.
-        FMLCommonHandler.instance().bus().register(new RunicAltarWorldItemHandler());
 
         proxy.registerRenderers();
     }
