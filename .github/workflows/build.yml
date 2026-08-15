@@ -2,7 +2,7 @@ name: Build 1.7.10 port
 
 on:
   push:
-    branches: [ main, botania-port ]
+    branches: [ main, botania-port, blood-magic-port ]
   pull_request:
 
 permissions:
@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Sync permitted Botanical Extra Reforked visual assets
-        if: github.ref == 'refs/heads/botania-port' || github.event_name == 'pull_request'
+        if: github.ref == 'refs/heads/botania-port' || github.ref == 'refs/heads/blood-magic-port' || github.event_name == 'pull_request'
         shell: bash
         run: scripts/sync_reforked_assets.sh
 
