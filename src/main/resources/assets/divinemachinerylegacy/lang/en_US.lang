@@ -41,6 +41,7 @@ tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Crimson Mechanical Or
 
 tile.divinemachinerylegacy.jaded_amaranthus.name=Jaded Amaranthus
 tile.divinemachinerylegacy.greenhouse.name=Greenhouse
+tile.divinemachinerylegacy.blood_altar_assembler.name=Blood Altar Assembler
 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
@@ -68,6 +69,13 @@ item.divinemachinerylegacy.upgrade_storage_mana_1.name=Mana Storage Upgrade I
 item.divinemachinerylegacy.upgrade_storage_mana_2.name=Mana Storage Upgrade II
 item.divinemachinerylegacy.upgrade_storage_mana_3.name=Mana Storage Upgrade III
 item.divinemachinerylegacy.upgrade_heat_greenhouse.name=Greenhouse Heat Upgrade
+
+item.divinemachinerylegacy.blood_altar_tier_card_2.name=Blood Altar Tier Card II
+item.divinemachinerylegacy.blood_altar_tier_card_3.name=Blood Altar Tier Card III
+item.divinemachinerylegacy.blood_altar_tier_card_4.name=Blood Altar Tier Card IV
+item.divinemachinerylegacy.blood_altar_tier_card_5.name=Blood Altar Tier Card V
+item.divinemachinerylegacy.blood_altar_parallel_card.name=Blood Altar Parallel Card
+item.divinemachinerylegacy.blood_magic_speed_card.name=Blood Magic Speed Card
 
 item.divinemachinerylegacy.base_spark.name=Base Mana Spark
 item.divinemachinerylegacy.malachite_spark.name=Malachite Mana Spark
@@ -120,3 +128,11 @@ container.divinemachinerylegacy.alfheim_market=Mechanical Alfheim Market
 container.divinemachinerylegacy.orechid=Mechanical Orechid
 container.divinemachinerylegacy.jaded_amaranthus=Jaded Amaranthus
 container.divinemachinerylegacy.greenhouse=Greenhouse
+container.divinemachinerylegacy.blood_altar_assembler=Blood Altar Assembler
+
+gui.divinemachinerylegacy.blood_altar_assembler.upgrades=Upgrades
+gui.divinemachinerylegacy.blood_altar_assembler.inputs=Inputs
+gui.divinemachinerylegacy.blood_altar_assembler.outputs=Outputs
+gui.divinemachinerylegacy.blood_altar_assembler.tier=Altar tier: %s
+gui.divinemachinerylegacy.blood_altar_assembler.parallel=Parallel: %s
+gui.divinemachinerylegacy.blood_altar_assembler.batch=Active batch: %s
