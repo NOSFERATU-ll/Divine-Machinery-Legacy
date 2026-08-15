@@ -33,6 +33,8 @@ tile.divinemachinerylegacy.mechanical_orechid.saffron.name=Saffron Mechanical Or
 tile.divinemachinerylegacy.mechanical_orechid.shadow.name=Shadow Mechanical Orechid
 tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Crimson Mechanical Orechid
 
+tile.divinemachinerylegacy.jaded_amaranthus.name=Jaded Amaranthus
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
 item.divinemachinerylegacy.catalyst_seed_infinity.name=Infinite Seeds Catalyst
@@ -40,6 +42,8 @@ item.divinemachinerylegacy.catalyst_water_infinity.name=Infinite Water Catalyst
 item.divinemachinerylegacy.catalyst_stone_infinity.name=Infinite Stone Catalyst
 item.divinemachinerylegacy.catalyst_wood_infinity.name=Infinite Wood Catalyst
 item.divinemachinerylegacy.catalyst_speed.name=Speed Catalyst
+item.divinemachinerylegacy.catalyst_petal.name=Petal Catalyst
+item.divinemachinerylegacy.catalyst_petal_block.name=Petal Block Catalyst
 
 item.divinemachinerylegacy.base_spark.name=Base Mana Spark
 item.divinemachinerylegacy.malachite_spark.name=Malachite Mana Spark
@@ -89,3 +93,4 @@ container.divinemachinerylegacy.daisy=Mechanical Daisy
 container.divinemachinerylegacy.industrial_agglomeration=Industrial Agglomeration Factory
 container.divinemachinerylegacy.alfheim_market=Mechanical Alfheim Market
 container.divinemachinerylegacy.orechid=Mechanical Orechid
+container.divinemachinerylegacy.jaded_amaranthus=Jaded Amaranthus
