@@ -41,6 +41,7 @@ tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Багровая ме
 
 tile.divinemachinerylegacy.jaded_amaranthus.name=Нефритовый амарант
 tile.divinemachinerylegacy.greenhouse.name=Теплица
+tile.divinemachinerylegacy.blood_altar_assembler.name=Кровавый сборщик
 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
@@ -68,6 +69,13 @@ item.divinemachinerylegacy.upgrade_storage_mana_1.name=Хранилище ман
 item.divinemachinerylegacy.upgrade_storage_mana_2.name=Хранилище маны II
 item.divinemachinerylegacy.upgrade_storage_mana_3.name=Хранилище маны III
 item.divinemachinerylegacy.upgrade_heat_greenhouse.name=Обогрев теплицы
+
+item.divinemachinerylegacy.blood_altar_tier_card_2.name=Карта кровавого алтаря II
+item.divinemachinerylegacy.blood_altar_tier_card_3.name=Карта кровавого алтаря III
+item.divinemachinerylegacy.blood_altar_tier_card_4.name=Карта кровавого алтаря IV
+item.divinemachinerylegacy.blood_altar_tier_card_5.name=Карта кровавого алтаря V
+item.divinemachinerylegacy.blood_altar_parallel_card.name=Карта параллельной обработки кровавого сборщика
+item.divinemachinerylegacy.blood_magic_speed_card.name=Кровавая карта скорости
 
 item.divinemachinerylegacy.base_spark.name=Базовая искра маны
 item.divinemachinerylegacy.malachite_spark.name=Малахитовая искра маны
@@ -120,3 +128,11 @@ container.divinemachinerylegacy.alfheim_market=Механический рыно
 container.divinemachinerylegacy.orechid=Механическая рудноцветка
 container.divinemachinerylegacy.jaded_amaranthus=Нефритовый амарант
 container.divinemachinerylegacy.greenhouse=Теплица
+container.divinemachinerylegacy.blood_altar_assembler=Кровавый сборщик
+
+gui.divinemachinerylegacy.blood_altar_assembler.upgrades=Карты улучшений
+gui.divinemachinerylegacy.blood_altar_assembler.inputs=Вход
+gui.divinemachinerylegacy.blood_altar_assembler.outputs=Выход
+gui.divinemachinerylegacy.blood_altar_assembler.tier=Уровень алтаря: %s
+gui.divinemachinerylegacy.blood_altar_assembler.parallel=Параллельно: %s
+gui.divinemachinerylegacy.blood_altar_assembler.batch=Активно: %s
