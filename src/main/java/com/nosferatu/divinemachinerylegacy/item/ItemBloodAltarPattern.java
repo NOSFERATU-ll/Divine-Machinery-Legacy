@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
@@ -49,11 +50,18 @@ public class ItemBloodAltarPattern extends Item implements ICraftingPatternItem 
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player.isSneaking() && BloodMagicPatternData.isEncoded(stack)) {
-            if (!world.isRemote) {
+        if (!player.isSneaking()) return stack;
+
+        if (!world.isRemote) {
+            if (BloodMagicPatternData.isEncoded(stack)) {
                 BloodMagicPatternData.clear(stack);
                 stack.stackSize = Math.max(1, stack.stackSize);
                 player.inventory.markDirty();
+                player.addChatMessage(new ChatComponentTranslation(
+                        "message.divinemachinerylegacy.blood_altar_pattern.cleared"));
+            } else {
+                player.addChatMessage(new ChatComponentTranslation(
+                        "message.divinemachinerylegacy.blood_altar_pattern.already_empty"));
             }
         }
         return stack;
@@ -68,11 +76,23 @@ public class ItemBloodAltarPattern extends Item implements ICraftingPatternItem 
     }
 
     @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        if (!BloodMagicPatternData.isEncoded(stack)) return super.getItemStackDisplayName(stack);
+        ItemStack output = BloodMagicPatternData.getOutput(stack);
+        if (output == null) return super.getItemStackDisplayName(stack);
+        return StatCollector.translateToLocalFormatted(
+                "item." + DivineMachineryLegacy.MODID + ".blood_altar_pattern.encoded.name",
+                output.getDisplayName());
+    }
+
+    @Override
     @SuppressWarnings({"rawtypes", "unchecked"})
     public void addInformation(ItemStack stack, EntityPlayer player, List lines, boolean advanced) {
         if (!BloodMagicPatternData.isEncoded(stack)) {
             lines.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal(
                     "tooltip.divinemachinerylegacy.blood_altar_pattern.empty"));
+            lines.add(EnumChatFormatting.DARK_GRAY + StatCollector.translateToLocal(
+                    "tooltip.divinemachinerylegacy.blood_altar_pattern.how_to_encode"));
             return;
         }
 
