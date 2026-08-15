@@ -3,6 +3,7 @@ package com.nosferatu.divinemachinerylegacy.bloodmagic;
 import appeng.api.AEApi;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEItemStack;
+import com.nosferatu.divinemachinerylegacy.config.BloodMagicAddonConfig;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -61,8 +62,19 @@ public final class BloodMagicPatternDetails implements ICraftingPatternDetails {
         return BloodMagicPatternData.getKind(pattern);
     }
 
+    /**
+     * Patterns store the recipe's unscaled effective LP requirement. The
+     * multiplier is applied when AE2 asks the machine to execute it, matching
+     * bmaddon's getRequiredLifeEssence() behavior and allowing config changes
+     * to affect already encoded patterns.
+     */
     public int getLifeEssenceCost() {
-        return BloodMagicPatternData.getLifeEssenceCost(pattern);
+        int base = BloodMagicPatternData.getLifeEssenceCost(pattern);
+        double multiplier = BloodMagicAddonConfig.bloodAltarAssemblerLifeEssenceMultiplier;
+        if (base <= 0 || multiplier <= 0.0D) return 0;
+        double scaled = Math.ceil(base * multiplier);
+        if (scaled >= Integer.MAX_VALUE) return Integer.MAX_VALUE;
+        return Math.max(1, (int) scaled);
     }
 
     public int getRequiredTier() {
@@ -80,8 +92,6 @@ public final class BloodMagicPatternDetails implements ICraftingPatternDetails {
 
     @Override
     public boolean isValidItemForSlot(int slotIndex, ItemStack stack, World world) {
-        // This is a processing pattern; AE2 only uses per-slot substitution
-        // checks for crafting-table patterns.
         return false;
     }
 
