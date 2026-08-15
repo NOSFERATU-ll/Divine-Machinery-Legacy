@@ -1,5 +1,6 @@
 package com.nosferatu.divinemachinerylegacy.gui;
 
+import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalRunicAltar;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -29,6 +30,10 @@ public class ContainerMechanicalRunicAltar extends Container {
         for (int i = 0; i < 3; i++) {
             addSlotToContainer(new SlotLivingrock(tile, i, 8 + i * 18, 22));
         }
+
+        // Upgrade slots. They are only valid on Shadow (1) / Crimson (2).
+        addSlotToContainer(new SlotUpgrade(tile, TileMechanicalRunicAltar.SLOT_UPGRADE_START, 82, 22));
+        addSlotToContainer(new SlotUpgrade(tile, TileMechanicalRunicAltar.SLOT_UPGRADE_START + 1, 100, 22));
 
         // 4x4 input area.
         int index = TileMechanicalRunicAltar.SLOT_INPUT_START;
@@ -144,12 +149,20 @@ public class ContainerMechanicalRunicAltar extends Container {
         ItemStack stack = slot.getStack();
         original = stack.copy();
 
-        int machineSlots = 35; // 3 Livingrock + 16 inputs + 16 outputs exposed by this GUI.
+        final int machineSlots = 37; // 3 livingrock + 2 upgrades + 16 inputs + 16 outputs.
         if (index < machineSlots) {
             if (!mergeItemStack(stack, machineSlots, inventorySlots.size(), true)) return null;
         } else {
-            // Let the tile validators decide which machine slots can accept the stack.
-            if (!mergeItemStack(stack, 0, 19, false)) return null;
+            boolean moved;
+            if (stack.getItem() == DivineMachineryLegacy.catalystManaInfinity
+                    || stack.getItem() == DivineMachineryLegacy.catalystLivingrockInfinity) {
+                moved = mergeItemStack(stack, 3, 5, false);
+            } else if (tile.isItemValidForSlot(TileMechanicalRunicAltar.SLOT_LIVINGROCK_START, stack)) {
+                moved = mergeItemStack(stack, 0, 3, false);
+            } else {
+                moved = mergeItemStack(stack, 5, 21, false);
+            }
+            if (!moved) return null;
         }
 
         if (stack.stackSize == 0) slot.putStack(null);
@@ -165,6 +178,22 @@ public class ContainerMechanicalRunicAltar extends Container {
         @Override
         public boolean isItemValid(ItemStack stack) {
             return inventory.isItemValidForSlot(getSlotIndex(), stack);
+        }
+    }
+
+    private static class SlotUpgrade extends Slot {
+        SlotUpgrade(TileMechanicalRunicAltar tile, int index, int x, int y) {
+            super(tile, index, x, y);
+        }
+
+        @Override
+        public boolean isItemValid(ItemStack stack) {
+            return inventory.isItemValidForSlot(getSlotIndex(), stack);
+        }
+
+        @Override
+        public int getSlotStackLimit() {
+            return 1;
         }
     }
 
