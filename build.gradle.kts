@@ -1,28 +1,30 @@
 plugins {
-    `java-library`
-    `maven-publish`
-    eclipse
-    idea
-    // RFG 2.0.2 is currently published with Java 25 bytecode and Gradle 8.8
-    // cannot instrument that plugin jar. The RFG 1.4.9 tag's own example
-    // intentionally uses plugin 1.4.0 with Gradle 8.8, so pin that known-good
-    // combination for this 1.7.10 project.
-    id("com.gtnewhorizons.retrofuturagradle") version "1.4.0"
+    id("com.falsepattern.fpgradle-mc") version "4.0.2"
 }
 
 group = "com.nosferatu.divinemachinerylegacy"
 version = "0.1.0-dev"
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+minecraft_fp {
+    java {
+        // Keep the produced mod compatible with the Java 8-era 1.7.10 pack.
+        compatibility = legacy
     }
-    withSourcesJar()
-}
 
-minecraft {
-    mcVersion.set("1.7.10")
-    username.set("Developer")
+    mod {
+        modid = "divinemachinerylegacy"
+        name = "Divine Machinery Legacy"
+        version = project.version.toString()
+        rootPkg = "com.nosferatu.divinemachinerylegacy"
+    }
+
+    run {
+        username = "Developer"
+    }
+
+    updates {
+        check = false
+    }
 }
 
 tasks.processResources.configure {
@@ -34,35 +36,24 @@ tasks.processResources.configure {
 
 repositories {
     mavenCentral()
-    maven {
-        name = "GTNH Maven"
-        url = uri("https://nexus.gtnewhorizons.com/repository/public/")
-    }
-    maven {
-        name = "CurseMaven"
-        url = uri("https://cursemaven.com")
-        content {
-            includeGroup("curse.maven")
-        }
-    }
+    cursemavenEX()
 }
 
 dependencies {
-    // Prefer the exact jars from the user's Divine Journey instance when they
-    // are present. CI and clean clones fall back to the exact same CurseForge
-    // file IDs, so the target versions do not silently drift.
+    // Prefer the exact jars supplied from the Divine Journey instance.
+    // CI/clean clones use the exact CurseForge files for the same versions.
     val localBotania = file("libs/Botania r1.8-249.jar")
     val localAe2 = file("libs/appliedenergistics2-rv3-beta-6.jar")
 
     if (localBotania.exists()) {
-        api(rfg.deobf(files(localBotania)))
+        devOnlyNonPublishable(rfg.deobf(files(localBotania)))
     } else {
-        api(rfg.deobf("curse.maven:botania-225643:2283837"))
+        devOnlyNonPublishable(deobfCurse("botania-225643:2283837"))
     }
 
     if (localAe2.exists()) {
-        api(rfg.deobf(files(localAe2)))
+        devOnlyNonPublishable(rfg.deobf(files(localAe2)))
     } else {
-        api(rfg.deobf("curse.maven:applied-energistics-2-223794:2296430"))
+        devOnlyNonPublishable(deobfCurse("applied-energistics-2-223794:2296430"))
     }
 }
