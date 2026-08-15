@@ -18,12 +18,18 @@ tile.divinemachinerylegacy.mechanical_daisy.saffron.name=Шафрановая м
 tile.divinemachinerylegacy.mechanical_daisy.shadow.name=Теневая механическая чистая маргаритка
 tile.divinemachinerylegacy.mechanical_daisy.crimson.name=Багровая механическая чистая маргаритка
 
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.malachite.name=Малахитовая фабрика промышленной агломерации
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.saffron.name=Шафрановая фабрика промышленной агломерации
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.shadow.name=Теневая фабрика промышленной агломерации
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.crimson.name=Багровая фабрика промышленной агломерации
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
 item.divinemachinerylegacy.catalyst_seed_infinity.name=Катализатор бесконечных семян
 item.divinemachinerylegacy.catalyst_water_infinity.name=Катализатор бесконечной воды
 item.divinemachinerylegacy.catalyst_stone_infinity.name=Катализатор бесконечного камня
 item.divinemachinerylegacy.catalyst_wood_infinity.name=Катализатор бесконечной древесины
+item.divinemachinerylegacy.catalyst_speed.name=Катализатор скорости
 
 item.divinemachinerylegacy.base_spark.name=Базовая искра маны
 item.divinemachinerylegacy.malachite_spark.name=Малахитовая искра маны
@@ -70,3 +76,4 @@ container.divinemachinerylegacy.runic_altar=Механический рунич�
 container.divinemachinerylegacy.mana_pool=Механический бассейн маны
 container.divinemachinerylegacy.apothecary=Механический лепестковый аптекарь
 container.divinemachinerylegacy.daisy=Механическая чистая маргаритка
+container.divinemachinerylegacy.industrial_agglomeration=Фабрика промышленной агломерации

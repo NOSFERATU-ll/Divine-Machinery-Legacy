@@ -1,3 +1,33 @@
 package com.nosferatu.divinemachinerylegacy.gui;
-import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;import com.nosferatu.divinemachinerylegacy.tile.*;import cpw.mods.fml.common.network.IGuiHandler;import net.minecraft.entity.player.EntityPlayer;import net.minecraft.tileentity.TileEntity;import net.minecraft.world.World;
-public class GuiHandler implements IGuiHandler{@Override public Object getServerGuiElement(int id,EntityPlayer p,World w,int x,int y,int z){TileEntity te=w.getTileEntity(x,y,z);if(id==DivineMachineryLegacy.GUI_RUNIC_ALTAR&&te instanceof TileMechanicalRunicAltar)return new ContainerMechanicalRunicAltar(p.inventory,(TileMechanicalRunicAltar)te);if(id==DivineMachineryLegacy.GUI_MANA_POOL&&te instanceof TileMechanicalManaPool)return new ContainerMechanicalManaPool(p.inventory,(TileMechanicalManaPool)te);if(id==DivineMachineryLegacy.GUI_APOTHECARY&&te instanceof TileMechanicalApothecary)return new ContainerMechanicalApothecary(p.inventory,(TileMechanicalApothecary)te);if(id==DivineMachineryLegacy.GUI_DAISY&&te instanceof TileMechanicalDaisy)return new ContainerMechanicalDaisy(p.inventory,(TileMechanicalDaisy)te);return null;}@Override public Object getClientGuiElement(int id,EntityPlayer p,World w,int x,int y,int z){return DivineMachineryLegacy.proxy.getClientGuiElement(id,p,w,x,y,z);}}
+
+import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
+import com.nosferatu.divinemachinerylegacy.tile.*;
+import cpw.mods.fml.common.network.IGuiHandler;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+
+public class GuiHandler implements IGuiHandler {
+    @Override
+    public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        TileEntity te = world.getTileEntity(x, y, z);
+        if (id == DivineMachineryLegacy.GUI_RUNIC_ALTAR && te instanceof TileMechanicalRunicAltar)
+            return new ContainerMechanicalRunicAltar(player.inventory, (TileMechanicalRunicAltar) te);
+        if (id == DivineMachineryLegacy.GUI_MANA_POOL && te instanceof TileMechanicalManaPool)
+            return new ContainerMechanicalManaPool(player.inventory, (TileMechanicalManaPool) te);
+        if (id == DivineMachineryLegacy.GUI_APOTHECARY && te instanceof TileMechanicalApothecary)
+            return new ContainerMechanicalApothecary(player.inventory, (TileMechanicalApothecary) te);
+        if (id == DivineMachineryLegacy.GUI_DAISY && te instanceof TileMechanicalDaisy)
+            return new ContainerMechanicalDaisy(player.inventory, (TileMechanicalDaisy) te);
+        if (id == DivineMachineryLegacy.GUI_INDUSTRIAL_AGGLOMERATION
+                && te instanceof TileMechanicalIndustrialAgglomerationFactory)
+            return new ContainerMechanicalIndustrialAgglomerationFactory(player.inventory,
+                    (TileMechanicalIndustrialAgglomerationFactory) te);
+        return null;
+    }
+
+    @Override
+    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        return DivineMachineryLegacy.proxy.getClientGuiElement(id, player, world, x, y, z);
+    }
+}

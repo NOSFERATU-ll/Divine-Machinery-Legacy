@@ -18,12 +18,18 @@ tile.divinemachinerylegacy.mechanical_daisy.saffron.name=Saffron Mechanical Dais
 tile.divinemachinerylegacy.mechanical_daisy.shadow.name=Shadow Mechanical Daisy
 tile.divinemachinerylegacy.mechanical_daisy.crimson.name=Crimson Mechanical Daisy
 
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.malachite.name=Malachite Industrial Agglomeration Factory
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.saffron.name=Saffron Industrial Agglomeration Factory
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.shadow.name=Shadow Industrial Agglomeration Factory
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.crimson.name=Crimson Industrial Agglomeration Factory
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
 item.divinemachinerylegacy.catalyst_seed_infinity.name=Infinite Seeds Catalyst
 item.divinemachinerylegacy.catalyst_water_infinity.name=Infinite Water Catalyst
 item.divinemachinerylegacy.catalyst_stone_infinity.name=Infinite Stone Catalyst
 item.divinemachinerylegacy.catalyst_wood_infinity.name=Infinite Wood Catalyst
+item.divinemachinerylegacy.catalyst_speed.name=Speed Catalyst
 
 item.divinemachinerylegacy.base_spark.name=Base Mana Spark
 item.divinemachinerylegacy.malachite_spark.name=Malachite Mana Spark
@@ -70,3 +76,4 @@ container.divinemachinerylegacy.runic_altar=Mechanical Runic Altar
 container.divinemachinerylegacy.mana_pool=Mechanical Mana Pool
 container.divinemachinerylegacy.apothecary=Mechanical Apothecary
 container.divinemachinerylegacy.daisy=Mechanical Daisy
+container.divinemachinerylegacy.industrial_agglomeration=Industrial Agglomeration Factory
