@@ -35,11 +35,15 @@ jobs:
       - name: Build
         run: gradle build --stacktrace
 
-      - name: Upload development jar to workflow artifacts
+      - name: Upload playable development jar
         uses: actions/upload-artifact@v6
         with:
           name: Divine-Machinery-Legacy-dev
-          path: build/libs/*.jar
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+            !build/libs/*-javadoc.jar
+            !build/libs/*-dev-dev.jar
           if-no-files-found: error
           retention-days: 14
 
@@ -51,7 +55,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' ! -name '*-javadoc.jar' | head -n 1)"
+          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' ! -name '*-javadoc.jar' ! -name '*-dev-dev.jar' | head -n 1)"
           if [ -z "$JAR" ]; then
             echo "No runnable jar found in build/libs"
             exit 1
