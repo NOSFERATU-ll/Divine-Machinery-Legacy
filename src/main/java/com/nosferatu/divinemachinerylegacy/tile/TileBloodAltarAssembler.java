@@ -3,9 +3,9 @@ package com.nosferatu.divinemachinerylegacy.tile;
 import WayofTime.alchemicalWizardry.AlchemicalWizardry;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipe;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
+import appeng.api.AEApi;
 import appeng.api.implementations.tiles.ICraftingMachine;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
-import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.item.ItemBloodAltarTierCard;
 import com.nosferatu.divinemachinerylegacy.item.ItemBloodMachineUpgrade;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +26,8 @@ import net.minecraftforge.fluids.IFluidHandler;
  * Blood Altar Assembler backport for Blood Magic 1.7.10 + AE2 rv3.
  *
  * The modern bmaddon machine is pattern driven, starts at altar tier I,
- * accepts tier II-V cards, has nine upgrade slots, special speed cards and
- * parallel cards.  This implementation keeps that progression while using
+ * accepts tier II-V cards, has nine upgrade slots, AE2/special speed cards
+ * and parallel cards. This implementation keeps that progression while using
  * the real 1.7.10 AltarRecipeRegistry and Life Essence fluid.
  */
 public class TileBloodAltarAssembler extends TileEntity
@@ -47,6 +47,9 @@ public class TileBloodAltarAssembler extends TileEntity
     public static final int NORMAL_MIN_CRAFT_TIME_TICKS = 20;
     public static final int MAX_PARALLEL_CRAFTS = 8;
     public static final int PARALLEL_CRAFTS_PER_CARD = 2;
+    public static final int MAX_PARALLEL_CARDS = 4;
+    public static final int MAX_AE2_SPEED_CARDS = 4;
+    public static final int MAX_BLOOD_MAGIC_SPEED_CARDS = 9;
 
     private final ItemStack[] inventory = new ItemStack[INVENTORY_SIZE];
     private int lifeEssence;
@@ -127,7 +130,7 @@ public class TileBloodAltarAssembler extends TileEntity
 
     private int calculateCraftTimeTicks() {
         int bloodSpeedCards = getBloodMagicSpeedCardCount();
-        int accelerationCards = bloodSpeedCards * 4;
+        int accelerationCards = getAe2SpeedCardCount() + bloodSpeedCards * 4;
 
         // bmaddon formula: ceil(base * 1.5 / (1 + acceleration cards)).
         int calculated = (int) Math.ceil((BASE_CRAFT_TIME_TICKS * 1.5D)
@@ -168,11 +171,20 @@ public class TileBloodAltarAssembler extends TileEntity
     }
 
     public int getBloodMagicSpeedCardCount() {
-        return countUpgrade(ItemBloodMachineUpgrade.Type.SPEED);
+        return Math.min(MAX_BLOOD_MAGIC_SPEED_CARDS, countUpgrade(ItemBloodMachineUpgrade.Type.SPEED));
+    }
+
+    public int getAe2SpeedCardCount() {
+        int count = 0;
+        for (int slot = SLOT_UPGRADE_START; slot <= SLOT_UPGRADE_END; slot++) {
+            ItemStack stack = inventory[slot];
+            if (isAe2SpeedCard(stack)) count += stack.stackSize;
+        }
+        return Math.min(MAX_AE2_SPEED_CARDS, count);
     }
 
     public int getParallelCardCount() {
-        return countUpgrade(ItemBloodMachineUpgrade.Type.PARALLEL);
+        return Math.min(MAX_PARALLEL_CARDS, countUpgrade(ItemBloodMachineUpgrade.Type.PARALLEL));
     }
 
     private int countUpgrade(ItemBloodMachineUpgrade.Type type) {
@@ -306,7 +318,15 @@ public class TileBloodAltarAssembler extends TileEntity
     private boolean isUpgradeItem(ItemStack stack) {
         if (stack == null) return false;
         Item item = stack.getItem();
-        return item instanceof ItemBloodAltarTierCard || item instanceof ItemBloodMachineUpgrade;
+        return item instanceof ItemBloodAltarTierCard
+                || item instanceof ItemBloodMachineUpgrade
+                || isAe2SpeedCard(stack);
+    }
+
+    private boolean isAe2SpeedCard(ItemStack stack) {
+        if (stack == null) return false;
+        Item speedCard = AEApi.instance().definitions().materials().cardSpeed().maybeItem().orNull();
+        return speedCard != null && stack.getItem() == speedCard;
     }
 
     // ---------------------------------------------------------------------
