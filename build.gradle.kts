@@ -72,3 +72,17 @@ dependencies {
         devOnlyNonPublishable(rfg.deobf("curse.maven:blood-magic-224791:2264826"))
     }
 }
+
+// BloodMagic Additions patches AE2's upgrade inventory in modern versions.
+// The 1.7.10 backport carries an equally small LaunchWrapper transformer in
+// the same jar so the Blood Magic Speed Card works in every AE2 SPEED host.
+tasks.withType<org.gradle.jvm.tasks.Jar>().configureEach {
+    manifest {
+        attributes(
+            mapOf(
+                "FMLCorePlugin" to "com.nosferatu.divinemachinerylegacy.core.DivineMachineryLegacyCorePlugin",
+                "FMLCorePluginContainsFMLMod" to "true"
+            )
+        )
+    }
+}
