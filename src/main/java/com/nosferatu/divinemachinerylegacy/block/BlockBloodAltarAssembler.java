@@ -29,6 +29,7 @@ public class BlockBloodAltarAssembler extends BlockContainer {
         setBlockTextureName(DivineMachineryLegacy.MODID + ":bloodmagic/blood_altar_assembler");
         setHardness(4.0F);
         setResistance(10.0F);
+        setHarvestLevel("pickaxe", 2);
         setStepSound(soundTypeMetal);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
     }
@@ -78,6 +79,10 @@ public class BlockBloodAltarAssembler extends BlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
                                     int side, float hitX, float hitY, float hitZ) {
+        // AE2's modern machine deliberately passes alternate-use (sneak) clicks
+        // through so wrenches/memory-card style interactions can own the click.
+        if (player.isSneaking()) return false;
+
         if (!world.isRemote) {
             player.openGui(DivineMachineryLegacy.INSTANCE, DivineMachineryLegacy.GUI_BLOOD_ALTAR_ASSEMBLER,
                     world, x, y, z);
