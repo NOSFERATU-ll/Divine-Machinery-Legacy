@@ -1,6 +1,7 @@
 package com.nosferatu.divinemachinerylegacy.block;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodGenerator;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -28,7 +29,7 @@ public class BlockBloodGenerator extends BlockContainer {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
                                     int side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
-            player.openGui(DivineMachineryLegacy.INSTANCE, DivineMachineryLegacy.GUI_BLOOD_GENERATOR,
+            player.openGui(DivineMachineryLegacy.INSTANCE, BloodMagicContent.GUI_BLOOD_GENERATOR,
                     world, x, y, z);
         }
         return true;
