@@ -7,12 +7,15 @@ import com.nosferatu.divinemachinerylegacy.client.render.*;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.gui.*;
 import com.nosferatu.divinemachinerylegacy.tile.*;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -57,6 +60,13 @@ public class ClientProxy extends CommonProxy {
         int greenhouse = RenderingRegistry.getNextAvailableRenderId();
         BlockGreenhouse.setRenderId(greenhouse);
         RenderingRegistry.registerBlockHandler(new RenderGreenhouse(greenhouse));
+
+        RenderBloodGenerator bloodGeneratorRenderer = new RenderBloodGenerator();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileBloodGenerator.class, bloodGeneratorRenderer);
+        if (BloodMagicContent.bloodGenerator != null) {
+            MinecraftForgeClient.registerItemRenderer(
+                    Item.getItemFromBlock(BloodMagicContent.bloodGenerator), bloodGeneratorRenderer);
+        }
 
         RenderingRegistry.registerEntityRenderingHandler(EntityTieredManaSpark.class, new RenderTieredManaSpark());
     }
