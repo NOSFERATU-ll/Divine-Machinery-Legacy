@@ -41,6 +41,7 @@ public class DivineMachineryLegacy {
     public static final int GUI_ORECHID = 7;
     public static final int GUI_JADED_AMARANTHUS = 8;
     public static final int GUI_GREENHOUSE = 9;
+    public static final int GUI_MANA_INFUSER = 10;
 
     public static final String[] MATERIAL_KEYS = {
             "malachite", "saffron", "shadow", "crimson", "crystal", "aureate", "mazarine"
@@ -57,6 +58,7 @@ public class DivineMachineryLegacy {
 
     public static Block mechanicalRunicAltar;
     public static Block mechanicalManaPool;
+    public static Block mechanicalManaInfuser;
     public static Block mechanicalApothecary;
     public static Block mechanicalDaisy;
     public static Block mechanicalIndustrialAgglomerationFactory;
@@ -75,7 +77,6 @@ public class DivineMachineryLegacy {
     public static Item catalystPetal;
     public static Item catalystPetalBlock;
 
-    /** Reforked Greenhouse upgrades except heat; indices are stable for recipes. */
     public static final Item[] greenhouseUpgrades = new Item[15];
     public static Item greenhouseHeatUpgrade;
 
@@ -108,6 +109,10 @@ public class DivineMachineryLegacy {
         mechanicalManaPool = new BlockMechanicalManaPool();
         GameRegistry.registerBlock(mechanicalManaPool, ItemBlockMechanicalManaPool.class, "mechanical_mana_pool");
         GameRegistry.registerTileEntity(TileMechanicalManaPool.class, MODID + ".mechanical_mana_pool");
+
+        mechanicalManaInfuser = new BlockMechanicalManaInfuser();
+        GameRegistry.registerBlock(mechanicalManaInfuser, ItemBlockMechanicalManaInfuser.class, "mechanical_mana_infuser");
+        GameRegistry.registerTileEntity(TileMechanicalManaInfuser.class, MODID + ".mechanical_mana_infuser");
 
         mechanicalApothecary = new BlockMechanicalApothecary();
         GameRegistry.registerBlock(mechanicalApothecary, ItemBlockMechanicalApothecary.class, "mechanical_apothecary");
@@ -188,7 +193,6 @@ public class DivineMachineryLegacy {
     private void registerSparkRecipes() {
         GameRegistry.addShapelessRecipe(new ItemStack(manaSparks[SparkTier.BASE.ordinal()]),
                 new ItemStack(vazkii.botania.common.item.ModItems.spark));
-
         BotaniaAPI.registerRuneAltarRecipe(new ItemStack(manaSparks[1]), 50000,
                 rune(0), rune(1), rune(2), rune(3), rune(8), new ItemStack(manaSparks[0]),
                 new ItemStack(materialIngotBlocks[0]), new ItemStack(materialIngots[0]), new ItemStack(materialDragonstoneBlocks[0]));
@@ -218,23 +222,19 @@ public class DivineMachineryLegacy {
             String dragonstoneKey = material + "_dragonstone";
             String ingotBlockKey = material + "_ingot_block";
             String dragonstoneBlockKey = material + "_dragonstone_block";
-
             materialIngots[i] = new ItemReforkedMaterial(ingotKey);
             materialDragonstones[i] = new ItemReforkedMaterial(dragonstoneKey);
             materialIngotBlocks[i] = new BlockReforkedMaterial(ingotBlockKey, true);
             materialDragonstoneBlocks[i] = new BlockReforkedMaterial(dragonstoneBlockKey, false);
-
             GameRegistry.registerItem(materialIngots[i], ingotKey);
             GameRegistry.registerItem(materialDragonstones[i], dragonstoneKey);
             GameRegistry.registerBlock(materialIngotBlocks[i], ingotBlockKey);
             GameRegistry.registerBlock(materialDragonstoneBlocks[i], dragonstoneBlockKey);
-
             String suffix = Character.toUpperCase(material.charAt(0)) + material.substring(1);
             OreDictionary.registerOre("ingot" + suffix, new ItemStack(materialIngots[i]));
             OreDictionary.registerOre("block" + suffix, new ItemStack(materialIngotBlocks[i]));
             OreDictionary.registerOre("gem" + suffix + "Dragonstone", new ItemStack(materialDragonstones[i]));
             OreDictionary.registerOre("block" + suffix + "Dragonstone", new ItemStack(materialDragonstoneBlocks[i]));
-
             GameRegistry.addRecipe(new ItemStack(materialIngotBlocks[i]), "III", "III", "III", 'I', materialIngots[i]);
             GameRegistry.addShapelessRecipe(new ItemStack(materialIngots[i], 9), materialIngotBlocks[i]);
             GameRegistry.addRecipe(new ItemStack(materialDragonstoneBlocks[i]), "DDD", "DDD", "DDD", 'D', materialDragonstones[i]);
