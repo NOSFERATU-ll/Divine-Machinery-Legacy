@@ -1,5 +1,11 @@
+itemGroup.divinemachinerylegacy=Divine Machinery Legacy
+
 tile.divinemachinerylegacy.mechanical_runic_altar.malachite.name=Malachite Mechanical Runic Altar
 tile.divinemachinerylegacy.mechanical_runic_altar.saffron.name=Saffron Mechanical Runic Altar
 tile.divinemachinerylegacy.mechanical_runic_altar.shadow.name=Shadow Mechanical Runic Altar
 tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Crimson Mechanical Runic Altar
+
+item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
+item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
+
 container.divinemachinerylegacy.runic_altar=Mechanical Runic Altar
