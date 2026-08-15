@@ -38,7 +38,13 @@ tasks.processResources.configure {
 
 repositories {
     mavenCentral()
-    cursemavenEX()
+    maven {
+        name = "CurseMaven"
+        url = uri("https://cursemaven.com")
+        content {
+            includeGroup("curse.maven")
+        }
+    }
 }
 
 dependencies {
@@ -50,12 +56,12 @@ dependencies {
     if (localBotania.exists()) {
         devOnlyNonPublishable(rfg.deobf(files(localBotania)))
     } else {
-        devOnlyNonPublishable(deobfCurse("botania-225643:2283837"))
+        devOnlyNonPublishable(rfg.deobf("curse.maven:botania-225643:2283837"))
     }
 
     if (localAe2.exists()) {
         devOnlyNonPublishable(rfg.deobf(files(localAe2)))
     } else {
-        devOnlyNonPublishable(deobfCurse("applied-energistics-2-223794:2296430"))
+        devOnlyNonPublishable(rfg.deobf("curse.maven:applied-energistics-2-223794:2296430"))
     }
 }
