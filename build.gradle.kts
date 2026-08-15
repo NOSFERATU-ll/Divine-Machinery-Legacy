@@ -29,13 +29,6 @@ minecraft_fp {
     }
 }
 
-tasks.processResources.configure {
-    inputs.property("version", project.version)
-    filesMatching("mcmod.info") {
-        expand(mapOf("version" to project.version.toString()))
-    }
-}
-
 repositories {
     mavenCentral()
     maven {
