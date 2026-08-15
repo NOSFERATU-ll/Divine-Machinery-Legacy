@@ -1,6 +1,7 @@
 package com.nosferatu.divinemachinerylegacy.block;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicConfigSync;
 import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodGenerator;
 import net.minecraft.block.BlockContainer;
@@ -16,6 +17,7 @@ public class BlockBloodGenerator extends BlockContainer {
         setBlockTextureName(DivineMachineryLegacy.MODID + ":bloodmagic/blood_generator");
         setHardness(4.0F);
         setResistance(6.0F);
+        setHarvestLevel("pickaxe", 2);
         setStepSound(soundTypeMetal);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
     }
@@ -44,6 +46,9 @@ public class BlockBloodGenerator extends BlockContainer {
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
                                     int side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
+            // bmaddon refreshes its common generator config immediately before
+            // opening this screen in addition to the normal login/dimension sync.
+            BloodMagicConfigSync.sendToPlayer(player);
             player.openGui(DivineMachineryLegacy.INSTANCE, BloodMagicContent.GUI_BLOOD_GENERATOR,
                     world, x, y, z);
         }
