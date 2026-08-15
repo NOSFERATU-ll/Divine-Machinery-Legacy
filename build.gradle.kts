@@ -46,6 +46,7 @@ dependencies {
     val localBotania = file("libs/Botania r1.8-249.jar")
     val localAe2 = file("libs/appliedenergistics2-rv3-beta-6.jar")
     val localCoFH = file("libs/CoFHCore-[1.7.10]3.1.4-329.jar")
+    val localBloodMagic = file("libs/BloodMagic-1.7.10-1.3.3-17.jar")
 
     if (localBotania.exists()) {
         devOnlyNonPublishable(rfg.deobf(files(localBotania)))
@@ -63,5 +64,11 @@ dependencies {
         devOnlyNonPublishable(rfg.deobf(files(localCoFH)))
     } else {
         devOnlyNonPublishable(rfg.deobf("curse.maven:CoFHCore-69162:2388751"))
+    }
+
+    if (localBloodMagic.exists()) {
+        devOnlyNonPublishable(rfg.deobf(files(localBloodMagic)))
+    } else {
+        devOnlyNonPublishable(rfg.deobf("curse.maven:blood-magic-224791:2264826"))
     }
 }
