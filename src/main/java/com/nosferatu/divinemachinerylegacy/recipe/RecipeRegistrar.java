@@ -21,6 +21,7 @@ public final class RecipeRegistrar {
         registerMachines();
         registerCatalysts();
         registerGreenhouseUpgrades();
+        BloodMagicRecipeRegistrar.register();
     }
 
     private static void registerMaterialProgression() {
