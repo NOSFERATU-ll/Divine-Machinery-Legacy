@@ -1,0 +1,122 @@
+itemGroup.divinemachinerylegacy=Divine Machinery Legacy
+
+tile.divinemachinerylegacy.mechanical_runic_altar.malachite.name=Малахитовый механический рунический алтарь
+tile.divinemachinerylegacy.mechanical_runic_altar.saffron.name=Шафрановый механический рунический алтарь
+tile.divinemachinerylegacy.mechanical_runic_altar.shadow.name=Теневой механический рунический алтарь
+tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Багровый механический рунический алтарь
+
+tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Малахитовый механический бассейн маны
+tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Шафрановый механический бассейн маны
+tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Теневой механический бассейн маны
+tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Багровый механический бассейн маны
+
+tile.divinemachinerylegacy.mechanical_mana_infuser.malachite.name=Малахитовый механический мана-инфузор
+tile.divinemachinerylegacy.mechanical_mana_infuser.saffron.name=Шафрановый механический мана-инфузор
+tile.divinemachinerylegacy.mechanical_mana_infuser.shadow.name=Теневой механический мана-инфузор
+tile.divinemachinerylegacy.mechanical_mana_infuser.crimson.name=Багровый механический мана-инфузор
+
+tile.divinemachinerylegacy.mechanical_apothecary.malachite.name=Малахитовый механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_apothecary.saffron.name=Шафрановый механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_apothecary.shadow.name=Теневой механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_apothecary.crimson.name=Багровый механический лепестковый аптекарь
+tile.divinemachinerylegacy.mechanical_daisy.malachite.name=Малахитовая механическая чистая маргаритка
+tile.divinemachinerylegacy.mechanical_daisy.saffron.name=Шафрановая механическая чистая маргаритка
+tile.divinemachinerylegacy.mechanical_daisy.shadow.name=Теневая механическая чистая маргаритка
+tile.divinemachinerylegacy.mechanical_daisy.crimson.name=Багровая механическая чистая маргаритка
+
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.malachite.name=Малахитовая фабрика промышленной агломерации
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.saffron.name=Шафрановая фабрика промышленной агломерации
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.shadow.name=Теневая фабрика промышленной агломерации
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.crimson.name=Багровая фабрика промышленной агломерации
+
+tile.divinemachinerylegacy.mechanical_alfheim_market.malachite.name=Малахитовый механический рынок Альфхейма
+tile.divinemachinerylegacy.mechanical_alfheim_market.saffron.name=Шафрановый механический рынок Альфхейма
+tile.divinemachinerylegacy.mechanical_alfheim_market.shadow.name=Теневой механический рынок Альфхейма
+tile.divinemachinerylegacy.mechanical_alfheim_market.crimson.name=Багровый механический рынок Альфхейма
+
+tile.divinemachinerylegacy.mechanical_orechid.malachite.name=Малахитовая механическая рудноцветка
+tile.divinemachinerylegacy.mechanical_orechid.saffron.name=Шафрановая механическая рудноцветка
+tile.divinemachinerylegacy.mechanical_orechid.shadow.name=Теневая механическая рудноцветка
+tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Багровая механическая рудноцветка
+
+tile.divinemachinerylegacy.jaded_amaranthus.name=Нефритовый амарант
+tile.divinemachinerylegacy.greenhouse.name=Теплица
+
+item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
+item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
+item.divinemachinerylegacy.catalyst_seed_infinity.name=Катализатор бесконечных семян
+item.divinemachinerylegacy.catalyst_water_infinity.name=Катализатор бесконечной воды
+item.divinemachinerylegacy.catalyst_stone_infinity.name=Катализатор бесконечного камня
+item.divinemachinerylegacy.catalyst_wood_infinity.name=Катализатор бесконечной древесины
+item.divinemachinerylegacy.catalyst_speed.name=Катализатор скорости
+item.divinemachinerylegacy.catalyst_petal.name=Катализатор лепестков
+item.divinemachinerylegacy.catalyst_petal_block.name=Катализатор блоков лепестков
+
+item.divinemachinerylegacy.upgrade_flower_4x.name=Вместимость цветов x4
+item.divinemachinerylegacy.upgrade_flower_16x.name=Вместимость цветов x16
+item.divinemachinerylegacy.upgrade_flower_32x.name=Вместимость цветов x32
+item.divinemachinerylegacy.upgrade_flower_64x.name=Вместимость цветов x64
+item.divinemachinerylegacy.upgrade_gen_mana.name=Улучшение генерации маны
+item.divinemachinerylegacy.upgrade_slot_add.name=Дополнительный топливный слот
+item.divinemachinerylegacy.upgrade_cost_energy.name=Улучшение энергоэффективности
+item.divinemachinerylegacy.upgrade_tick_gen_mana_1.name=Скорость генерации маны I
+item.divinemachinerylegacy.upgrade_tick_gen_mana_2.name=Скорость генерации маны II
+item.divinemachinerylegacy.upgrade_storage_energy_1.name=Хранилище энергии I
+item.divinemachinerylegacy.upgrade_storage_energy_2.name=Хранилище энергии II
+item.divinemachinerylegacy.upgrade_storage_energy_3.name=Хранилище энергии III
+item.divinemachinerylegacy.upgrade_storage_mana_1.name=Хранилище маны I
+item.divinemachinerylegacy.upgrade_storage_mana_2.name=Хранилище маны II
+item.divinemachinerylegacy.upgrade_storage_mana_3.name=Хранилище маны III
+item.divinemachinerylegacy.upgrade_heat_greenhouse.name=Обогрев теплицы
+
+item.divinemachinerylegacy.base_spark.name=Базовая искра маны
+item.divinemachinerylegacy.malachite_spark.name=Малахитовая искра маны
+item.divinemachinerylegacy.saffron_spark.name=Шафрановая искра маны
+item.divinemachinerylegacy.shadow_spark.name=Теневая искра маны
+item.divinemachinerylegacy.crimson_spark.name=Багровая искра маны
+item.divinemachinerylegacy.aureate_spark.name=Ауреатовая искра маны
+item.divinemachinerylegacy.mazarine_spark.name=Мазариновая искра маны
+tooltip.divinemachinerylegacy.spark_transfer=Передача маны: %,d/т
+
+item.divinemachinerylegacy.malachite_ingot.name=Малахитовый слиток
+item.divinemachinerylegacy.saffron_ingot.name=Шафрановый слиток
+item.divinemachinerylegacy.shadow_ingot.name=Теневой слиток
+item.divinemachinerylegacy.crimson_ingot.name=Багровый слиток
+item.divinemachinerylegacy.crystal_ingot.name=Кристальный слиток
+item.divinemachinerylegacy.aureate_ingot.name=Ауреатовый слиток
+item.divinemachinerylegacy.mazarine_ingot.name=Мазариновый слиток
+
+item.divinemachinerylegacy.malachite_dragonstone.name=Малахитовый драконий камень
+item.divinemachinerylegacy.saffron_dragonstone.name=Шафрановый драконий камень
+item.divinemachinerylegacy.shadow_dragonstone.name=Теневой драконий камень
+item.divinemachinerylegacy.crimson_dragonstone.name=Багровый драконий камень
+item.divinemachinerylegacy.crystal_dragonstone.name=Кристальный драконий камень
+item.divinemachinerylegacy.aureate_dragonstone.name=Ауреатовый драконий камень
+item.divinemachinerylegacy.mazarine_dragonstone.name=Мазариновый драконий камень
+
+tile.divinemachinerylegacy.malachite_ingot_block.name=Малахитовый блок
+tile.divinemachinerylegacy.saffron_ingot_block.name=Шафрановый блок
+tile.divinemachinerylegacy.shadow_ingot_block.name=Теневой блок
+tile.divinemachinerylegacy.crimson_ingot_block.name=Багровый блок
+tile.divinemachinerylegacy.crystal_ingot_block.name=Кристальный блок
+tile.divinemachinerylegacy.aureate_ingot_block.name=Ауреатовый блок
+tile.divinemachinerylegacy.mazarine_ingot_block.name=Мазариновый блок
+
+tile.divinemachinerylegacy.malachite_dragonstone_block.name=Блок малахитового драконьего камня
+tile.divinemachinerylegacy.saffron_dragonstone_block.name=Блок шафранового драконьего камня
+tile.divinemachinerylegacy.shadow_dragonstone_block.name=Блок теневого драконьего камня
+tile.divinemachinerylegacy.crimson_dragonstone_block.name=Блок багрового драконьего камня
+tile.divinemachinerylegacy.crystal_dragonstone_block.name=Блок кристального драконьего камня
+tile.divinemachinerylegacy.aureate_dragonstone_block.name=Блок ауреатового драконьего камня
+tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Блок мазаринового драконьего камня
+
+container.divinemachinerylegacy.runic_altar=Механический рунический алтарь
+container.divinemachinerylegacy.mana_pool=Механический бассейн маны
+container.divinemachinerylegacy.mana_infuser=Механический мана-инфузор
+container.divinemachinerylegacy.apothecary=Механический лепестковый аптекарь
+container.divinemachinerylegacy.daisy=Механическая чистая маргаритка
+container.divinemachinerylegacy.industrial_agglomeration=Фабрика промышленной агломерации
+container.divinemachinerylegacy.alfheim_market=Механический рынок Альфхейма
+container.divinemachinerylegacy.orechid=Механическая рудноцветка
+container.divinemachinerylegacy.jaded_amaranthus=Нефритовый амарант
+container.divinemachinerylegacy.greenhouse=Теплица

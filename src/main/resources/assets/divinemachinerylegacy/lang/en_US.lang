@@ -1,0 +1,122 @@
+itemGroup.divinemachinerylegacy=Divine Machinery Legacy
+
+tile.divinemachinerylegacy.mechanical_runic_altar.malachite.name=Malachite Mechanical Runic Altar
+tile.divinemachinerylegacy.mechanical_runic_altar.saffron.name=Saffron Mechanical Runic Altar
+tile.divinemachinerylegacy.mechanical_runic_altar.shadow.name=Shadow Mechanical Runic Altar
+tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Crimson Mechanical Runic Altar
+
+tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Malachite Mechanical Mana Pool
+tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Saffron Mechanical Mana Pool
+tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Shadow Mechanical Mana Pool
+tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Crimson Mechanical Mana Pool
+
+tile.divinemachinerylegacy.mechanical_mana_infuser.malachite.name=Malachite Mechanical Mana Infuser
+tile.divinemachinerylegacy.mechanical_mana_infuser.saffron.name=Saffron Mechanical Mana Infuser
+tile.divinemachinerylegacy.mechanical_mana_infuser.shadow.name=Shadow Mechanical Mana Infuser
+tile.divinemachinerylegacy.mechanical_mana_infuser.crimson.name=Crimson Mechanical Mana Infuser
+
+tile.divinemachinerylegacy.mechanical_apothecary.malachite.name=Malachite Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_apothecary.saffron.name=Saffron Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_apothecary.shadow.name=Shadow Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_apothecary.crimson.name=Crimson Mechanical Apothecary
+tile.divinemachinerylegacy.mechanical_daisy.malachite.name=Malachite Mechanical Daisy
+tile.divinemachinerylegacy.mechanical_daisy.saffron.name=Saffron Mechanical Daisy
+tile.divinemachinerylegacy.mechanical_daisy.shadow.name=Shadow Mechanical Daisy
+tile.divinemachinerylegacy.mechanical_daisy.crimson.name=Crimson Mechanical Daisy
+
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.malachite.name=Malachite Industrial Agglomeration Factory
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.saffron.name=Saffron Industrial Agglomeration Factory
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.shadow.name=Shadow Industrial Agglomeration Factory
+tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.crimson.name=Crimson Industrial Agglomeration Factory
+
+tile.divinemachinerylegacy.mechanical_alfheim_market.malachite.name=Malachite Mechanical Alfheim Market
+tile.divinemachinerylegacy.mechanical_alfheim_market.saffron.name=Saffron Mechanical Alfheim Market
+tile.divinemachinerylegacy.mechanical_alfheim_market.shadow.name=Shadow Mechanical Alfheim Market
+tile.divinemachinerylegacy.mechanical_alfheim_market.crimson.name=Crimson Mechanical Alfheim Market
+
+tile.divinemachinerylegacy.mechanical_orechid.malachite.name=Malachite Mechanical Orechid
+tile.divinemachinerylegacy.mechanical_orechid.saffron.name=Saffron Mechanical Orechid
+tile.divinemachinerylegacy.mechanical_orechid.shadow.name=Shadow Mechanical Orechid
+tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Crimson Mechanical Orechid
+
+tile.divinemachinerylegacy.jaded_amaranthus.name=Jaded Amaranthus
+tile.divinemachinerylegacy.greenhouse.name=Greenhouse
+
+item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
+item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
+item.divinemachinerylegacy.catalyst_seed_infinity.name=Infinite Seeds Catalyst
+item.divinemachinerylegacy.catalyst_water_infinity.name=Infinite Water Catalyst
+item.divinemachinerylegacy.catalyst_stone_infinity.name=Infinite Stone Catalyst
+item.divinemachinerylegacy.catalyst_wood_infinity.name=Infinite Wood Catalyst
+item.divinemachinerylegacy.catalyst_speed.name=Speed Catalyst
+item.divinemachinerylegacy.catalyst_petal.name=Petal Catalyst
+item.divinemachinerylegacy.catalyst_petal_block.name=Petal Block Catalyst
+
+item.divinemachinerylegacy.upgrade_flower_4x.name=Flower Capacity x4
+item.divinemachinerylegacy.upgrade_flower_16x.name=Flower Capacity x16
+item.divinemachinerylegacy.upgrade_flower_32x.name=Flower Capacity x32
+item.divinemachinerylegacy.upgrade_flower_64x.name=Flower Capacity x64
+item.divinemachinerylegacy.upgrade_gen_mana.name=Mana Generation Upgrade
+item.divinemachinerylegacy.upgrade_slot_add.name=Extra Fuel Slot Upgrade
+item.divinemachinerylegacy.upgrade_cost_energy.name=Energy Efficiency Upgrade
+item.divinemachinerylegacy.upgrade_tick_gen_mana_1.name=Mana Rate Upgrade I
+item.divinemachinerylegacy.upgrade_tick_gen_mana_2.name=Mana Rate Upgrade II
+item.divinemachinerylegacy.upgrade_storage_energy_1.name=Energy Storage Upgrade I
+item.divinemachinerylegacy.upgrade_storage_energy_2.name=Energy Storage Upgrade II
+item.divinemachinerylegacy.upgrade_storage_energy_3.name=Energy Storage Upgrade III
+item.divinemachinerylegacy.upgrade_storage_mana_1.name=Mana Storage Upgrade I
+item.divinemachinerylegacy.upgrade_storage_mana_2.name=Mana Storage Upgrade II
+item.divinemachinerylegacy.upgrade_storage_mana_3.name=Mana Storage Upgrade III
+item.divinemachinerylegacy.upgrade_heat_greenhouse.name=Greenhouse Heat Upgrade
+
+item.divinemachinerylegacy.base_spark.name=Base Mana Spark
+item.divinemachinerylegacy.malachite_spark.name=Malachite Mana Spark
+item.divinemachinerylegacy.saffron_spark.name=Saffron Mana Spark
+item.divinemachinerylegacy.shadow_spark.name=Shadow Mana Spark
+item.divinemachinerylegacy.crimson_spark.name=Crimson Mana Spark
+item.divinemachinerylegacy.aureate_spark.name=Aureate Mana Spark
+item.divinemachinerylegacy.mazarine_spark.name=Mazarine Mana Spark
+tooltip.divinemachinerylegacy.spark_transfer=Mana transfer: %,d/t
+
+item.divinemachinerylegacy.malachite_ingot.name=Malachite Ingot
+item.divinemachinerylegacy.saffron_ingot.name=Saffron Ingot
+item.divinemachinerylegacy.shadow_ingot.name=Shadow Ingot
+item.divinemachinerylegacy.crimson_ingot.name=Crimson Ingot
+item.divinemachinerylegacy.crystal_ingot.name=Crystal Ingot
+item.divinemachinerylegacy.aureate_ingot.name=Aureate Ingot
+item.divinemachinerylegacy.mazarine_ingot.name=Mazarine Ingot
+
+item.divinemachinerylegacy.malachite_dragonstone.name=Malachite Dragonstone
+item.divinemachinerylegacy.saffron_dragonstone.name=Saffron Dragonstone
+item.divinemachinerylegacy.shadow_dragonstone.name=Shadow Dragonstone
+item.divinemachinerylegacy.crimson_dragonstone.name=Crimson Dragonstone
+item.divinemachinerylegacy.crystal_dragonstone.name=Crystal Dragonstone
+item.divinemachinerylegacy.aureate_dragonstone.name=Aureate Dragonstone
+item.divinemachinerylegacy.mazarine_dragonstone.name=Mazarine Dragonstone
+
+tile.divinemachinerylegacy.malachite_ingot_block.name=Malachite Block
+tile.divinemachinerylegacy.saffron_ingot_block.name=Saffron Block
+tile.divinemachinerylegacy.shadow_ingot_block.name=Shadow Block
+tile.divinemachinerylegacy.crimson_ingot_block.name=Crimson Block
+tile.divinemachinerylegacy.crystal_ingot_block.name=Crystal Block
+tile.divinemachinerylegacy.aureate_ingot_block.name=Aureate Block
+tile.divinemachinerylegacy.mazarine_ingot_block.name=Mazarine Block
+
+tile.divinemachinerylegacy.malachite_dragonstone_block.name=Malachite Dragonstone Block
+tile.divinemachinerylegacy.saffron_dragonstone_block.name=Saffron Dragonstone Block
+tile.divinemachinerylegacy.shadow_dragonstone_block.name=Shadow Dragonstone Block
+tile.divinemachinerylegacy.crimson_dragonstone_block.name=Crimson Dragonstone Block
+tile.divinemachinerylegacy.crystal_dragonstone_block.name=Crystal Dragonstone Block
+tile.divinemachinerylegacy.aureate_dragonstone_block.name=Aureate Dragonstone Block
+tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Mazarine Dragonstone Block
+
+container.divinemachinerylegacy.runic_altar=Mechanical Runic Altar
+container.divinemachinerylegacy.mana_pool=Mechanical Mana Pool
+container.divinemachinerylegacy.mana_infuser=Mechanical Mana Infuser
+container.divinemachinerylegacy.apothecary=Mechanical Apothecary
+container.divinemachinerylegacy.daisy=Mechanical Daisy
+container.divinemachinerylegacy.industrial_agglomeration=Industrial Agglomeration Factory
+container.divinemachinerylegacy.alfheim_market=Mechanical Alfheim Market
+container.divinemachinerylegacy.orechid=Mechanical Orechid
+container.divinemachinerylegacy.jaded_amaranthus=Jaded Amaranthus
+container.divinemachinerylegacy.greenhouse=Greenhouse

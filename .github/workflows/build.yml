@@ -1,0 +1,84 @@
+name: Build 1.7.10 port
+
+on:
+  push:
+    branches: [ main, botania-port ]
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Sync permitted Botanical Extra Reforked visual assets
+        if: github.ref == 'refs/heads/botania-port' || github.event_name == 'pull_request'
+        shell: bash
+        run: scripts/sync_reforked_assets.sh
+
+      - name: Setup Java for Gradle
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Setup Gradle 9.3.1
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '9.3.1'
+          cache-provider: basic
+
+      - name: Build
+        run: gradle build --stacktrace
+
+      - name: Upload playable development jar
+        uses: actions/upload-artifact@v6
+        with:
+          name: Divine-Machinery-Legacy-dev
+          path: |
+            build/libs/*.jar
+            !build/libs/*-sources.jar
+            !build/libs/*-javadoc.jar
+            !build/libs/*-dev-dev.jar
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish rolling development release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/botania-port'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          JAR="$(find build/libs -maxdepth 1 -type f -name '*.jar' ! -name '*-sources.jar' ! -name '*-javadoc.jar' ! -name '*-dev-dev.jar' | head -n 1)"
+          if [ -z "$JAR" ]; then
+            echo "No runnable jar found in build/libs"
+            exit 1
+          fi
+
+          TAG="botania-dev"
+          RELEASE_TITLE="Botania Port Development Build"
+          ASSET_NAME="Divine-Machinery-Legacy-dev.jar"
+
+          git tag -f "$TAG" "$GITHUB_SHA"
+          git push origin "refs/tags/$TAG" --force
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release edit "$TAG" \
+              --prerelease \
+              --title "$RELEASE_TITLE" \
+              --notes "Automatic development build from botania-port. Includes permitted Botanical Machinery Extra Reforked development visual assets. Commit: $GITHUB_SHA"
+          else
+            gh release create "$TAG" \
+              --prerelease \
+              --target "$GITHUB_SHA" \
+              --title "$RELEASE_TITLE" \
+              --notes "Automatic development build from botania-port. Includes permitted Botanical Machinery Extra Reforked development visual assets. Commit: $GITHUB_SHA"
+          fi
+
+          gh release upload "$TAG" "$JAR#$ASSET_NAME" --clobber
