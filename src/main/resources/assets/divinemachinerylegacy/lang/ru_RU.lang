@@ -23,6 +23,11 @@ tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.saffron.n
 tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.shadow.name=Теневая фабрика промышленной агломерации
 tile.divinemachinerylegacy.mechanical_industrial_agglomeration_factory.crimson.name=Багровая фабрика промышленной агломерации
 
+tile.divinemachinerylegacy.mechanical_alfheim_market.malachite.name=Малахитовый механический рынок Альфхейма
+tile.divinemachinerylegacy.mechanical_alfheim_market.saffron.name=Шафрановый механический рынок Альфхейма
+tile.divinemachinerylegacy.mechanical_alfheim_market.shadow.name=Теневой механический рынок Альфхейма
+tile.divinemachinerylegacy.mechanical_alfheim_market.crimson.name=Багровый механический рынок Альфхейма
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
 item.divinemachinerylegacy.catalyst_seed_infinity.name=Катализатор бесконечных семян
@@ -77,3 +82,4 @@ container.divinemachinerylegacy.mana_pool=Механический бассей�
 container.divinemachinerylegacy.apothecary=Механический лепестковый аптекарь
 container.divinemachinerylegacy.daisy=Механическая чистая маргаритка
 container.divinemachinerylegacy.industrial_agglomeration=Фабрика промышленной агломерации
+container.divinemachinerylegacy.alfheim_market=Механический рынок Альфхейма

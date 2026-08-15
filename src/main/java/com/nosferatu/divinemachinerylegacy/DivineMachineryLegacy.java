@@ -35,6 +35,7 @@ public class DivineMachineryLegacy {
     public static final int GUI_APOTHECARY = 3;
     public static final int GUI_DAISY = 4;
     public static final int GUI_INDUSTRIAL_AGGLOMERATION = 5;
+    public static final int GUI_ALFHEIM_MARKET = 6;
 
     public static final String[] MATERIAL_KEYS = {
             "malachite", "saffron", "shadow", "crimson", "crystal", "aureate", "mazarine"
@@ -54,6 +55,7 @@ public class DivineMachineryLegacy {
     public static Block mechanicalApothecary;
     public static Block mechanicalDaisy;
     public static Block mechanicalIndustrialAgglomerationFactory;
+    public static Block mechanicalAlfheimMarket;
 
     public static Item catalystManaInfinity;
     public static Item catalystLivingrockInfinity;
@@ -104,6 +106,12 @@ public class DivineMachineryLegacy {
                 "mechanical_industrial_agglomeration_factory");
         GameRegistry.registerTileEntity(TileMechanicalIndustrialAgglomerationFactory.class,
                 MODID + ".mechanical_industrial_agglomeration_factory");
+
+        mechanicalAlfheimMarket = new BlockMechanicalAlfheimMarket();
+        GameRegistry.registerBlock(mechanicalAlfheimMarket,
+                ItemBlockMechanicalAlfheimMarket.class, "mechanical_alfheim_market");
+        GameRegistry.registerTileEntity(TileMechanicalAlfheimMarket.class,
+                MODID + ".mechanical_alfheim_market");
 
         NetworkRegistry.INSTANCE.registerGuiHandler(INSTANCE, new GuiHandler());
         registerSparkRecipes();
