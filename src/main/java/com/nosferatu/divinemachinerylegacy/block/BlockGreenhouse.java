@@ -27,6 +27,8 @@ public class BlockGreenhouse extends BlockContainer {
         setResistance(12F);
         setLightOpacity(0);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
+        // Reforked greenhouse geometry only reaches Y=2/16.
+        setBlockBounds(0F, 0F, 0F, 1F, 0.125F, 1F);
     }
 
     public static void setRenderId(int id) { renderId = id; }
