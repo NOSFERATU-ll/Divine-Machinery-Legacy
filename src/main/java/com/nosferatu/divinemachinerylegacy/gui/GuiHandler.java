@@ -1,6 +1,7 @@
 package com.nosferatu.divinemachinerylegacy.gui;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
 import com.nosferatu.divinemachinerylegacy.tile.*;
 import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,6 +36,8 @@ public class GuiHandler implements IGuiHandler {
             return new ContainerGreenhouse(player.inventory, (TileGreenhouse) te);
         if (id == DivineMachineryLegacy.GUI_BLOOD_ALTAR_ASSEMBLER && te instanceof TileBloodAltarAssembler)
             return new ContainerBloodAltarAssembler(player.inventory, (TileBloodAltarAssembler) te);
+        if (id == BloodMagicContent.GUI_BLOOD_GENERATOR && te instanceof TileBloodGenerator)
+            return new ContainerBloodGenerator(player.inventory, (TileBloodGenerator) te);
         return null;
     }
 
