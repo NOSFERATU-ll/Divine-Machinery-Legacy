@@ -14,6 +14,8 @@ import static com.nosferatu.divinemachinerylegacy.client.render.RenderMachineMod
 
 /** Exact Reforked plate / enchanted-soil / Pure Daisy silhouette. */
 public class RenderMechanicalDaisy implements ISimpleBlockRenderingHandler {
+    private static final double FLOWER_MIN = 8D - 3D / Math.sqrt(2D);
+    private static final double FLOWER_MAX = 8D + 3D / Math.sqrt(2D);
     private final int renderId;
 
     public RenderMechanicalDaisy(int renderId) {
@@ -45,7 +47,6 @@ public class RenderMechanicalDaisy implements ISimpleBlockRenderingHandler {
     private static void draw(Tessellator t, BlockMechanicalDaisy block, int meta,
                              double x, double y, double z, int brightness) {
         IIcon plate = block.getPlate(meta);
-        // Reforked uses Botania's enchanted soil here, not vanilla grass.
         IIcon soilTop = ModBlocks.enchantedSoil.getIcon(1, 0);
         IIcon soilSide = ModBlocks.enchantedSoil.getIcon(2, 0);
 
@@ -65,9 +66,10 @@ public class RenderMechanicalDaisy implements ISimpleBlockRenderingHandler {
                 soilSide, new UV(5, 0, 11, 1),
                 soilSide, new UV(5, 0, 11, 1));
 
-        // The two Reforked flower planes are rotated 45 degrees around Y;
-        // crossedPlant produces the same X silhouette in the legacy renderer.
-        crossedPlant(t, x, y, z, 5, 3, 5, 11, 11.4, 11, block.getFlower(), brightness);
+        // Reforked starts with two 6-wide planes and rotates them 45 degrees.
+        // Their projected endpoints are 8 +/- 3/sqrt(2), not 5..11.
+        crossedPlant(t, x, y, z, FLOWER_MIN, 3, FLOWER_MIN,
+                FLOWER_MAX, 11.4, FLOWER_MAX, block.getFlower(), brightness);
     }
 
     @Override
