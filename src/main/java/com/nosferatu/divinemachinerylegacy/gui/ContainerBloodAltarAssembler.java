@@ -1,5 +1,8 @@
 package com.nosferatu.divinemachinerylegacy.gui;
 
+import appeng.api.AEApi;
+import com.nosferatu.divinemachinerylegacy.item.ItemBloodAltarTierCard;
+import com.nosferatu.divinemachinerylegacy.item.ItemBloodMachineUpgrade;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssembler;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssemblerExtended;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,6 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /** 1.7.10 menu layout matching bmaddon: 9 patterns, 9 upgrades, player inventory. */
@@ -181,19 +185,48 @@ public class ContainerBloodAltarAssembler extends Container {
         }
     }
 
-    private static class SlotUpgrade extends Slot {
+    private class SlotUpgrade extends Slot {
         SlotUpgrade(TileBloodAltarAssembler tile, int index, int x, int y) {
             super(tile, index, x, y);
         }
 
         @Override
         public boolean isItemValid(ItemStack stack) {
-            return inventory.isItemValidForSlot(getSlotIndex(), stack);
+            if (!inventory.isItemValidForSlot(getSlotIndex(), stack)) return false;
+            int max = getMaxInstalled(stack);
+            if (max <= 0) return false;
+            return countInstalled(stack) < max;
         }
 
         @Override
         public int getSlotStackLimit() {
+            // Matches modern RestrictedInputSlot#setStackLimit(1).
             return 1;
+        }
+
+        private int getMaxInstalled(ItemStack candidate) {
+            if (candidate == null) return 0;
+            Item item = candidate.getItem();
+            if (item instanceof ItemBloodAltarTierCard) return 1;
+            if (item instanceof ItemBloodMachineUpgrade) {
+                ItemBloodMachineUpgrade upgrade = (ItemBloodMachineUpgrade) item;
+                return upgrade.getType() == ItemBloodMachineUpgrade.Type.PARALLEL
+                        ? TileBloodAltarAssembler.MAX_PARALLEL_CARDS
+                        : TileBloodAltarAssembler.MAX_BLOOD_MAGIC_SPEED_CARDS;
+            }
+            Item aeSpeed = AEApi.instance().definitions().materials().cardSpeed().maybeItem().orNull();
+            return aeSpeed != null && item == aeSpeed ? TileBloodAltarAssembler.MAX_AE2_SPEED_CARDS : 0;
+        }
+
+        private int countInstalled(ItemStack candidate) {
+            int count = 0;
+            Item item = candidate.getItem();
+            for (int slot = TileBloodAltarAssembler.SLOT_UPGRADE_START;
+                 slot <= TileBloodAltarAssembler.SLOT_UPGRADE_END; slot++) {
+                ItemStack installed = tile.getStackInSlot(slot);
+                if (installed != null && installed.getItem() == item) count += installed.stackSize;
+            }
+            return count;
         }
     }
 
