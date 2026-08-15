@@ -2,18 +2,27 @@ package com.nosferatu.divinemachinerylegacy.block;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodAltarAssemblerNetworked;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BlockBloodAltarAssembler extends BlockContainer {
+    private static int renderId = -1;
+
+    @SideOnly(Side.CLIENT)
+    private IIcon lightsIcon;
+
     public BlockBloodAltarAssembler() {
         super(Material.iron);
         setBlockName(DivineMachineryLegacy.MODID + ".blood_altar_assembler");
@@ -22,6 +31,43 @@ public class BlockBloodAltarAssembler extends BlockContainer {
         setResistance(10.0F);
         setStepSound(soundTypeMetal);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
+    }
+
+    public static void setRenderId(int id) {
+        renderId = id;
+    }
+
+    @Override
+    public int getRenderType() {
+        return renderId;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister register) {
+        super.registerBlockIcons(register);
+        lightsIcon = register.registerIcon(
+                DivineMachineryLegacy.MODID + ":bloodmagic/blood_altar_assembler_lights");
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getBaseIcon() {
+        return blockIcon;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public IIcon getLightsIcon() {
+        return lightsIcon;
     }
 
     @Override
