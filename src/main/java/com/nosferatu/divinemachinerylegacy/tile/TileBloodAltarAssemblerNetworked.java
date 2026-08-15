@@ -87,6 +87,13 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
     }
 
     @Override
+    public void securityBreak() {
+        if (worldObj != null && !worldObj.isRemote) {
+            worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+        }
+    }
+
+    @Override
     public AENetworkProxy getProxy() {
         return gridProxy;
     }
