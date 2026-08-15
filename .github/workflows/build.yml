@@ -26,3 +26,11 @@ jobs:
 
       - name: Build
         run: gradle build --stacktrace
+
+      - name: Upload development jar
+        uses: actions/upload-artifact@v6
+        with:
+          name: Divine-Machinery-Legacy-dev
+          path: build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 14
