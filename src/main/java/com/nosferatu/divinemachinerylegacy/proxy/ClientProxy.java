@@ -41,6 +41,10 @@ public class ClientProxy extends CommonProxy {
         BlockMechanicalAlfheimMarket.setRenderId(alfheim);
         RenderingRegistry.registerBlockHandler(new RenderMechanicalAlfheimMarket(alfheim));
 
+        int orechid = RenderingRegistry.getNextAvailableRenderId();
+        BlockMechanicalOrechid.setRenderId(orechid);
+        RenderingRegistry.registerBlockHandler(new RenderMechanicalOrechid(orechid));
+
         RenderingRegistry.registerEntityRenderingHandler(EntityTieredManaSpark.class, new RenderTieredManaSpark());
     }
 
@@ -61,6 +65,8 @@ public class ClientProxy extends CommonProxy {
                     (TileMechanicalIndustrialAgglomerationFactory) te);
         if (id == DivineMachineryLegacy.GUI_ALFHEIM_MARKET && te instanceof TileMechanicalAlfheimMarket)
             return new GuiMechanicalAlfheimMarket(player.inventory, (TileMechanicalAlfheimMarket) te);
+        if (id == DivineMachineryLegacy.GUI_ORECHID && te instanceof TileMechanicalOrechid)
+            return new GuiMechanicalOrechid(player.inventory, (TileMechanicalOrechid) te);
         return null;
     }
 }

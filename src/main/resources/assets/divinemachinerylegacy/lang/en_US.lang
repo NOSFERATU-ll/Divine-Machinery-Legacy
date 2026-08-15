@@ -28,6 +28,11 @@ tile.divinemachinerylegacy.mechanical_alfheim_market.saffron.name=Saffron Mechan
 tile.divinemachinerylegacy.mechanical_alfheim_market.shadow.name=Shadow Mechanical Alfheim Market
 tile.divinemachinerylegacy.mechanical_alfheim_market.crimson.name=Crimson Mechanical Alfheim Market
 
+tile.divinemachinerylegacy.mechanical_orechid.malachite.name=Malachite Mechanical Orechid
+tile.divinemachinerylegacy.mechanical_orechid.saffron.name=Saffron Mechanical Orechid
+tile.divinemachinerylegacy.mechanical_orechid.shadow.name=Shadow Mechanical Orechid
+tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Crimson Mechanical Orechid
+
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
 item.divinemachinerylegacy.catalyst_seed_infinity.name=Infinite Seeds Catalyst
@@ -83,3 +88,4 @@ container.divinemachinerylegacy.apothecary=Mechanical Apothecary
 container.divinemachinerylegacy.daisy=Mechanical Daisy
 container.divinemachinerylegacy.industrial_agglomeration=Industrial Agglomeration Factory
 container.divinemachinerylegacy.alfheim_market=Mechanical Alfheim Market
+container.divinemachinerylegacy.orechid=Mechanical Orechid
