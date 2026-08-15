@@ -42,6 +42,7 @@ tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Crimson Mechanical Or
 tile.divinemachinerylegacy.jaded_amaranthus.name=Jaded Amaranthus
 tile.divinemachinerylegacy.greenhouse.name=Greenhouse
 tile.divinemachinerylegacy.blood_altar_assembler.name=Blood Altar Assembler
+tile.divinemachinerylegacy.blood_generator.name=Blood Generator
 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
@@ -129,6 +130,10 @@ container.divinemachinerylegacy.orechid=Mechanical Orechid
 container.divinemachinerylegacy.jaded_amaranthus=Jaded Amaranthus
 container.divinemachinerylegacy.greenhouse=Greenhouse
 container.divinemachinerylegacy.blood_altar_assembler=Blood Altar Assembler
+container.divinemachinerylegacy.blood_generator=Blood Generator
+
+tooltip.divinemachinerylegacy.blood_generator.energy=Energy: %s / %s RF
+tooltip.divinemachinerylegacy.blood_generator.blood=Blood: %s / %s mB
 
 gui.divinemachinerylegacy.blood_altar_assembler.upgrades=Upgrades
 gui.divinemachinerylegacy.blood_altar_assembler.inputs=Inputs
