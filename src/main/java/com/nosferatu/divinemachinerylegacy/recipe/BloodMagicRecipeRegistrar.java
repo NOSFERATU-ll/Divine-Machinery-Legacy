@@ -1,10 +1,12 @@
 package com.nosferatu.divinemachinerylegacy.recipe;
 
 import WayofTime.alchemicalWizardry.ModBlocks;
+import WayofTime.alchemicalWizardry.ModItems;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
 import appeng.api.AEApi;
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemStack;
 
 /** Registers the BloodMagic Additions port and its altar progression against Blood Magic 1.7.10. */
@@ -13,6 +15,21 @@ public final class BloodMagicRecipeRegistrar {
 
     public static void register() {
         BloodMagicContent.register();
+
+        // bmaddon itself ships no recipe for the Blood Generator. DML gives it
+        // a deliberate late-midgame recipe matching what the machine actually does:
+        // a dense AE2 power core, Blood Magic capacity/dislocation runes for its
+        // Life Essence buffer/output, and Weak Blood Shards as the blood-tech gate.
+        ItemStack denseEnergyCell = AEApi.instance().definitions().blocks()
+                .energyCellDense().maybeStack(1).orNull();
+        if (denseEnergyCell != null && ModItems.weakBloodShard != null) {
+            GameRegistry.addRecipe(new ItemStack(BloodMagicContent.bloodGenerator),
+                    "WCW", "DED", "WCW",
+                    'W', new ItemStack(ModItems.weakBloodShard),
+                    'C', new ItemStack(ModBlocks.bloodRune, 1, 4),
+                    'D', new ItemStack(ModBlocks.bloodRune, 1, 2),
+                    'E', denseEnergyCell);
+        }
 
         // Modern Blood Magic stores altar upgradeLevel zero-based. In 1.7.10
         // AltarRecipeRegistry expects the real altar tier, hence +1 here.
