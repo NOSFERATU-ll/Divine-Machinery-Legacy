@@ -2,6 +2,7 @@ package com.nosferatu.divinemachinerylegacy.proxy;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.block.*;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
 import com.nosferatu.divinemachinerylegacy.client.render.*;
 import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.gui.*;
@@ -87,6 +88,8 @@ public class ClientProxy extends CommonProxy {
             return new GuiGreenhouse(player.inventory, (TileGreenhouse) te);
         if (id == DivineMachineryLegacy.GUI_BLOOD_ALTAR_ASSEMBLER && te instanceof TileBloodAltarAssembler)
             return new GuiBloodAltarAssembler(player.inventory, (TileBloodAltarAssembler) te);
+        if (id == BloodMagicContent.GUI_BLOOD_GENERATOR && te instanceof TileBloodGenerator)
+            return new GuiBloodGenerator(player.inventory, (TileBloodGenerator) te);
         return null;
     }
 }
