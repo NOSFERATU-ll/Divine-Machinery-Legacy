@@ -13,6 +13,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.io.File;
 
@@ -61,5 +62,6 @@ public final class BloodMagicContent {
         // Blood Pattern while this event handler gives the source pattern back.
         GameRegistry.addRecipe(new RecipeEncodeBloodPattern());
         FMLCommonHandler.instance().bus().register(new BloodPatternCraftingHandler());
+        MinecraftForge.EVENT_BUS.register(new BloodAltarAssemblerMemoryCardHandler());
     }
 }
