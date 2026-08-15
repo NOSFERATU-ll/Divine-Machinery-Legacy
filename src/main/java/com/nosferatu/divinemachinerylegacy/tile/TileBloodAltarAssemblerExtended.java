@@ -22,9 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Pattern-aware Blood Altar Assembler. The 1.7.10 machine keeps the proven
- * Blood Altar backend from TileBloodAltarAssembler, while adding bmaddon's nine
- * internal Blood Pattern slots and its Alchemy Table processing path.
+ * Pattern-aware Blood Altar Assembler matching BloodMagic Additions 1.0.4.
+ *
+ * Unlike the early port prototype this machine is intentionally pattern-only:
+ * it does not expose a hidden manual input queue and it refuses ordinary AE2
+ * processing patterns. The nine installed Blood Patterns are the authoritative
+ * crafting list, just like in bmaddon.
  */
 public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
     public static final int SLOT_PATTERN_START = TileBloodAltarAssembler.INVENTORY_SIZE;
@@ -37,8 +40,6 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
 
     @Override
     public void updateEntity() {
-        // Preserve the existing plain Blood Altar/manual automation path.
-        super.updateEntity();
         if (worldObj == null || worldObj.isRemote || patternJobs.isEmpty()) return;
 
         boolean dirty = false;
@@ -122,7 +123,12 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         if (isPatternSlot(slot)) return isValidBloodPattern(stack);
-        return super.isItemValidForSlot(slot, stack);
+        if (slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END) {
+            return super.isItemValidForSlot(slot, stack);
+        }
+        // The inherited 1.7 implementation has legacy manual input slots.
+        // bmaddon does not: all recipe items arrive from AE2 pattern execution.
+        return false;
     }
 
     private boolean isPatternSlot(int slot) {
@@ -159,18 +165,33 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
         markDirty();
     }
 
+    private boolean hasInstalledPattern(BloodMagicPatternDetails details) {
+        ItemStack requested = details == null ? null : details.getPattern();
+        if (requested == null) return false;
+
+        for (ItemStack installed : patternInventory) {
+            if (installed == null) continue;
+            if (installed.isItemEqual(requested)
+                    && ItemStack.areItemStackTagsEqual(installed, requested)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // ---------------------------------------------------------------------
     // AE2 processing execution.
     // ---------------------------------------------------------------------
 
     @Override
     public boolean pushPattern(ICraftingPatternDetails pattern, InventoryCrafting table, ForgeDirection direction) {
-        if (!(pattern instanceof BloodMagicPatternDetails)) {
-            return super.pushPattern(pattern, table, direction);
-        }
+        // Ordinary AE2 processing patterns must not turn the machine into a
+        // generic hidden Blood Altar. Only installed Blood Patterns are valid.
+        if (!(pattern instanceof BloodMagicPatternDetails)) return false;
         if (worldObj == null || worldObj.isRemote || table == null) return false;
 
         BloodMagicPatternDetails details = (BloodMagicPatternDetails) pattern;
+        if (!hasInstalledPattern(details)) return false;
         if (details.getRequiredTier() > getAltarTier()) return false;
         if (patternJobs.size() >= getMaxParallelCrafts()) return false;
 
@@ -330,26 +351,42 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
         return a != null && b != null && a.stackSize == b.stackSize && sameType(a, b);
     }
 
+    // The inherited machine exposes its old manual input queue through sided
+    // inventory. Keep only the output buffer visible to external automation.
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        int[] slots = new int[SLOT_OUTPUT_END - SLOT_OUTPUT_START + 1];
+        for (int i = 0; i < slots.length; i++) slots[i] = SLOT_OUTPUT_START + i;
+        return slots;
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+        return slot >= SLOT_OUTPUT_START && slot <= SLOT_OUTPUT_END;
+    }
+
     @Override
     public boolean isCrafting() {
-        return super.isCrafting() || !patternJobs.isEmpty();
+        return !patternJobs.isEmpty();
     }
 
     @Override
     public int getProgressTicks() {
-        if (super.isCrafting() || patternJobs.isEmpty()) return super.getProgressTicks();
-        return patternJobs.get(0).progress;
+        return patternJobs.isEmpty() ? 0 : patternJobs.get(0).progress;
     }
 
     @Override
     public int getCraftTimeTicks() {
-        if (super.isCrafting() || patternJobs.isEmpty()) return super.getCraftTimeTicks();
-        return patternJobs.get(0).craftTime;
+        return patternJobs.isEmpty() ? 0 : patternJobs.get(0).craftTime;
     }
 
     @Override
     public int getActiveBatch() {
-        if (super.isCrafting() || patternJobs.isEmpty()) return super.getActiveBatch();
         return patternJobs.size();
     }
 
