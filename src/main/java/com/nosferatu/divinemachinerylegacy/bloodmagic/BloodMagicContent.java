@@ -5,7 +5,9 @@ import appeng.api.AEApi;
 import com.nosferatu.divinemachinerylegacy.block.BlockBloodGenerator;
 import com.nosferatu.divinemachinerylegacy.config.BloodMagicAddonConfig;
 import com.nosferatu.divinemachinerylegacy.item.ItemBloodAltarPattern;
+import com.nosferatu.divinemachinerylegacy.recipe.RecipeEncodeBloodPattern;
 import com.nosferatu.divinemachinerylegacy.tile.TileBloodGenerator;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -50,5 +52,11 @@ public final class BloodMagicContent {
                     'S', new ItemStack(ModItems.weakBloodShard),
                     'P', aeBlankPattern);
         }
+
+        // AE2 rv3 cannot accept a foreign blank pattern in its Pattern Terminal.
+        // The bridge recipe copies a normal AE2 processing pattern into the
+        // Blood Pattern while this event handler gives the source pattern back.
+        GameRegistry.addRecipe(new RecipeEncodeBloodPattern());
+        FMLCommonHandler.instance().bus().register(new BloodPatternCraftingHandler());
     }
 }
