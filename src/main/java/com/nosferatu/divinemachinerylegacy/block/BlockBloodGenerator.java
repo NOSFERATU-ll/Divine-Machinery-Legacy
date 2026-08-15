@@ -15,7 +15,7 @@ public class BlockBloodGenerator extends BlockContainer {
         super(Material.iron);
         setBlockName(DivineMachineryLegacy.MODID + ".blood_generator");
         setBlockTextureName(DivineMachineryLegacy.MODID + ":bloodmagic/blood_generator");
-        setHardness(4.0F);
+        setHardness(5.0F);
         setResistance(6.0F);
         setHarvestLevel("pickaxe", 2);
         setStepSound(soundTypeMetal);
