@@ -30,8 +30,13 @@ public final class BloodMagicAddonConfig {
     private BloodMagicAddonConfig() { }
 
     public static void load(File suggestedConfigurationFile) {
-        File parent = suggestedConfigurationFile.getParentFile();
-        File file = new File(parent, "divinemachinerylegacy-bloodmagic.cfg");
+        File parent = suggestedConfigurationFile == null ? null : suggestedConfigurationFile.getParentFile();
+        loadFromDirectory(parent);
+    }
+
+    public static void loadFromDirectory(File configDirectory) {
+        if (configDirectory == null) configDirectory = new File("config");
+        File file = new File(configDirectory, "divinemachinerylegacy-bloodmagic.cfg");
         Configuration config = new Configuration(file);
         try {
             config.load();
