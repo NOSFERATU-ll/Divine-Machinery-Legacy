@@ -1,5 +1,6 @@
 package com.nosferatu.divinemachinerylegacy.tile;
 
+import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.botania.MachineTier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -24,16 +25,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * First native 1.7.10 port milestone for Botanical Machinery-style automation.
+ * Mechanical Runic Altar backport for Botania 1.7.10.
  *
- * Inventory layout is deliberately fixed across all tiers so future AE2 and GUI
- * code can target stable slot numbers:
+ * Stable inventory layout across all tiers:
  *   0..2   Livingrock
- *   3..4   reserved upgrade slots
+ *   3..4   machine catalyst upgrades
  *   5..20  rune altar inputs
  *   21..36 outputs
  *
- * Tier metadata controls which Livingrock/upgrade slots are actually enabled.
+ * Tier metadata controls parallelism, mana capacity, Livingrock slots and
+ * available catalyst slots. Advanced/Ultimate tiers support the same two
+ * Runic Altar catalysts used by Extra Reforked: infinite mana and infinite
+ * Livingrock.
  */
 public class TileMechanicalRunicAltar extends TileEntity implements ISidedInventory, ISparkAttachable {
 
@@ -47,7 +50,7 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
     public static final int SLOT_OUTPUT_END = 36;
     public static final int INVENTORY_SIZE = 37;
 
-    /** Mirrors the current Extra Reforked default: 100 mana progress per craft per tick. */
+    /** Mirrors Extra Reforked's default runic altar mana work per tick. */
     public static final int MAX_MANA_PROGRESS_PER_TICK = 100;
 
     private final ItemStack[] inventory = new ItemStack[INVENTORY_SIZE];
@@ -82,11 +85,14 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
             return;
         }
 
-        int byBuffer = mana / currentBatch;
+        boolean infiniteMana = hasInfiniteMana();
+        int byBuffer = infiniteMana ? Integer.MAX_VALUE : mana / currentBatch;
         int manaProgress = Math.min(Math.min(MAX_MANA_PROGRESS_PER_TICK, remaining), byBuffer);
         if (manaProgress <= 0) return;
 
-        mana -= manaProgress * currentBatch;
+        if (!infiniteMana) {
+            mana -= manaProgress * currentBatch;
+        }
         progress += manaProgress;
         markDirty();
 
@@ -203,8 +209,8 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
             return;
         }
 
-        // Rebuild just before committing so automation cannot make the machine
-        // consume stale inputs after a pipe/player changed the inventory.
+        // Rebuild immediately before committing so automation cannot make the
+        // machine consume stale inputs after a pipe/player changed inventory.
         MatchPlan plan = buildPlan(currentRecipe, currentBatch);
         if (plan == null || getLivingrockCount() < currentBatch || !canFitResults(currentRecipe, currentBatch, plan.runeReturns)) {
             resetProcess();
@@ -243,6 +249,8 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
     }
 
     private void removeLivingrock(int amount) {
+        if (hasInfiniteLivingrock()) return;
+
         int left = amount;
         int allowed = getTier().getLivingrockSlots();
         for (int i = 0; i < allowed && left > 0; i++) {
@@ -257,6 +265,8 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
     }
 
     private int getLivingrockCount() {
+        if (hasInfiniteLivingrock()) return Integer.MAX_VALUE;
+
         int total = 0;
         int allowed = getTier().getLivingrockSlots();
         for (int i = 0; i < allowed; i++) {
@@ -394,6 +404,31 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
         return currentBatch;
     }
 
+    public boolean hasInfiniteMana() {
+        return hasUpgrade(DivineMachineryLegacy.catalystManaInfinity);
+    }
+
+    public boolean hasInfiniteLivingrock() {
+        return hasUpgrade(DivineMachineryLegacy.catalystLivingrockInfinity);
+    }
+
+    private boolean hasUpgrade(Item item) {
+        if (item == null) return false;
+        int enabled = getTier().getUpgradeSlots();
+        for (int i = 0; i < enabled; i++) {
+            ItemStack stack = inventory[SLOT_UPGRADE_START + i];
+            if (stack != null && stack.getItem() == item) return true;
+        }
+        return false;
+    }
+
+    private boolean isUpgradeItem(ItemStack stack) {
+        if (stack == null) return false;
+        Item item = stack.getItem();
+        return item == DivineMachineryLegacy.catalystManaInfinity
+                || item == DivineMachineryLegacy.catalystLivingrockInfinity;
+    }
+
     // Client GUI synchronization only.
     public void setClientMana(int value) {
         if (worldObj != null && worldObj.isRemote) mana = Math.max(0, value);
@@ -423,12 +458,14 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
 
     @Override
     public boolean isFull() {
-        return mana >= getManaCapacity();
+        return hasInfiniteMana() || mana >= getManaCapacity();
     }
 
     @Override
     public void recieveMana(int amount) {
         if (amount == 0) return;
+        if (amount > 0 && hasInfiniteMana()) return;
+
         int before = mana;
         long next = (long) mana + amount;
         if (next < 0L) next = 0L;
@@ -454,6 +491,7 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
 
     @Override
     public int getAvailableSpaceForMana() {
+        if (hasInfiniteMana()) return 0;
         return Math.max(0, getManaCapacity() - mana);
     }
 
@@ -566,12 +604,13 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
             return local < getTier().getLivingrockSlots() && isLivingrock(stack);
         }
 
-        // Upgrade items are intentionally reserved until the catalyst item layer
-        // is ported. This prevents arbitrary items from occupying future slots.
-        if (slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END) return false;
+        if (slot >= SLOT_UPGRADE_START && slot <= SLOT_UPGRADE_END) {
+            int local = slot - SLOT_UPGRADE_START;
+            return local < getTier().getUpgradeSlots() && isUpgradeItem(stack);
+        }
 
         if (slot >= SLOT_INPUT_START && slot <= SLOT_INPUT_END) {
-            return stack != null && !isLivingrock(stack);
+            return stack != null && !isLivingrock(stack) && !isUpgradeItem(stack);
         }
 
         return false;
@@ -580,10 +619,14 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
         int living = getTier().getLivingrockSlots();
-        int total = living + (SLOT_INPUT_END - SLOT_INPUT_START + 1) + (SLOT_OUTPUT_END - SLOT_OUTPUT_START + 1);
+        int upgrades = getTier().getUpgradeSlots();
+        int total = living + upgrades
+                + (SLOT_INPUT_END - SLOT_INPUT_START + 1)
+                + (SLOT_OUTPUT_END - SLOT_OUTPUT_START + 1);
         int[] result = new int[total];
         int p = 0;
         for (int i = 0; i < living; i++) result[p++] = SLOT_LIVINGROCK_START + i;
+        for (int i = 0; i < upgrades; i++) result[p++] = SLOT_UPGRADE_START + i;
         for (int slot = SLOT_INPUT_START; slot <= SLOT_INPUT_END; slot++) result[p++] = slot;
         for (int slot = SLOT_OUTPUT_START; slot <= SLOT_OUTPUT_END; slot++) result[p++] = slot;
         return result;
@@ -644,6 +687,8 @@ public class TileMechanicalRunicAltar extends TileEntity implements ISidedInvent
                 inventory[slot] = ItemStack.loadItemStackFromNBT(item);
             }
         }
+
+        if (mana > getManaCapacity()) mana = getManaCapacity();
     }
 
     private static final class MatchPlan {
