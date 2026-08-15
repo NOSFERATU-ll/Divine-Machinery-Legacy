@@ -85,6 +85,8 @@ public class ClientProxy extends CommonProxy {
             return new GuiJadedAmaranthus(player.inventory, (TileJadedAmaranthus) te);
         if (id == DivineMachineryLegacy.GUI_GREENHOUSE && te instanceof TileGreenhouse)
             return new GuiGreenhouse(player.inventory, (TileGreenhouse) te);
+        if (id == DivineMachineryLegacy.GUI_BLOOD_ALTAR_ASSEMBLER && te instanceof TileBloodAltarAssembler)
+            return new GuiBloodAltarAssembler(player.inventory, (TileBloodAltarAssembler) te);
         return null;
     }
 }
