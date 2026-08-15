@@ -1,6 +1,7 @@
 package com.nosferatu.divinemachinerylegacy.bloodmagic;
 
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,14 @@ import java.lang.reflect.Method;
  */
 public final class BloodMagicNeiCatalystBridge {
     private boolean attempted;
+
+    /**
+     * Registers the delayed bridge without introducing a hard dependency on NEI.
+     * The client tick event simply never fires on a dedicated server.
+     */
+    public static void registerIfAvailable() {
+        FMLCommonHandler.instance().bus().register(new BloodMagicNeiCatalystBridge());
+    }
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
