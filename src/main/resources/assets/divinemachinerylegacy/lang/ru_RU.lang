@@ -8,6 +8,15 @@ tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Багровый 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
 
+item.divinemachinerylegacy.base_spark.name=Базовая искра маны
+item.divinemachinerylegacy.malachite_spark.name=Малахитовая искра маны
+item.divinemachinerylegacy.saffron_spark.name=Шафрановая искра маны
+item.divinemachinerylegacy.shadow_spark.name=Теневая искра маны
+item.divinemachinerylegacy.crimson_spark.name=Багровая искра маны
+item.divinemachinerylegacy.aureate_spark.name=Ауреатовая искра маны
+item.divinemachinerylegacy.mazarine_spark.name=Мазариновая искра маны
+tooltip.divinemachinerylegacy.spark_transfer=Передача маны: %,d/т
+
 item.divinemachinerylegacy.malachite_ingot.name=Малахитовый слиток
 item.divinemachinerylegacy.saffron_ingot.name=Шафрановый слиток
 item.divinemachinerylegacy.shadow_ingot.name=Теневой слиток

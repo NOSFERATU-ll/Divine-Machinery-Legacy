@@ -8,6 +8,15 @@ tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Crimson Mechanica
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
 
+item.divinemachinerylegacy.base_spark.name=Base Mana Spark
+item.divinemachinerylegacy.malachite_spark.name=Malachite Mana Spark
+item.divinemachinerylegacy.saffron_spark.name=Saffron Mana Spark
+item.divinemachinerylegacy.shadow_spark.name=Shadow Mana Spark
+item.divinemachinerylegacy.crimson_spark.name=Crimson Mana Spark
+item.divinemachinerylegacy.aureate_spark.name=Aureate Mana Spark
+item.divinemachinerylegacy.mazarine_spark.name=Mazarine Mana Spark
+tooltip.divinemachinerylegacy.spark_transfer=Mana transfer: %,d/t
+
 item.divinemachinerylegacy.malachite_ingot.name=Malachite Ingot
 item.divinemachinerylegacy.saffron_ingot.name=Saffron Ingot
 item.divinemachinerylegacy.shadow_ingot.name=Shadow Ingot

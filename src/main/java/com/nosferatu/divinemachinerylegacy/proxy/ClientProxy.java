@@ -3,6 +3,8 @@ package com.nosferatu.divinemachinerylegacy.proxy;
 import com.nosferatu.divinemachinerylegacy.DivineMachineryLegacy;
 import com.nosferatu.divinemachinerylegacy.block.BlockMechanicalRunicAltar;
 import com.nosferatu.divinemachinerylegacy.client.render.RenderMechanicalRunicAltar;
+import com.nosferatu.divinemachinerylegacy.client.render.RenderTieredManaSpark;
+import com.nosferatu.divinemachinerylegacy.entity.EntityTieredManaSpark;
 import com.nosferatu.divinemachinerylegacy.gui.GuiMechanicalRunicAltar;
 import com.nosferatu.divinemachinerylegacy.tile.TileMechanicalRunicAltar;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -20,6 +22,7 @@ public class ClientProxy extends CommonProxy {
         int renderId = RenderingRegistry.getNextAvailableRenderId();
         BlockMechanicalRunicAltar.setRenderId(renderId);
         RenderingRegistry.registerBlockHandler(new RenderMechanicalRunicAltar(renderId));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTieredManaSpark.class, new RenderTieredManaSpark());
     }
 
     @Override
