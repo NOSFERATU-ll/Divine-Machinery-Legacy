@@ -5,6 +5,8 @@ import WayofTime.alchemicalWizardry.api.alchemy.AlchemyRecipeRegistry;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipe;
 import WayofTime.alchemicalWizardry.api.altarRecipeRegistry.AltarRecipeRegistry;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicContent;
+import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicPatternData;
 import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicPatternDetails;
 import com.nosferatu.divinemachinerylegacy.bloodmagic.BloodMagicPatternKind;
 import com.nosferatu.divinemachinerylegacy.config.BloodMagicAddonConfig;
@@ -20,14 +22,17 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Adds the custom Blood Pattern path from bmaddon without breaking the already
- * working plain AE2-processing fallback in TileBloodAltarAssembler.
- *
- * Blood Altar and Alchemy Table patterns are real AE2 rv3 processing patterns.
- * Their item inputs are supplied by AE2, LP is consumed from the machine tank,
- * and the finished item is returned through the normal output slots/ME Interface.
+ * Pattern-aware Blood Altar Assembler. The 1.7.10 machine keeps the proven
+ * Blood Altar backend from TileBloodAltarAssembler, while adding bmaddon's nine
+ * internal Blood Pattern slots and its Alchemy Table processing path.
  */
 public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
+    public static final int SLOT_PATTERN_START = TileBloodAltarAssembler.INVENTORY_SIZE;
+    public static final int PATTERN_SLOT_COUNT = 9;
+    public static final int SLOT_PATTERN_END = SLOT_PATTERN_START + PATTERN_SLOT_COUNT - 1;
+    public static final int EXTENDED_INVENTORY_SIZE = SLOT_PATTERN_END + 1;
+
+    private final ItemStack[] patternInventory = new ItemStack[PATTERN_SLOT_COUNT];
     private final List<PatternJob> patternJobs = new ArrayList<PatternJob>();
 
     @Override
@@ -54,6 +59,109 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
 
         if (dirty) markDirty();
     }
+
+    // ---------------------------------------------------------------------
+    // Nine Blood Pattern slots, matching bmaddon 1.0.4.
+    // ---------------------------------------------------------------------
+
+    @Override
+    public int getSizeInventory() {
+        return EXTENDED_INVENTORY_SIZE;
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        if (isPatternSlot(slot)) return patternInventory[slot - SLOT_PATTERN_START];
+        return super.getStackInSlot(slot);
+    }
+
+    @Override
+    public ItemStack decrStackSize(int slot, int amount) {
+        if (!isPatternSlot(slot)) return super.decrStackSize(slot, amount);
+        int index = slot - SLOT_PATTERN_START;
+        ItemStack stack = patternInventory[index];
+        if (stack == null) return null;
+
+        ItemStack result;
+        if (stack.stackSize <= amount) {
+            result = stack;
+            patternInventory[index] = null;
+        } else {
+            result = stack.splitStack(amount);
+            if (stack.stackSize <= 0) patternInventory[index] = null;
+        }
+        markDirty();
+        return result;
+    }
+
+    @Override
+    public ItemStack getStackInSlotOnClosing(int slot) {
+        if (!isPatternSlot(slot)) return super.getStackInSlotOnClosing(slot);
+        int index = slot - SLOT_PATTERN_START;
+        ItemStack stack = patternInventory[index];
+        patternInventory[index] = null;
+        if (stack != null) markDirty();
+        return stack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        if (!isPatternSlot(slot)) {
+            super.setInventorySlotContents(slot, stack);
+            return;
+        }
+
+        if (stack != null) {
+            if (!isValidBloodPattern(stack)) return;
+            stack.stackSize = 1;
+        }
+        patternInventory[slot - SLOT_PATTERN_START] = stack;
+        markDirty();
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        if (isPatternSlot(slot)) return isValidBloodPattern(stack);
+        return super.isItemValidForSlot(slot, stack);
+    }
+
+    private boolean isPatternSlot(int slot) {
+        return slot >= SLOT_PATTERN_START && slot <= SLOT_PATTERN_END;
+    }
+
+    private boolean isValidBloodPattern(ItemStack stack) {
+        return stack != null
+                && BloodMagicContent.bloodAltarPattern != null
+                && stack.getItem() == BloodMagicContent.bloodAltarPattern
+                && BloodMagicPatternData.isEncoded(stack);
+    }
+
+    public ItemStack getBloodPattern(int index) {
+        if (index < 0 || index >= PATTERN_SLOT_COUNT) return null;
+        return patternInventory[index];
+    }
+
+    public boolean setBloodPatternIfEmpty(int index, ItemStack pattern) {
+        if (index < 0 || index >= PATTERN_SLOT_COUNT || patternInventory[index] != null
+                || !isValidBloodPattern(pattern)) return false;
+        ItemStack copy = pattern.copy();
+        copy.stackSize = 1;
+        patternInventory[index] = copy;
+        markDirty();
+        return true;
+    }
+
+    public void setBloodPattern(int index, ItemStack pattern) {
+        if (index < 0 || index >= PATTERN_SLOT_COUNT) return;
+        if (pattern != null && !isValidBloodPattern(pattern)) return;
+        patternInventory[index] = pattern == null ? null : pattern.copy();
+        if (patternInventory[index] != null) patternInventory[index].stackSize = 1;
+        markDirty();
+    }
+
+    // ---------------------------------------------------------------------
+    // AE2 processing execution.
+    // ---------------------------------------------------------------------
 
     @Override
     public boolean pushPattern(ICraftingPatternDetails pattern, InventoryCrafting table, ForgeDirection direction) {
@@ -164,7 +272,7 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
     private ItemStack[] copyOutputInventory() {
         ItemStack[] result = new ItemStack[SLOT_OUTPUT_END - SLOT_OUTPUT_START + 1];
         for (int i = 0; i < result.length; i++) {
-            ItemStack stack = getStackInSlot(SLOT_OUTPUT_START + i);
+            ItemStack stack = super.getStackInSlot(SLOT_OUTPUT_START + i);
             result[i] = stack == null ? null : stack.copy();
         }
         return result;
@@ -195,7 +303,7 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
     private void insertPatternOutput(ItemStack incoming) {
         int left = incoming.stackSize;
         for (int slot = SLOT_OUTPUT_START; slot <= SLOT_OUTPUT_END && left > 0; slot++) {
-            ItemStack existing = getStackInSlot(slot);
+            ItemStack existing = super.getStackInSlot(slot);
             if (existing == null || !sameType(existing, incoming)) continue;
             int limit = Math.min(getInventoryStackLimit(), existing.getMaxStackSize());
             int room = limit - existing.stackSize;
@@ -203,13 +311,13 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
             int moved = Math.min(room, left);
             existing.stackSize += moved;
             left -= moved;
-            setInventorySlotContents(slot, existing);
+            super.setInventorySlotContents(slot, existing);
         }
         for (int slot = SLOT_OUTPUT_START; slot <= SLOT_OUTPUT_END && left > 0; slot++) {
-            if (getStackInSlot(slot) != null) continue;
+            if (super.getStackInSlot(slot) != null) continue;
             ItemStack placed = incoming.copy();
             placed.stackSize = Math.min(left, Math.min(getInventoryStackLimit(), placed.getMaxStackSize()));
-            setInventorySlotContents(slot, placed);
+            super.setInventorySlotContents(slot, placed);
             left -= placed.stackSize;
         }
     }
@@ -248,7 +356,19 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        NBTTagList list = new NBTTagList();
+
+        NBTTagList patterns = new NBTTagList();
+        for (int i = 0; i < PATTERN_SLOT_COUNT; i++) {
+            ItemStack pattern = patternInventory[i];
+            if (pattern == null) continue;
+            NBTTagCompound patternTag = new NBTTagCompound();
+            patternTag.setByte("Slot", (byte) i);
+            pattern.writeToNBT(patternTag);
+            patterns.appendTag(patternTag);
+        }
+        tag.setTag("DMLBloodPatterns", patterns);
+
+        NBTTagList jobs = new NBTTagList();
         for (PatternJob job : patternJobs) {
             NBTTagCompound jobTag = new NBTTagCompound();
             NBTTagCompound outputTag = new NBTTagCompound();
@@ -256,18 +376,32 @@ public class TileBloodAltarAssemblerExtended extends TileBloodAltarAssembler {
             jobTag.setTag("Output", outputTag);
             jobTag.setInteger("Progress", job.progress);
             jobTag.setInteger("CraftTime", job.craftTime);
-            list.appendTag(jobTag);
+            jobs.appendTag(jobTag);
         }
-        tag.setTag("DMLBloodPatternJobs", list);
+        tag.setTag("DMLBloodPatternJobs", jobs);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
+
+        for (int i = 0; i < patternInventory.length; i++) patternInventory[i] = null;
+        NBTTagList patterns = tag.getTagList("DMLBloodPatterns", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < patterns.tagCount(); i++) {
+            NBTTagCompound patternTag = patterns.getCompoundTagAt(i);
+            int slot = patternTag.getByte("Slot") & 255;
+            if (slot < 0 || slot >= PATTERN_SLOT_COUNT) continue;
+            ItemStack pattern = ItemStack.loadItemStackFromNBT(patternTag);
+            if (isValidBloodPattern(pattern)) {
+                pattern.stackSize = 1;
+                patternInventory[slot] = pattern;
+            }
+        }
+
         patternJobs.clear();
-        NBTTagList list = tag.getTagList("DMLBloodPatternJobs", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < list.tagCount(); i++) {
-            NBTTagCompound jobTag = list.getCompoundTagAt(i);
+        NBTTagList jobs = tag.getTagList("DMLBloodPatternJobs", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < jobs.tagCount(); i++) {
+            NBTTagCompound jobTag = jobs.getCompoundTagAt(i);
             ItemStack output = ItemStack.loadItemStackFromNBT(jobTag.getCompoundTag("Output"));
             if (output == null) continue;
             PatternJob job = new PatternJob(output, Math.max(1, jobTag.getInteger("CraftTime")));
