@@ -9,6 +9,12 @@ tile.divinemachinerylegacy.mechanical_mana_pool.malachite.name=Malachite Mechani
 tile.divinemachinerylegacy.mechanical_mana_pool.saffron.name=Saffron Mechanical Mana Pool
 tile.divinemachinerylegacy.mechanical_mana_pool.shadow.name=Shadow Mechanical Mana Pool
 tile.divinemachinerylegacy.mechanical_mana_pool.crimson.name=Crimson Mechanical Mana Pool
+
+tile.divinemachinerylegacy.mechanical_mana_infuser.malachite.name=Malachite Mechanical Mana Infuser
+tile.divinemachinerylegacy.mechanical_mana_infuser.saffron.name=Saffron Mechanical Mana Infuser
+tile.divinemachinerylegacy.mechanical_mana_infuser.shadow.name=Shadow Mechanical Mana Infuser
+tile.divinemachinerylegacy.mechanical_mana_infuser.crimson.name=Crimson Mechanical Mana Infuser
+
 tile.divinemachinerylegacy.mechanical_apothecary.malachite.name=Malachite Mechanical Apothecary
 tile.divinemachinerylegacy.mechanical_apothecary.saffron.name=Saffron Mechanical Apothecary
 tile.divinemachinerylegacy.mechanical_apothecary.shadow.name=Shadow Mechanical Apothecary
@@ -34,6 +40,7 @@ tile.divinemachinerylegacy.mechanical_orechid.shadow.name=Shadow Mechanical Orec
 tile.divinemachinerylegacy.mechanical_orechid.crimson.name=Crimson Mechanical Orechid
 
 tile.divinemachinerylegacy.jaded_amaranthus.name=Jaded Amaranthus
+tile.divinemachinerylegacy.greenhouse.name=Greenhouse
 
 item.divinemachinerylegacy.catalyst_mana_infinity.name=Infinite Mana Catalyst
 item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Infinite Livingrock Catalyst
@@ -44,6 +51,23 @@ item.divinemachinerylegacy.catalyst_wood_infinity.name=Infinite Wood Catalyst
 item.divinemachinerylegacy.catalyst_speed.name=Speed Catalyst
 item.divinemachinerylegacy.catalyst_petal.name=Petal Catalyst
 item.divinemachinerylegacy.catalyst_petal_block.name=Petal Block Catalyst
+
+item.divinemachinerylegacy.upgrade_flower_4x.name=Flower Capacity x4
+item.divinemachinerylegacy.upgrade_flower_16x.name=Flower Capacity x16
+item.divinemachinerylegacy.upgrade_flower_32x.name=Flower Capacity x32
+item.divinemachinerylegacy.upgrade_flower_64x.name=Flower Capacity x64
+item.divinemachinerylegacy.upgrade_gen_mana.name=Mana Generation Upgrade
+item.divinemachinerylegacy.upgrade_slot_add.name=Extra Fuel Slot Upgrade
+item.divinemachinerylegacy.upgrade_cost_energy.name=Energy Efficiency Upgrade
+item.divinemachinerylegacy.upgrade_tick_gen_mana_1.name=Mana Rate Upgrade I
+item.divinemachinerylegacy.upgrade_tick_gen_mana_2.name=Mana Rate Upgrade II
+item.divinemachinerylegacy.upgrade_storage_energy_1.name=Energy Storage Upgrade I
+item.divinemachinerylegacy.upgrade_storage_energy_2.name=Energy Storage Upgrade II
+item.divinemachinerylegacy.upgrade_storage_energy_3.name=Energy Storage Upgrade III
+item.divinemachinerylegacy.upgrade_storage_mana_1.name=Mana Storage Upgrade I
+item.divinemachinerylegacy.upgrade_storage_mana_2.name=Mana Storage Upgrade II
+item.divinemachinerylegacy.upgrade_storage_mana_3.name=Mana Storage Upgrade III
+item.divinemachinerylegacy.upgrade_heat_greenhouse.name=Greenhouse Heat Upgrade
 
 item.divinemachinerylegacy.base_spark.name=Base Mana Spark
 item.divinemachinerylegacy.malachite_spark.name=Malachite Mana Spark
@@ -88,9 +112,11 @@ tile.divinemachinerylegacy.mazarine_dragonstone_block.name=Mazarine Dragonstone 
 
 container.divinemachinerylegacy.runic_altar=Mechanical Runic Altar
 container.divinemachinerylegacy.mana_pool=Mechanical Mana Pool
+container.divinemachinerylegacy.mana_infuser=Mechanical Mana Infuser
 container.divinemachinerylegacy.apothecary=Mechanical Apothecary
 container.divinemachinerylegacy.daisy=Mechanical Daisy
 container.divinemachinerylegacy.industrial_agglomeration=Industrial Agglomeration Factory
 container.divinemachinerylegacy.alfheim_market=Mechanical Alfheim Market
 container.divinemachinerylegacy.orechid=Mechanical Orechid
 container.divinemachinerylegacy.jaded_amaranthus=Jaded Amaranthus
+container.divinemachinerylegacy.greenhouse=Greenhouse
