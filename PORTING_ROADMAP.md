@@ -24,6 +24,8 @@ During development, original Botanical Machinery Extra Reforked GUI/visual asset
 - [x] Consume Livingrock as the final ritual material.
 - [x] Refuse to start if outputs do not fit.
 - [x] Revalidate inputs immediately before craft completion.
+- [x] Accept native Botania-style right-click ingredient insertion.
+- [x] Collect valid dropped Rune Altar ingredients and Livingrock from the altar top.
 
 ### Tiers
 - [x] Malachite: 2.5M mana / up to 4 crafts.
@@ -62,7 +64,7 @@ During development, original Botanical Machinery Extra Reforked GUI/visual asset
 - [x] English and Russian names.
 - [x] Original Extra Reforked Runic Altar development GUI wired under explicit permission.
 - [x] Original inventory modules, mana bars, tier textures and catalyst art wired for development builds.
-- [ ] Final 1.7.10 block renderer/model for the altar frame.
+- [x] Native 1.7.10 custom block renderer matching Extra Reforked's framed Runic Altar model.
 - [ ] Final original Divine Machinery Legacy GUI/artwork pass after feature completion.
 
 ### Milestone gate
