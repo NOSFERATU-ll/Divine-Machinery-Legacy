@@ -48,25 +48,36 @@ public class RenderBloodGenerator extends TileEntitySpecialRenderer implements I
 
         switch (type) {
             case INVENTORY:
-                // Approximate the original modern GUI transform: 30/225 degrees,
-                // scaled to sit comfortably inside the 16x16 inventory cell.
-                GL11.glTranslatef(8F, 8F, 0F);
-                GL11.glScalef(10F, 10F, 10F);
+                // Mirror bmaddon's item model GUI transform. The OBJ itself is
+                // already normalized to 0..1; the old 10x scale made it spill
+                // across the whole NEI/inventory screen.
+                GL11.glScalef(0.625F, 0.625F, 0.625F);
                 GL11.glRotatef(30F, 1F, 0F, 0F);
                 GL11.glRotatef(225F, 0F, 1F, 0F);
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 break;
             case EQUIPPED:
+                // Modern third-person display: rotation [75,45,0],
+                // translation [0,2.5,0], scale 0.375.
+                GL11.glTranslatef(0F, 2.5F / 16F, 0F);
+                GL11.glScalef(0.375F, 0.375F, 0.375F);
+                GL11.glRotatef(75F, 1F, 0F, 0F);
+                GL11.glRotatef(45F, 0F, 1F, 0F);
+                GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+                break;
             case EQUIPPED_FIRST_PERSON:
-                GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-                GL11.glScalef(0.75F, 0.75F, 0.75F);
+                // Modern first-person right-hand display: rotation [0,45,0],
+                // scale 0.4.
+                GL11.glScalef(0.4F, 0.4F, 0.4F);
                 GL11.glRotatef(45F, 0F, 1F, 0F);
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 break;
             case ENTITY:
             default:
-                GL11.glTranslatef(-0.5F, 0F, -0.5F);
-                GL11.glScalef(0.5F, 0.5F, 0.5F);
+                // Modern ground display: translation [0,3,0], scale 0.25.
+                GL11.glTranslatef(0F, 3F / 16F, 0F);
+                GL11.glScalef(0.25F, 0.25F, 0.25F);
+                GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 break;
         }
 
