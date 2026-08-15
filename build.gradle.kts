@@ -3,7 +3,11 @@ plugins {
     `maven-publish`
     eclipse
     idea
-    id("com.gtnewhorizons.retrofuturagradle") version "2.0.2"
+    // RFG 2.0.2 is currently published with Java 25 bytecode and Gradle 8.8
+    // cannot instrument that plugin jar. The RFG 1.4.9 tag's own example
+    // intentionally uses plugin 1.4.0 with Gradle 8.8, so pin that known-good
+    // combination for this 1.7.10 project.
+    id("com.gtnewhorizons.retrofuturagradle") version "1.4.0"
 }
 
 group = "com.nosferatu.divinemachinerylegacy"
