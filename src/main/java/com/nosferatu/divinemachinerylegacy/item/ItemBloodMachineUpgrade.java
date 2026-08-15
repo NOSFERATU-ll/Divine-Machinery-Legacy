@@ -17,7 +17,9 @@ public class ItemBloodMachineUpgrade extends Item {
         setUnlocalizedName(DivineMachineryLegacy.MODID + "." + key);
         setTextureName(DivineMachineryLegacy.MODID + ":bloodmagic/" + key);
         setCreativeTab(DivineMachineryLegacy.CREATIVE_TAB);
-        setMaxStackSize(64);
+        // bmaddon exposes at most four parallel cards and nine dedicated
+        // Blood Magic speed cards to this machine.
+        setMaxStackSize(type == Type.PARALLEL ? 4 : 9);
     }
 
     public Type getType() {
