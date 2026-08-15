@@ -1,0 +1,11 @@
+itemGroup.divinemachinerylegacy=Divine Machinery Legacy
+
+tile.divinemachinerylegacy.mechanical_runic_altar.malachite.name=Малахитовый механический рунический алтарь
+tile.divinemachinerylegacy.mechanical_runic_altar.saffron.name=Шафрановый механический рунический алтарь
+tile.divinemachinerylegacy.mechanical_runic_altar.shadow.name=Теневой механический рунический алтарь
+tile.divinemachinerylegacy.mechanical_runic_altar.crimson.name=Багровый механический рунический алтарь
+
+item.divinemachinerylegacy.catalyst_mana_infinity.name=Катализатор бесконечной маны
+item.divinemachinerylegacy.catalyst_livingrock_infinity.name=Катализатор бесконечного живого камня
+
+container.divinemachinerylegacy.runic_altar=Механический рунический алтарь
