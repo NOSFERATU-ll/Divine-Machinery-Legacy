@@ -59,15 +59,8 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
             notifyPatternChange();
         }
 
-        if (worldObj != null && !worldObj.isRemote) {
-            int activeCrafts = Math.max(0, getActiveBatch());
-            if (activeCrafts > 0 && !consumeConfiguredAePower(activeCrafts)) {
-                // Like bmaddon, an already-started craft pauses instead of being
-                // destroyed if its channel or AE supply disappears.
-                return;
-            }
-        }
-
+        // Extended advances each non-pending craft independently through the
+        // hook below, exactly like bmaddon's per-craft power loop.
         super.updateEntity();
 
         if (worldObj != null && !worldObj.isRemote && gridProxy.isActive()) {
@@ -75,14 +68,19 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
         }
     }
 
-    private boolean consumeConfiguredAePower(int activeCrafts) {
+    @Override
+    protected boolean canAdvancePatternCraft() {
+        return consumeConfiguredAePowerForOneCraft();
+    }
+
+    private boolean consumeConfiguredAePowerForOneCraft() {
         if (!gridProxy.isActive()) return false;
 
         int accelerationCards = getAe2SpeedCardCount() + getBloodMagicSpeedCardCount() * 4;
-        double perCraft = BloodMagicAddonConfig.bloodAltarAssemblerAePerTickBase
-                + BloodMagicAddonConfig.bloodAltarAssemblerAePerTickPerAccelerationCard
-                * accelerationCards;
-        double required = Math.max(0.0D, perCraft) * Math.max(1, activeCrafts);
+        double required = Math.max(0.0D,
+                BloodMagicAddonConfig.bloodAltarAssemblerAePerTickBase
+                        + BloodMagicAddonConfig.bloodAltarAssemblerAePerTickPerAccelerationCard
+                        * accelerationCards);
         if (required <= 0.0D) return true;
 
         try {
@@ -132,8 +130,9 @@ public class TileBloodAltarAssemblerNetworked extends TileBloodAltarAssemblerExt
         }
     }
 
+    /** Renderer state: modern bmaddon lights reflect network power, not channel activity. */
     public boolean isNetworkPowered() {
-        return gridProxy.isActive();
+        return gridProxy.isPowered();
     }
 
     @Override
